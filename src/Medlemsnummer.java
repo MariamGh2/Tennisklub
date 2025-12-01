@@ -24,11 +24,11 @@ public class Medlemsnummer {
             int next = nr + 1;                                               //Udregn næste nummer
             Files.writeString(filSti, String.valueOf(next));           //Gem næste nummer i filen
 
-            return nr;                                                        //Returnere det gamle nr.
+            return nr;             ½                                           //Returnere det gamle nr.
 
         } catch (IOException e){
         System.out.println("Fejl i medlemsnummer: " + e.getMessage());
-        return 4;
+        return 0;
         }
     }
 

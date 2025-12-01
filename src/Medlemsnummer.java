@@ -28,7 +28,7 @@ public class Medlemsnummer {
 
         } catch (IOException e){
         System.out.println("Fejl i medlemsnummer: " + e.getMessage());
-        return -1;
+        return "hej";
         }
     }
 

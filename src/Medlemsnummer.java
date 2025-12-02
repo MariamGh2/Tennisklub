@@ -2,94 +2,63 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-
-//Klassen har kun ansvaret for at finde næste medlemsnummer
-//Den læser og skriver til en fil, så vi kan huske sidste nummer mellemhver gang programmet starter
+/* Klassen har ansvaret for at finde næste medlemsnummer
+Den læser alle eksisterende medlemmer fra medlem.txt
+og finder det mindste ledige tal (genbruger huller)
+ */
 public class Medlemsnummer {
 
-
-    public Medlemsnummer() {
-    } //Default constructor
+    public Medlemsnummer(){}   //Default constructor
 
 
-    //Her defineres en sti (path) til filen, hvor vi gemmer de seneste medlemsnumre
-    //Filen kommer til at ligge samme sted som programmet kører fra
-    private static final Path FIL = Path.of("medlem.txt");
 
-    /*Denne metode kaldes udefra fra Medlemsklassen
-    Den sørger for at:
-    1. Læse sidste nummer fra filen
-    2. Lægge 1 til
-    3. Skrive det nye nummer tilbage i filen
-    4. Returnere det nye nummer
-     */
-    public static int hentNytMedlemsnummer() {
-        int sidste = laesSidsteNummer();     //Læs sidste nummer
-        int nyt = sidste + 1;
-        System.out.println("Sidste medlemsnr: " + sidste + " Nyt: " + nyt);    //DEBUG
-        return nyt;                          //Returnere tallet til den der kalder metoden
+    private static final Path FIL = Path.of("medlem.txt");     //Sti til filen hvor ALLE medlemmerne står
+
+    public static int hentNytMedlemsnummer() {                       //Denne metode kaldes fra Medlem-klassen
+        return findMindsteLedigeNummer();                           //Den finder næste ledige medlemsnummer og returnere det
     }
 
-    //Denne metode læser det sidste medlemsnummer fra filen
-    private static int laesSidsteNummer() {
+    private static int findMindsteLedigeNummer() {                  //Finder det mindste ledige medlemsnummer, fx hvis numrene er 1,2,4,5 -> returnere 3
         try {
-            //Hvis filen ikke findes, opret og returner 0
-            if (!Files.exists(FIL)) {
-                return 0;
+            if (!Files.exists(FIL)) {                                    //Hvis filen ikke findes -> ingen medlemmer endnu -> start på 1
+                return 1;
             }
-
-            //Læs alle linjer i filen
             List<String> linjer = Files.readAllLines(FIL);
-            if (linjer.isEmpty()) {
-                return 0;
+
+            if (linjer.isEmpty()) {                                       //Hvis filen er tom -> start på 1
+                return 1;
             }
 
-            //Find sidste ikke-tomme linje
-            String sidsteLinje = "";
-            for (int i = linjer.size() - 1; i >= 0; i--) {
-                String linje = linjer.get(i).trim();
-                if (!linjer.isEmpty()) {
-                    sidsteLinje = linje;
-                    break;
+            Set<Integer> brugteNumre = new HashSet<>();   //HashSet til at gemme alle medlemsnumre
+                                                          //HashSet indeholder unikke værdier (ingen dubletter)
+                                                          //Søger hurtigere end et Arraylist, derfor perfekt ift. at finde huller
+
+            for (String linje : linjer) {                  //Gennemgå ALLE linjer i medlem.txt
+                String trimmed = linje.trim();             //trimmed og trim er en metode som fjerner mellemrum, linjeskift og tabs
+                if (trimmed.isEmpty()) continue;          //Tom linje (skip denne linje, den indeholder ikke data)
+
+                String[] dele = trimmed.split("_");    //Format: navn_medlemsnr._fødelsdag_mail
+                if (dele.length < 2) continue;
+
+                try {
+                    int nummer = Integer.parseInt(dele[1].trim());
+                    brugteNumre.add(nummer);
+                } catch (NumberFormatException e) {             //Linje med fejl ignoreres
                 }
             }
-            if (sidsteLinje.isEmpty()) {
-                return 0;
+            for (int kandidat = 1; kandidat <= brugteNumre.size() + 1; kandidat++){   //Find mindste ledige tal (kandidat) -> loop fra 1 og op
+                if (!brugteNumre.contains(kandidat)){                                  //Kandidat er forslag -> kandidat til at være næste ledige nummer
+                    return kandidat;
+                }
             }
-
-            System.out.println("Sidste linje i medlem.txt: " + sidsteLinje); //DEBUG
-
-            //Split linjen i dele
-            String[] dele = sidsteLinje.split(";");
-
-            if (dele.length < 2) {
-                System.out.println("Kunne ikke finde medlemsnummer i linjen - format forkert?"); //DEBUG
-                //linjen er ikke korrekt formateret -> start på 0
-                return 0;
-            }
-
-            //andet felt = medlemsnummer
-            String medlemnummerTekst = (dele[1].trim());
-            return Integer.parseInt(medlemnummerTekst);
-
-        } catch (IOException e) {
-            throw new RuntimeException("Fejl ved læsning a medlem.txt");
-        } catch (NumberFormatException e) {
-            System.out.println("Kunne ikke parse medlemsnummer - format forkert? Starter fra 0"); //DEBUG
-            return 0;
-        }
-    }
-
-        //Denne metode skriver et nyt nummer nede i filen
-        private static void tilfoejNummerTilFil(int nummer){
-        try {
-            //Tilføjer tallet som ny linje (append)
-            Files.writeString(FIL, nummer + "\n", StandardOpenOption.APPEND);
+            return brugteNumre.size() + 1;    //fallback (burde aldrig bruges)
         } catch (IOException e){
-            //Hvis der sker en fejl, stopper vi programmet med en fejlbesked
-            throw new RuntimeException ("Fejl ved skrivning til medlem.txt");
+            throw new RuntimeException("Fejl ved læsning af medlem.txt");    //RuntimeException bruges til at vise hvis der er en fejl
+                                                                             //Stopper programmet, så fejlen ikke skjules
         }
     }
 }

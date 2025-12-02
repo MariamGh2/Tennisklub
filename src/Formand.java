@@ -26,7 +26,7 @@ public class Formand {
         System.out.println("er du motionist eller konkurrenceSpiller");
         type = sc.nextLine();
 
-        if statement skal skrives her. 
+//        if statement skal skrives her.
 
 
 

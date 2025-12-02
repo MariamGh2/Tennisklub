@@ -1,15 +1,20 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-
-public class Medlemsnummer {                                               //Klassen har kun ansvaret for at finde næste medlemsnummer
-                                                                           //Den læser og skriver til en fil, så vi kan huske sidste nummer mellemhver gang programmet starter
+import java.nio.file.StandardOpenOption;
+import java.util.List;
 
 
-    public Medlemsnummer(){} //Default constructor
+//Klassen har kun ansvaret for at finde næste medlemsnummer
+//Den læser og skriver til en fil, så vi kan huske sidste nummer mellemhver gang programmet starter
+public class Medlemsnummer {
 
-    //Her difineres en sti (path) til filen, hvor vi gemmer de seneste medlemsnumre
+
+    public Medlemsnummer() {
+    } //Default constructor
+
+
+    //Her defineres en sti (path) til filen, hvor vi gemmer de seneste medlemsnumre
     //Filen kommer til at ligge samme sted som programmet kører fra
     private static final Path FIL = Path.of("medlem.txt");
 
@@ -20,43 +25,71 @@ public class Medlemsnummer {                                               //Kla
     3. Skrive det nye nummer tilbage i filen
     4. Returnere det nye nummer
      */
-    public static int hentNytMedlemsnummer(){
+    public static int hentNytMedlemsnummer() {
         int sidste = laesSidsteNummer();     //Læs sidste nummer
-        int nyt = sidste + 1;                //Læg 1 til
-        skrivTilFil(nyt);                    //Gemmer tallet i filen
+        int nyt = sidste + 1;
+        System.out.println("Sidste medlemsnr: " + sidste + " Nyt: " + nyt);    //DEBUG
         return nyt;                          //Returnere tallet til den der kalder metoden
     }
 
     //Denne metode læser det sidste medlemsnummer fra filen
-    private static int laesSidsteNummer(){
+    private static int laesSidsteNummer() {
         try {
-            //Først tjekker vi, om filen findes
-            if (!Files.exists(FIL)){
-                //Hvis den ikke findes, opretter vi den og skriver 0 i den
-                //Det betyder at første medlemsnummer, vi laver, bliver 1
-                Files.writeString(FIL, "0");
+            //Hvis filen ikke findes, opret og returner 0
+            if (!Files.exists(FIL)) {
                 return 0;
             }
 
-            //Hvis filen findes, læser vi dens indhold som tekst
-            String tekst = Files.readString(FIL).trim();    //trim() fjerner evt. mellemrum/linjeskift
-            int tekst2 = Integer.parseInt(tekst);
-            return tekst2;                 //Laver teksten om til et helt tal (int)
+            //Læs alle linjer i filen
+            List<String> linjer = Files.readAllLines(FIL);
+            if (linjer.isEmpty()) {
+                return 0;
+            }
+
+            //Find sidste ikke-tomme linje
+            String sidsteLinje = "";
+            for (int i = linjer.size() - 1; i >= 0; i--) {
+                String linje = linjer.get(i).trim();
+                if (!linjer.isEmpty()) {
+                    sidsteLinje = linje;
+                    break;
+                }
+            }
+            if (sidsteLinje.isEmpty()) {
+                return 0;
+            }
+
+            System.out.println("Sidste linje i medlem.txt: " + sidsteLinje); //DEBUG
+
+            //Split linjen i dele
+            String[] dele = sidsteLinje.split(";");
+
+            if (dele.length < 2) {
+                System.out.println("Kunne ikke finde medlemsnummer i linjen - format forkert?"); //DEBUG
+                //linjen er ikke korrekt formateret -> start på 0
+                return 0;
+            }
+
+            //andet felt = medlemsnummer
+            String medlemnummerTekst = (dele[1].trim());
+            return Integer.parseInt(medlemnummerTekst);
 
         } catch (IOException e) {
-            //Hvis der sker en fejl ved fil-læsning, stopper vi programmet med en fejlbesked
-            throw new RuntimeException("Fejl ved læsning af medlemsnummer.txt");
+            throw new RuntimeException("Fejl ved læsning a medlem.txt");
+        } catch (NumberFormatException e) {
+            System.out.println("Kunne ikke parse medlemsnummer - format forkert? Starter fra 0"); //DEBUG
+            return 0;
         }
     }
 
-    //Denne metode skriver et nyt nummer nede i filen
-    private static void skrivTilFil(int nummer){
+        //Denne metode skriver et nyt nummer nede i filen
+        private static void tilfoejNummerTilFil(int nummer){
         try {
-            //Vi overskriver bare hele filens indhold med det nye tal
-            Files.writeString(FIL, String.valueOf(nummer));
+            //Tilføjer tallet som ny linje (append)
+            Files.writeString(FIL, nummer + "\n", StandardOpenOption.APPEND);
         } catch (IOException e){
             //Hvis der sker en fejl, stopper vi programmet med en fejlbesked
-            throw new RuntimeException ("Fejl ved skrivning til medlemsnummer.txt");
+            throw new RuntimeException ("Fejl ved skrivning til medlem.txt");
         }
     }
 }

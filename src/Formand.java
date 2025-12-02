@@ -11,6 +11,8 @@ public class Formand {
         int medlemNummer;
         String foedselsdag;
         String mail;
+        String type;
+
 
         Scanner sc = new Scanner(System.in);
 
@@ -21,12 +23,18 @@ public class Formand {
         foedselsdag = sc.nextLine();
         System.out.println("skriv mail");
         mail = sc.nextLine();
+        System.out.println("er du motionist eller konkurrenceSpiller");
+        type = sc.nextLine();
+
+        if statement skal skrives her. 
+
+
 
 //        new Medlem(navn, "Aktiv", medlemNummer, foedselsdag, mail);
 
         File fil = new File("medlem.txt");
 
-        FileUtil.appendTilFil(fil, navn + "_" + medlemNummer + "_" + foedselsdag + "_" + mail);
+        FileUtil.appendTilFil(fil, navn + "_" + medlemNummer + "_" + foedselsdag + "_" + mail + "_" + type);
     }
 
     public void sletMedlem(){}

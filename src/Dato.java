@@ -21,15 +21,15 @@ public class Dato {
 
         return (iDag.getDayOfMonth() == 1 && iDag.getMonthValue() == 1);
     }
-/*
-    // Metode der tjekker om medlem skal have rykker
+
+    //Metode der tjekker om medlem skal have rykker
     public static boolean skalHaveRykker(LocalDate sidsteBetalingDato) {
 
     //betalingsdato i nuværende år
     LocalDate betalingsdato = LocalDate.of(LocalDate.now().getYear(), 1, 1);
 
     // Betalingsfrist: 1. februar på nuværende år.
-    LocalDate deadline = LocalDate.of(LocalDate.now().getYear(), 1, 2);
+    LocalDate deadline = LocalDate.of(LocalDate.now().getYear(), 2, 1);
 
     // Hvis medlem aldrig har betalt (dato = null), fx ved nyt medlem
     if (sidsteBetalingDato == null) {
@@ -43,7 +43,9 @@ public class Dato {
 
     // Hvis sidste betaling var før betalingsdato og dagensdato er over rykkerfristen, så rykker
     return LocalDate.now().isAfter(deadline);
-}*/
+}
+
 
 }
+
 

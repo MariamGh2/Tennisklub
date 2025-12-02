@@ -29,8 +29,8 @@ public class KonkurrenceSpillere {
 
     public void setResultat(){}
 
-    public void tilmeldSpiller(String navn) {
-        FileUtil.opretSpillerFil(navn);
+
+
     }
 
 

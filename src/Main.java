@@ -10,7 +10,7 @@ public class Main {
 
         while (taendt) {
 
-            login();
+            //login();
 
             if (bruger == "coach") {
                 //Coach.menu();
@@ -18,14 +18,8 @@ public class Main {
                 //Formand.menu();
             } else if (bruger == "kasserer") {
                 //Kasserer.menu();
-
             }
         }
-
-
-        File fil = new File("medlem.txt");
-
-        FileUtil.aendreDataIFil(fil, "Toki", 2, "Bak");
     }
 
 

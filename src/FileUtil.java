@@ -22,6 +22,7 @@ public class FileUtil {
     }
 
 
+
     //Ændre i en angivet fil --- (Filens path, linjen vi søger, dataets position, ændringen til dataet)
     public static void aendreDataIFil(File file, String sogning, int dataPunkt, String aendring) {
 
@@ -85,23 +86,17 @@ public class FileUtil {
 
 
 
-    /// Opretter konkurrence spillerens personlige fil i KonkurrenceSpillereNavne mappen
-    public static void opretSpillerFil(String spillerNavn) {
 
-        int medlemsnummer = Medlemsnummer.getNextMedlemsnummer();             //Henter medlemsnummer
 
-        Path mappe = Paths.get("KonkurrenceSpillereNavne");              //Stien til mappen "KonkurrenceSpillereNavne" til txt filerne
 
-        String filNavn = spillerNavn + "_" + medlemsnummer + ".txt";          //Opretter en filsti med navnet: spillerNavn.txt
-        Path filSti = mappe.resolve(filNavn);
 
-        //Opretter tom fil
-        try {
-            Files.createFile(filSti);
-            System.out.println("Tom fil oprettet: " + filSti);
-        } catch (IOException e) {
-            System.out.println("Kunne ikke oprette fil: " + e.getMessage());
-        }
+
+
+
+
+
+
+
     }
 
 

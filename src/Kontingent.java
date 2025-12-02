@@ -7,8 +7,8 @@ public class Kontingent {
     public void prisBestemmelse(){}
 
 
-    public int getKontingent(){}
+    public void getKontingent(){}
 
 
-    public int getRestance(){}
+    public void getRestance(){}
 }

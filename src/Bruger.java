@@ -1,14 +1,10 @@
-public interface Bruger {
+import java.io.File;
 
-    String password = "";
-    String username = "";
+public interface Bruger {
 
     //Funktion for at logge ud af systemet
     void logud();
 
     //Funktion der giver menuen for brugeren
     void menu();
-
-    //Funktion for at slukke systemet
-    void sluk();
 }

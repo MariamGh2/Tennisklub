@@ -10,10 +10,11 @@ public class FileUtil {
     public FileUtil(){} //Default Constructor
 
 
-    //Tilføj en linje til en angivet fil
+    //Tilføj en linje til en angivet fil --- (Filens path, String der skal tilføjes)
     public static void appendTilFil(File file, String linje) {                                                             //Append en linje til dagens fil
         try (FileWriter myWriter = new FileWriter(file, true)) {
             myWriter.write(linje + System.lineSeparator());
+
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
@@ -21,41 +22,34 @@ public class FileUtil {
     }
 
 
-    //Ændre i en angivet fil
-    public static void SkrivIFil(File file, String type, String sogning, String aendring) {
-        File filNavn = file;                //Hvilken File der skal ændres (fra parameter)
-        String dataSogning = sogning;       //Det data den leder efter
-        String aendringString = aendring;   //Det input den ønsker at ændre eller indsætte
+    //Ændre i en angivet fil --- (Filens path, linjen vi søger, dataets position, ændringen til dataet)
+    public static void aendreDataIFil(File file, String sogning, int dataPunkt, String aendring) {
 
-        List<String> linjer = new ArrayList<>();
+        String aendringString = aendring;                                                           //Det input den ønsker at ændre eller indsætte
+        int dataIndex = dataPunkt - 1;                                                              //Laver data punkt om til et index
+
+        List<String> linjer = new ArrayList<>();                                                    //Arrayliste vi gæmmer linjerne på da vi har ændret dem, og senere skriver tilbage til filen
 
         //Læser alle linjerne i filen
-        try (BufferedReader aflaeser = new BufferedReader(new FileReader(filNavn))) { //Læser fra angivet fil
+        try (BufferedReader aflaeser = new BufferedReader(new FileReader(file))) {               //Læser fra angivet fil
             String linje;
-            while ((linje = aflaeser.readLine()) != null) {     //Checker en bestemt linje
-                if (linje.contains(dataSogning)) {              //Er søgningen på den linje?
+            while ((linje = aflaeser.readLine()) != null) {                                         //Checker en bestemt linje
+                if (linje.contains(sogning)) {                                                  //Er søgningen på den linje?
 
-                    String[] dele = linje.split("_");
-                    //String[] hvem = dele[0];    ///SOMETHING FUNKY HERE (ikke angivet hvor mange dele)
-
-                    if (type.equalsIgnoreCase("")) {
-                        
-                    } else if (type.equalsIgnoreCase("")) {
-
-                    } else if (type.equalsIgnoreCase("")) {
-
-                    }
+                    String[] dele = linje.split("_");                                         //Splitter linjen i dele med "_" som deler
+                    dele[dataIndex] = aendringString;                                               //Ændrer dataet
+                    linje = String.join("_", dele);                                         //Sætter linjen sammen igen med ændring
                 }
-                //Tilføjer alle linjerne til arraylisten
-                linjer.add(linje);
+
+                linjer.add(linje);                                                                  //Tilføjer alle linjerne til arraylisten
             }
         } catch (IOException e) {
             e.printStackTrace();
             return;
         }
 
-        //Skriver alle linjerne inde i arraylisten tilbage til filen
-        try (BufferedWriter skriver = new BufferedWriter(new FileWriter(filNavn))) {
+        //Skriver alle linjerne der er inde i arraylisten tilbage til filen
+        try (BufferedWriter skriver = new BufferedWriter(new FileWriter(file))) {
             for (String linje : linjer) {
                 skriver.write(linje);
                 skriver.newLine();
@@ -63,6 +57,28 @@ public class FileUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    //Returner et specifikt data fra en søgt linje som string --- (Filens path, linjen vi søger, dataets position)
+    public static String laesDataFraFil(File file, String sogning, int dataPunkt) {
+
+        int dataIndex = dataPunkt - 1;                                                              //Laver data punkt om til et index
+        String data = "";
+
+        try (BufferedReader aflaeser = new BufferedReader(new FileReader(file))) {
+            String linje;
+            while ((linje = aflaeser.readLine()) != null) {
+                if (linje.contains(sogning)) {                                                  //Er søgningen på den linje?
+
+                    String[] dele = linje.split("_");                                         //Splitter linjen i dele med "_" som deler
+                    data = dele[dataIndex];
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return data;
     }
 
 

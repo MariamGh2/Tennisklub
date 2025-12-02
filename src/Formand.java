@@ -14,9 +14,12 @@ public class Formand {
 
         Scanner sc = new Scanner(System.in);
 
+        System.out.println("Skriv navn");
         navn = sc.nextLine();
-        medlemNummer = 1;
+        medlemNummer = Medlemsnummer.hentNytMedlemsnummer();
+        System.out.println("Skriv fødselsdag");
         foedselsdag = sc.nextLine();
+        System.out.println("skriv mail");
         mail = sc.nextLine();
 
 //        new Medlem(navn, "Aktiv", medlemNummer, foedselsdag, mail);

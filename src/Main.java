@@ -7,7 +7,8 @@ public class Main {
     public static boolean taendt = true;
 
     public static void main(String[] args) {
-
+        System.out.println("hej");
+        
         while (taendt) {
 
             //login();
@@ -20,27 +21,50 @@ public class Main {
                 //Kasserer.menu();
             }
         }
+
+
     }
 
+/*
+    // Kontingent
+    public static void main(String[] args) {
+        {
 
-    //Login Funktionen
-    protected static void login() {
-        Scanner input = new Scanner(System.in);
+            // Opretter et nyt medlem med navn "medlem", alder 22 og aktivt medlemskab
+            Medlem m = new Medlem("medlem", 22, true);
 
-        System.out.println("=== LOGIN =============");
-        System.out.println("Brugernavn:");
-        String brugernavn = input.next();
+            // Beregner et kontingent-objekt, som kan beregne medlemskontingent
+            Kontingent k = new Kontingent();
 
-        System.out.println("Brugernavn: " + brugernavn);
-        System.out.println("Password:");
+            // Beregner kontingentet for medlemmet "m" og gemmer resultatet i variablen pris
+            double pris = k.beregnKontingent(m);
+            System.out.println("Kontingent: " + pris + " kr");
+        }
 
-        if (Coach.getBrugernavn().equals(brugernavn)) {
-            String password = input.next();
 
-            if (Coach.getPassword().equals(password)) {
-                bruger = "coach";
-                System.out.println("Du er nu logget ind som coach");
+        //Login Funktionen
+        protected static void login() {
+            Scanner input = new Scanner(System.in);
+
+            System.out.println("=== LOGIN =============");
+            System.out.println("Brugernavn:");
+            String brugernavn = input.next();
+
+            System.out.println("Brugernavn: " + brugernavn);
+            System.out.println("Password:");
+
+            if (Coach.getBrugernavn().equals(brugernavn)) {
+                String password = input.next();
+
+                if (Coach.getPassword().equals(password)) {
+                    bruger = "coach";
+                    System.out.println("Du er nu logget ind som coach");
+                }
             }
         }
+
+
+ */
+
     }
-}
+

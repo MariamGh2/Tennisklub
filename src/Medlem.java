@@ -10,7 +10,6 @@ import java.util.List;
 //Hvert medlem har: navn, medlemskabstype, medlemsnummer, mail og fødselsdag
 public class Medlem {
 
-//    private void alder;
 
     public Medlem(String medlem, int i, boolean b) {} //Default Constructor
 
@@ -116,15 +115,16 @@ public class Medlem {
         return mail;
     }
 
-    public void alder() {
-    }
-
     public int getMedlemsNummer() {
         return medlemsNummer;
     }
 
-    public int beregnAlder() {
+    public int getBeregnAlder() {
         return Period.between(foedselsdag, LocalDate.now()).getYears();
+    }
+
+    public boolean erAktivtMedlem(){
+        return medlemskab != null && medlemskab.equalsIgnoreCase("aktiv");
     }
 
 

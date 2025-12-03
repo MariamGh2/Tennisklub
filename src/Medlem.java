@@ -32,8 +32,8 @@ public class Medlem {
         this.foedselsdag = foedselsdag;
 
         skrivMedlemTilFil();              //Skriv medlemmet i filen
+        sorterFilEfterMedlemsnummer();    //Sorter filen så numrene altid står i rækkefølge
 
-        sorterFilEfterMedlemsnummer();    //Sortér filen så numrene altid står i rækkefølge
     }
 
     /// Skriver et medlem i medlem.txt i formatet: navn_medlemsnummer_fødselsdato_mail
@@ -42,7 +42,7 @@ public class Medlem {
             if (!Files.exists(FIL)) {         //Sørg for at filen findes (ellers opret tom fil)
                 Files.writeString(FIL, "");
             }
-            String linje = navn + "_" + medlemsNummer + "_" + foedselsdag + "_" + mail + medlemskab + "\n";    //Format på linjen der skrives
+            String linje = navn + "_" + medlemsNummer + "_" + foedselsdag + "_" + mail + "_" + medlemskab + "\n";    //Format på linjen der skrives
 
             Files.writeString(FIL, linje, StandardOpenOption.APPEND);                             //Tilføj til linjen nederst i filen
 
@@ -53,11 +53,14 @@ public class Medlem {
 
 
     ///Sortere medlem.txt efter medlemsnummer
-    private void sorterFilEfterMedlemsnummer(){
+    public static void sorterFilEfterMedlemsnummer(){
         try {
-            if (!Files.exists(FIL)) return;   //Hvis medlem.txt ikke findes, afbrydes metoden med det samme (så er der ikke noget at sortere)
 
-            List<String> linjer = Files.readAllLines(FIL);   //Linjer bliver til en liste
+            if (!Files.exists(FIL)) {
+        }
+
+            List<String> linjer = Files.readAllLines(FIL);   //Læser alle linjer
+
 
             linjer.removeIf(l -> l.trim().isEmpty());     //trim() fjerner mellemrum og skjulte tegn
                                                                  //isEmpthy() tjekker om den er tom, hvis ja, fjernes linjen
@@ -74,12 +77,31 @@ public class Medlem {
                                                   //Hvis de er ens -> rækkefølgen betyder ikke noget
                                                  //Listen bliver sorteret fra laveste medlemsnr. til højeste
             });
+
+
             Files.write(FIL, linjer);           //Efter sorteringen overskrives hele filen med den sorterede udgave af linjerne
 
         } catch (IOException e) {
             throw new RuntimeException("Fejl ved sortering af medlem.txt");
         }
     }
+
+    private static int hentMedlemsnummerFraLinje(String linje){     //Hjælpemetode til at finde medlemsnr. i en linje
+        String trimmed = linje.trim();
+        if (trimmed.isEmpty()) return Integer.MAX_VALUE;
+
+        String[] dele = trimmed.split("_");
+        if (dele.length < 2) return Integer.MAX_VALUE;   //Hvis der ikke er noget felt nr. 2
+
+        try {
+            return Integer.parseInt(dele[1].trim());
+        } catch (NumberFormatException e) {
+            return Integer.MAX_VALUE;   //Hvis format er forkert, skub den linje ned i bunden
+        }
+    }
+
+
+
 
     /// GETTERS
     public String getNavn() {

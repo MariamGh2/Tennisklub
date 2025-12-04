@@ -8,16 +8,14 @@ public class Kasserer extends Medlem implements Bruger {
 
     private String brugernavn;
     private String password;
-    private String position;
 
-    public Kasserer (String navn, int medlemsNummer, boolean medlemskab, String foedselsdag, String mail, String brugernavn, String password) {
-        super(navn, medlemsNummer, medlemskab, foedselsdag, mail);
+    public Kasserer (String navn, boolean medlemskab, String foedselsdag, String mail, String brugernavn, String password) {
+        super("kasserer", navn, medlemskab, foedselsdag, mail);
         this.brugernavn = brugernavn;
         this.password = password;
-        this.position = "kasserer";
 
-        FileUtil.appendTilFil(new File("medlem.txt"), position + "_" + navn + "_" + medlemsNummer + "_" + medlemskab + "_" + foedselsdag + "_" + mail);
-        FileUtil.appendTilFil(new File("personale.txt"), position + "_" + navn + "_" + medlemsNummer + "_" + medlemskab + "_" + foedselsdag + "_" + mail + "_" + brugernavn + "_" + password);
+        FileUtil.appendTilFil(new File("medlem.txt"), this.getPosition() + "_" + navn + "_" + this.getMedlemsNummer() + "_" + medlemskab + "_" + foedselsdag + "_" + mail);
+        FileUtil.appendTilFil(new File("personale.txt"), this.getPosition() + "_" + navn + "_" + this.getMedlemsNummer() + "_" + medlemskab + "_" + foedselsdag + "_" + mail + "_" + brugernavn + "_" + password);
     }
 
 

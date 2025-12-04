@@ -7,16 +7,14 @@ public class Coach extends Medlem implements Bruger {
 
     private String brugernavn;
     private String password;
-    private String position;
 
-    public Coach(String navn, int medlemsNummer, boolean medlemskab, String foedselsdag, String mail, String brugernavn, String password) {
-        super(navn, medlemsNummer, medlemskab, foedselsdag, mail);
+    public Coach(String navn, boolean medlemskab, String foedselsdag, String mail, String brugernavn, String password) {
+        super("coach", navn, medlemskab, foedselsdag, mail);
         this.brugernavn = brugernavn;
         this.password = password;
-        this.position = "coach";
 
-        FileUtil.appendTilFil(new File("medlem.txt"), position + "_" + navn + "_" + medlemsNummer + "_" + medlemskab + "_" + foedselsdag + "_" + mail);
-        FileUtil.appendTilFil(new File("personale.txt"), position + "_" + navn + "_" + medlemsNummer + "_" + medlemskab + "_" + foedselsdag + "_" + mail + "_" + brugernavn + "_" + password);
+        FileUtil.appendTilFil(new File("medlem.txt"), this.getPosition() + "_" + navn + "_" + this.getMedlemsNummer() + "_" + medlemskab + "_" + foedselsdag + "_" + mail);
+        FileUtil.appendTilFil(new File("personale.txt"), this.getPosition() + "_" + navn + "_" + this.getMedlemsNummer() + "_" + medlemskab + "_" + foedselsdag + "_" + mail + "_" + brugernavn + "_" + password);
     }
 
     @Override

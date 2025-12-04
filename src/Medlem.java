@@ -29,7 +29,7 @@ public abstract class Medlem {
     //Sti til filen hvor ALT gemmes
     private static final Path FIL = Path.of("medlem.txt");
 
-    public Medlem(String position, String navn, int medlemsNummer, boolean aktivPassiv, String foedselsdag, String mail) {
+    public Medlem(String position, String navn, boolean aktivPassiv, String foedselsdag, String mail) {
 
         this.position = position;
         this.navn = navn;
@@ -111,6 +111,9 @@ public abstract class Medlem {
 
 
     /// GETTERS
+
+    public String getPosition() {return position;}
+
     public String getNavn() {
         return navn;
     }

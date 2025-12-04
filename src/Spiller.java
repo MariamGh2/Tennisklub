@@ -9,8 +9,8 @@ public class Spiller extends Medlem {
     private String spillerType;
     private String position;
 
-    public Spiller(String navn, int medlemsNummer, boolean medlemskab, String foedselsdag, String mail, String spillerType) {
-        super(navn, medlemsNummer, medlemskab, foedselsdag, mail);
+    public Spiller(String position, String navn, boolean medlemskab, String foedselsdag, String mail, String spillerType) {
+        super(position, navn, medlemskab, foedselsdag, mail);
         this.spillerType = spillerType;
         this.position = "medlem";
     }

@@ -83,7 +83,7 @@ public class FileUtil {
     }
 
 
-    public static List<Object> laesMedlemFraFil(String objekt) {
+   /* public static List<Object> laesMedlemFraFil(String objekt) {
 
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String deler = "_";
@@ -101,13 +101,15 @@ public class FileUtil {
 
                 }
 
-                Spiller medlem = new Spiller(navn, medlemsNummer, medlemskab, foedselsdag, mail, spillerType);
+                Spiller medlem = new Spiller("Medlem", navn, medlemsNummer, medlemskab, foedselsdag, mail, spillerType);
                 medlemsListe.add(medlem);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    */
 }
 
 

@@ -11,16 +11,14 @@ public class Formand extends Medlem implements Bruger {
 
     private String brugernavn;
     private String password;
-    private String position;
 
-    public Formand(String navn, int medlemsNummer, boolean medlemskab, String foedselsdag, String mail, String brugernavn, String password) {
-        super(navn, medlemsNummer, medlemskab, foedselsdag, mail);
+    public Formand (String navn, boolean medlemskab, String foedselsdag, String mail, String brugernavn, String password) {
+        super("formand", navn, medlemskab, foedselsdag, mail);
         this.brugernavn = brugernavn;
         this.password = password;
-        this.position = "formand";
 
-        FileUtil.appendTilFil(new File("medlem.txt"), position + "_" + navn + "_" + medlemsNummer + "_" + medlemskab + "_" + foedselsdag + "_" + mail);
-        FileUtil.appendTilFil(new File("personale.txt"), position + "_" + navn + "_" + medlemsNummer + "_" + medlemskab + "_" + foedselsdag + "_" + mail + "_" + brugernavn + "_" + password);
+        FileUtil.appendTilFil(new File("medlem.txt"), this.getPosition() + "_" + navn + "_" + this.getMedlemsNummer() + "_" + medlemskab + "_" + foedselsdag + "_" + mail);
+        FileUtil.appendTilFil(new File("personale.txt"), this.getPosition() + "_" + navn + "_" + this.getMedlemsNummer() + "_" + medlemskab + "_" + foedselsdag + "_" + mail + "_" + brugernavn + "_" + password);
     }
 
     @Override
@@ -47,18 +45,14 @@ public class Formand extends Medlem implements Bruger {
     public void opretMedlem(){
 
         String navn;
-        int medlemsNummer;
         String foedselsdag;
         String mail;
         String type;
-
 
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Skriv navn");
         navn = sc.nextLine();
-
-        medlemsNummer = Medlemsnummer.hentNytMedlemsnummer();
 
         System.out.println("Skriv fødselsdag");
         foedselsdag = sc.nextLine();
@@ -77,14 +71,7 @@ public class Formand extends Medlem implements Bruger {
             System.out.println("Du har valgt konkurrencespiller");
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        LocalDate foedselsdato = LocalDate.parse(foedselsdag, formatter);
-
-        Medlem m = new Medlem(navn, type, 0, mail, foedselsdato);  //opret medlem (Medlem klarer medlemsnummer + filskrivning + sortering)
-
-        File fil = new File("medlem.txt");
-
-
+        Spiller s = new Spiller("medlem", navn, true, foedselsdag, mail, type);  //opret medlem (Medlem klarer medlemsnummer + filskrivning + sortering)
     }
 
 
@@ -100,7 +87,7 @@ public class Formand extends Medlem implements Bruger {
         while ((linje = reader.readLine()) != null) {
             String[] dele = linje.split("_");
 
-            if (String.valueOf(medlemsNummer).equals(dele[1])) {
+            if (String.valueOf(medlemsNummer).equals(dele[2])) {
                 continue;
             }
             writer.write(linje + System.lineSeparator());

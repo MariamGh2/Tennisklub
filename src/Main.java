@@ -10,19 +10,17 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-            //opretter mappen
-            File m = FileUtilKonkurrence.OpretKonkurrenceMappe();
+        //opretter mappen
+        File m = FileUtilKonkurrence.OpretKonkurrenceMappe();
 
         boolean formandExistens = false;
         boolean coachExistens = false;
         boolean kassererExistens = false;
 
-        Formand formand = new Formand("toki", Medlemsnummer.hentNytMedlemsnummer(), true, "03-07-2000","tokiarb@gmail.com","TheFormand", "123");
-        if (!formandExistens) {Formand ormand = new Formand("toki", Medlemsnummer.hentNytMedlemsnummer(), true, "03-07-2000","tokiarb@gmail.com","TheFormand", "123");}
-        if (!coachExistens) {Coach coach = new Coach("ditlev", Medlemsnummer.hentNytMedlemsnummer(), true, "03-07-2000","tokiarb@gmail.com","TheFormand", "123");}
-        if (!kassererExistens) {Kasserer kasserer = new Kasserer("arzola", Medlemsnummer.hentNytMedlemsnummer(), true, "03-07-2000","tokiarb@gmail.com","TheFormand", "123");}
+        if (!formandExistens) {Formand formand = new Formand("toki", true, "03-07-2000","tokiarb@gmail.com","TheFormand", "123");}
+        if (!coachExistens) {Coach coach = new Coach("ditlev", true, "03-07-2000","tokiarb@gmail.com","TheFormand", "123");}
+        if (!kassererExistens) {Kasserer kasserer = new Kasserer("arzola", true, "03-07-2000","tokiarb@gmail.com","TheFormand", "123");}
 
-        formand.opretMedlem();
         while (taendt) {
 
             //Login.login();
@@ -54,31 +52,6 @@ public class Main {
             double pris = k.beregnKontingent(m);
             System.out.println("Kontingent: " + pris + " kr");
         }
-
-
-        //Login Funktionen
-        protected static void login() {
-            Scanner input = new Scanner(System.in);
-
-            System.out.println("=== LOGIN =============");
-            System.out.println("Brugernavn:");
-            String brugernavn = input.next();
-
-            System.out.println("Brugernavn: " + brugernavn);
-            System.out.println("Password:");
-
-            if (Coach.getBrugernavn().equals(brugernavn)) {
-                String password = input.next();
-
-                if (Coach.getPassword().equals(password)) {
-                    bruger = "coach";
-                    System.out.println("Du er nu logget ind som coach");
-                }
-            }
-        }
-
-
  */
-
-    }
+}
 

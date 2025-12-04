@@ -10,7 +10,6 @@ public class FileUtil {
     public FileUtil(){} //Default Constructor
 
 
-
     //Tilføj en linje til en angivet fil --- (Filens path, String der skal tilføjes)
     public static void appendTilFil(File file, String linje) {                                                             //Append en linje til dagens fil
         try (FileWriter myWriter = new FileWriter(file, true)) {
@@ -21,6 +20,7 @@ public class FileUtil {
             e.printStackTrace();
         }
     }
+
 
 
     //Ændre i en angivet fil --- (Filens path, linjen vi søger, dataets position, ændringen til dataet)
@@ -112,3 +112,11 @@ public class FileUtil {
  */
 }
 
+
+
+    public void updateToFile(){}
+
+    public void readFromFile(){}
+
+    public void appendToFile(){}
+}

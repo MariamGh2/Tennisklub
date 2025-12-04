@@ -1,5 +1,9 @@
 import java.io.*;
 import java.time.LocalDate;
+import java.io.File;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Formand extends Medlem implements Bruger {
@@ -72,6 +76,20 @@ public class Formand extends Medlem implements Bruger {
             type = "konkurrencespiller";
             System.out.println("Du har valgt konkurrencespiller");
         }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate foedselsdato = LocalDate.parse(foedselsdag, formatter);
+
+        Medlem m = new Medlem(navn, type, 0, mail, foedselsdato);  //opret medlem (Medlem klarer medlemsnummer + filskrivning + sortering)
+
+
+
+
+//        if statement skal skrives her.
+
+
+
+//        new Medlem(navn, "Aktiv", medlemNummer, foedselsdag, mail);
 
         File fil = new File("medlem.txt");
 

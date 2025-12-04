@@ -1,37 +1,33 @@
 import java.io.File;
+import java.time.LocalDate;
 
-public class Coach implements Bruger {
+public class Coach extends Medlem implements Bruger {
 
     public Coach(){} //Default Constructor
 
+    private File medlemFil = new File("medlem.txt");
 
+    private String brugernavn;
+    private String password;
+    private String position;
 
-    public void topFem(){}
+    public Coach(String navn, int medlemsNummer, boolean medlemskab, String foedselsdag, String mail, String brugernavn, String password) {
+        super(navn, medlemsNummer, medlemskab, foedselsdag, mail);
+        this.brugernavn = brugernavn;
+        this.password = password;
+        this.position = "coach";
 
+        FileUtil.appendTilFil(new File("medlemFil.txt"), position + "_" + navn + "_" + medlemsNummer + "_" + medlemskab + "_" + foedselsdag + "_" + mail);
+        FileUtil.appendTilFil(new File("personale.txt"), position + "_" + navn + "_" + medlemsNummer + "_" + medlemskab + "_" + foedselsdag + "_" + mail + "_" + brugernavn + "_" + password);
+    }
 
-    public void opdaterResultat(){}
-
-
-    //Funktion til at få password fra password filen
-    public static String getBrugernavn(){
-
-        File file = new File("kontoer.txt");
-
-        String brugernavn = "";
-        brugernavn = FileUtil.laesDataFraFil(file, "coach", 2);
-
+    @Override
+    public String getBrugernavn() {
         return brugernavn;
     }
 
-
-    //Funktion til at få password fra password filen
-    public static String getPassword(){
-
-        File file = new File("kontoer.txt");
-
-        String password = "";
-        password = FileUtil.laesDataFraFil(file, "coach", 3);
-
+    @Override
+    public String getPassword() {
         return password;
     }
 
@@ -44,4 +40,11 @@ public class Coach implements Bruger {
     public void menu() {
 
     }
+
+
+    public void topFem(){}
+
+
+    public void opdaterResultat(){}
+
 }

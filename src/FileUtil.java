@@ -1,13 +1,13 @@
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileUtil {
 
     public FileUtil(){} //Default Constructor
+
 
 
     //Tilføj en linje til en angivet fil --- (Filens path, String der skal tilføjes)
@@ -20,7 +20,6 @@ public class FileUtil {
             e.printStackTrace();
         }
     }
-
 
 
     //Ændre i en angivet fil --- (Filens path, linjen vi søger, dataets position, ændringen til dataet)
@@ -82,24 +81,33 @@ public class FileUtil {
         return data;
     }
 
+/*
+    public static List<Object> laesMedlemFraFil(String objekt) {
 
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String deler = "_";
+        String linje = "";
+        String medlemFil = "medlem.txt";
+        List<Spiller> spillerListe = new ArrayList<>();
+        List<Medlem> medlemsListe = new ArrayList<>();
 
+        try(BufferedReader reader = new BufferedReader(new FileReader(medlemFil))){
+            while((linje = reader.readLine()) != null) {
+                String[] data = linje.split(deler);
+                if (objekt.equals("medlem")) {
+                    String
+                } else if (objekt.equals("konkurrencespiller")) {
 
+                }
 
+                Spiller medlem = new Spiller(navn, medlemsNummer, medlemskab, foedselsdag, mail, spillerType);
+                medlemsListe.add(medlem);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-
-
-
-
-
-
-    public void updateToFile(){}
-
-    public void readFromFile(){}
-
-    public void appendToFile(){}
-
-
-
+ */
 }
 

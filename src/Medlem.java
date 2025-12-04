@@ -1,38 +1,35 @@
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 
+import static java.lang.String.format;
 
-public class Medlem {
+public abstract class Medlem {
 
 //    private void alder;
 
-    public Medlem(String medlem, int i, boolean b) {} //Default Constructor
+    public Medlem() {} //Default Constructor
 
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     private String navn;
-    private String medlemskab;
     private int medlemsNummer;
+    private boolean medlemskab;
     private String mail;
     private LocalDate foedselsdag;
 
     //Fil til at gemme medlemmeer
-    private static final Path FIL = Path.of("medlem.txt");
+    //private static final Path FIL = Path.of("medlem.txt");
 
-    public Medlem(String navn, String medlemskab, int medlemsNummer, String mail, LocalDate foedselsdag) {
+    public Medlem(String navn, int medlemsNummer, boolean aktivPassiv, String foedselsdag, String mail) {
         this.navn = navn;
-        this.medlemskab = medlemskab;
+        this.medlemskab = aktivPassiv;
         this.mail = mail;
-        this.medlemsNummer = Medlemsnummer.hentNytMedlemsnummer();   //Genere nyt medlemsnr.
-        this.foedselsdag = foedselsdag;
-
-        skrivMedlemTilFil();   //Gem medlem i filen
+        this.medlemsNummer = medlemsNummer;   //Medlemsnummeret er genereret da formanden laver en medlem inde på formand klassen. Her på medlems objektet bliver det indputtet fra filen efter generering
+        this.foedselsdag = LocalDate.parse(foedselsdag, formatter);
     }
 
-    /// GEMMER MEDLEM I medlem.txt
+   /* /// GEMMER MEDLEM I medlem.txt
     private void skrivMedlemTilFil() {
         try {
             if (!Files.exists(FIL)) {  //Sørg for at filen findes (ellers opret tom fil)
@@ -49,12 +46,18 @@ public class Medlem {
         }
     }
 
+    */
+
     /// GETTERS
     public String getNavn() {
         return navn;
     }
 
-    public String getMedlemskab() {
+    public int getMedlemsNummer() {
+        return medlemsNummer;
+    }
+
+    public boolean getMedlemskab() {
         return medlemskab;
     }
 
@@ -65,18 +68,13 @@ public class Medlem {
     public void alder() {
     }
 
-    public int getMedlemsNummer() {
-        return medlemsNummer;
-    }
-
     public int beregnAlder() {
         return Period.between(foedselsdag, LocalDate.now()).getYears();
     }
 
 
-
     @Override
-    public String toString(){
-        return navn + " (Medlemsnr.: "+ medlemsNummer + ")";
+    public String toString() {
+        return navn + " (Medlemsnr.: " + medlemsNummer + ")";
     }
 }

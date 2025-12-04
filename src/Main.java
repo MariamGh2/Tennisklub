@@ -8,7 +8,11 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("hej");
-        
+
+        //opretter mappen
+        File m = FileUtilKonkurrence.OpretKonkurrenceMappe();
+
+
         while (taendt) {
 
             //login();
@@ -23,7 +27,10 @@ public class Main {
         }
 
 
+
     }
+
+
 
 /*
     // Kontingent

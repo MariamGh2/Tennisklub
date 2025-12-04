@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+//FileUtil har snavret for at læse medlemmer fra filen og bygge Medlem-objekt
 public class FileUtil {
 
     public FileUtil(){} //Default Constructor
@@ -90,18 +91,12 @@ public class FileUtil {
 
 
 
-
-
-
-
-    }
-
-
-/*
     public void updateToFile(){}
 
     public void readFromFile(){}
 
     public void appendToFile(){}
+
+
+
 }
-*/

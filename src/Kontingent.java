@@ -1,35 +1,34 @@
 public class Kontingent {
-    // double giver bedre mening at anvende end int, så vi kan returnere et decimaltal.
-    // Medlem medlem = klassens navn & parameteren der anvendes i metoder.
-/*
-    public double beregnKontingent(Medlem medlem){
 
-        //passivt medlemskab
-        if (medlem.erAktivtMedlem() == false){
-            return 250;
-        }
+    //Klassen har ansvaret for at beregne kontingent for et medlem
 
-        int alder = medlem.getAlder();
+    public Kontingent(){} //Default Constructor
 
-        // Junior < 18 år
-        if (alder < 18){
-            return 800;
-        }
-        // Senior: 18-59 år
-        if (alder < 60){
-            return 1500;
-        }
-        // Senior < 60 år -> 25 rabat
-        if (alder < 60){
-            return 1500 * 0.75;
-        }
+
+                                                                             //double giver bedre mening at anvende end int, så vi kan returnere et decimaltal.
+    public double beregnKontingent(Medlem medlem) {                 //Medlem medlem = klassens navn & parameteren der anvendes i metoder.
+        if(!medlem.erAktivtMedlem()){   //Hvis medlem ikke er aktiv (passiv)
+        return 250.0;                   //Passivt medlem takst
+    }
+
+    int alder = medlem.getBeregnAlder(); //getAlder() skal returnere medlemmets alder i hele år, så vi ved hvilken takt de hører indunder
+
+    if (alder < 18) {   //Under 18
+        return 800.0;  //Junior takst
+    }
+
+    if(alder < 60){     //Under 60
+        return 1500.0;  //Senior takst
+    }
+
+    return 1500.0 * 0.75;  //Medlemmer fra over 60 år får 25% rabat af seniortaksten
     }
 
 
 
 
 
-    public Kontingent(){} //Default Constructor
+
 
 
     public void prisBestemmelse(){}
@@ -40,5 +39,5 @@ public class Kontingent {
 
     public void getRestance(){}
 
- */
+
 }

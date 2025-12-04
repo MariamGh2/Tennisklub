@@ -7,6 +7,10 @@ public class Main {
     public static boolean taendt = true;
 
     public static void main(String[] args) {
+
+        Formand.opretMedlem();
+
+
         System.out.println("hej");
 
         //opretter mappen
@@ -27,10 +31,7 @@ public class Main {
         }
 
 
-
     }
-
-
 
 /*
     // Kontingent

@@ -9,36 +9,39 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-public abstract class Medlem {
 //Klassen repræsentere ét medlem i klubben
 //Hvert medlem har: navn, medlemskabstype, medlemsnummer, mail og fødselsdag
-public class Medlem {
-
+public abstract class Medlem {
 
 
     public Medlem() {} //Default Constructor
 
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
+    private String position;
     private String navn;
-    private String medlemskab;
     private int medlemsNummer;
     private boolean medlemskab;
     private String mail;
     private LocalDate foedselsdag;
+    private boolean betaling;
 
     //Sti til filen hvor ALT gemmes
     private static final Path FIL = Path.of("medlem.txt");
 
-    public Medlem(String navn, int medlemsNummer, boolean aktivPassiv, String foedselsdag, String mail) {
+    public Medlem(String position, String navn, int medlemsNummer, boolean aktivPassiv, String foedselsdag, String mail) {
+
+        this.position = position;
         this.navn = navn;
         this.medlemskab = aktivPassiv;
         this.mail = mail;
         this.medlemsNummer = Medlemsnummer.hentNytMedlemsnummer();   //Får næste ledige medlemsnummer
         this.foedselsdag = LocalDate.parse(foedselsdag, formatter);
+        this.betaling = true;
 
         skrivMedlemTilFil();              //Skriv medlemmet i filen
         sorterFilEfterMedlemsnummer();    //Sorter filen så numrene altid står i rækkefølge
+
 
     }
 
@@ -107,15 +110,9 @@ public class Medlem {
     }
 
 
-
-
     /// GETTERS
     public String getNavn() {
         return navn;
-    }
-
-    public int getMedlemsNummer() {
-        return medlemsNummer;
     }
 
     public boolean getMedlemskab() {
@@ -138,7 +135,7 @@ public class Medlem {
     }
 
     public boolean erAktivtMedlem(){
-        return medlemskab != null && medlemskab.equalsIgnoreCase("aktiv");
+        return medlemskab;
     }
 
 

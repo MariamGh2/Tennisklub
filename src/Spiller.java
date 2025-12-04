@@ -1,7 +1,7 @@
 import java.io.File;
 import java.time.LocalDate;
 
-
+//Denne klasse repræsenterer alle spillerem altså både motionister og konkurrence
 public class Spiller extends Medlem {
 
     private File medlemFil = new File("medlem.txt");

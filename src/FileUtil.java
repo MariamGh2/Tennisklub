@@ -82,7 +82,7 @@ public class FileUtil {
         return data;
     }
 
-/*
+
     public static List<Object> laesMedlemFraFil(String objekt) {
 
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -108,19 +108,6 @@ public class FileUtil {
             e.printStackTrace();
         }
     }
-
- */
 }
 
-
-
-    public void updateToFile(){}
-
-    public void readFromFile(){}
-
-    public void appendToFile(){}
-
-
-
-}
 

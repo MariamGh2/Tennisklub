@@ -19,7 +19,7 @@ public class Formand extends Medlem implements Bruger {
         this.password = password;
         this.position = "formand";
 
-        FileUtil.appendTilFil(new File("medlemFil.txt"), position + "_" + navn + "_" + medlemsNummer + "_" + medlemskab + "_" + foedselsdag + "_" + mail);
+        FileUtil.appendTilFil(new File("medlem.txt"), position + "_" + navn + "_" + medlemsNummer + "_" + medlemskab + "_" + foedselsdag + "_" + mail);
         FileUtil.appendTilFil(new File("personale.txt"), position + "_" + navn + "_" + medlemsNummer + "_" + medlemskab + "_" + foedselsdag + "_" + mail + "_" + brugernavn + "_" + password);
     }
 
@@ -82,18 +82,9 @@ public class Formand extends Medlem implements Bruger {
 
         Medlem m = new Medlem(navn, type, 0, mail, foedselsdato);  //opret medlem (Medlem klarer medlemsnummer + filskrivning + sortering)
 
-
-
-
-//        if statement skal skrives her.
-
-
-
-//        new Medlem(navn, "Aktiv", medlemNummer, foedselsdag, mail);
-
         File fil = new File("medlem.txt");
 
-        FileUtil.appendTilFil(fil, navn + "_" + medlemNummer + "_" + foedselsdag + "_" + mail);
+
     }
 
 

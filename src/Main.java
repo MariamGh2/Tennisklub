@@ -6,20 +6,12 @@ public class Main {
 
     public static String bruger;
     public static boolean taendt = true;
-
-    public static void main(String[] args) {
-        System.out.println("hej");
-
-        //opretter mappen
-        File m = FileUtilKonkurrence.OpretKonkurrenceMappe();
-
-
-
-        Formand.opretMedlem();
+          
 
     public static void main(String[] args) throws InterruptedException {
 
-
+            //opretter mappen
+            File m = FileUtilKonkurrence.OpretKonkurrenceMappe();
 
         boolean formandExistens = false;
         boolean coachExistens = false;

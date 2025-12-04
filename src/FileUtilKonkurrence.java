@@ -31,7 +31,7 @@ public class FileUtilKonkurrence {
         return mappe;
     }
 
-    public static File opretSpillerFil(KonkurrenceSpillere spiller) {
+    /*public static File opretSpillerFil(KonkurrenceSpillere spiller) {
         File mappe = OpretKonkurrenceMappe();
 
         String filnavn = spiller.getNavn().replace(" ", "") + "txt";
@@ -66,6 +66,8 @@ public class FileUtilKonkurrence {
             System.out.println("Fejl under skrivning til fil: " + e.getMessage());
         }
     }
+
+     */
 }
 
 

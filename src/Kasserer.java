@@ -6,8 +6,6 @@ public class Kasserer extends Medlem implements Bruger {
 
     public Kasserer (){} //Default Constructor
 
-    private File medlemFil = new File("medlem.txt");
-
     private String brugernavn;
     private String password;
     private String position;
@@ -18,7 +16,7 @@ public class Kasserer extends Medlem implements Bruger {
         this.password = password;
         this.position = "kasserer";
 
-        FileUtil.appendTilFil(new File("medlemFil.txt"), position + "_" + navn + "_" + medlemsNummer + "_" + medlemskab + "_" + foedselsdag + "_" + mail);
+        FileUtil.appendTilFil(new File("medlem.txt"), position + "_" + navn + "_" + medlemsNummer + "_" + medlemskab + "_" + foedselsdag + "_" + mail);
         FileUtil.appendTilFil(new File("personale.txt"), position + "_" + navn + "_" + medlemsNummer + "_" + medlemskab + "_" + foedselsdag + "_" + mail + "_" + brugernavn + "_" + password);
     }
 

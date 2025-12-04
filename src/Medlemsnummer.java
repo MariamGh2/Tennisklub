@@ -14,10 +14,8 @@ public class Medlemsnummer {
 
     public Medlemsnummer(){}   //Default constructor
 
-    //Her difineres en sti (path) til filen, hvor vi gemmer de seneste medlemsnumre
+    //Her defineres en sti (path) til filen, hvor vi gemmer de seneste medlemsnumre
     //Filen kommer til at ligge samme sted som programmet kører fra
-    private static final Path FIL = Path.of("medlem.txt");
-
     private static final Path FIL = Path.of("medlem.txt");     //Sti til filen hvor ALLE medlemmerne står
 
     public static int hentNytMedlemsnummer() {                       //Denne metode kaldes fra Medlem-klassen

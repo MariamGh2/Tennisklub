@@ -12,8 +12,6 @@ import static java.lang.String.format;
 public abstract class Medlem {
 //Klassen repræsentere ét medlem i klubben
 //Hvert medlem har: navn, medlemskabstype, medlemsnummer, mail og fødselsdag
-
-
 public class Medlem {
 
 
@@ -23,6 +21,7 @@ public class Medlem {
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     private String navn;
+    private String medlemskab;
     private int medlemsNummer;
     private boolean medlemskab;
     private String mail;
@@ -125,6 +124,9 @@ public class Medlem {
 
     public String getMail() {
         return mail;
+    }
+
+    public void alder() {
     }
 
     public int getMedlemsNummer() {

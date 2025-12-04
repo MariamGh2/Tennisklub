@@ -15,6 +15,7 @@ public class Main {
 
 
 
+        Formand.opretMedlem();
 
     public static void main(String[] args) throws InterruptedException {
 

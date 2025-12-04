@@ -93,7 +93,7 @@ public class Formand extends Medlem implements Bruger {
 
         File fil = new File("medlem.txt");
 
-        FileUtil.appendTilFil(fil, "medlem" + "_" + navn + "_" + medlemsNummer + "_" + "true" + "_" + foedselsdag + "_" + mail + "_" + type);
+        FileUtil.appendTilFil(fil, navn + "_" + medlemNummer + "_" + foedselsdag + "_" + mail);
     }
 
 

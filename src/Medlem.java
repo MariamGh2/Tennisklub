@@ -4,31 +4,39 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static java.lang.String.format;
+
+public abstract class Medlem {
 //Klassen repræsentere ét medlem i klubben
 //Hvert medlem har: navn, medlemskabstype, medlemsnummer, mail og fødselsdag
+
+
 public class Medlem {
 
 
-    public Medlem(String medlem, int i, boolean b) {} //Default Constructor
+
+    public Medlem() {} //Default Constructor
+
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     private String navn;
-    private String medlemskab;
     private int medlemsNummer;
+    private boolean medlemskab;
     private String mail;
     private LocalDate foedselsdag;
 
     //Sti til filen hvor ALT gemmes
     private static final Path FIL = Path.of("medlem.txt");
 
-
-    public Medlem(String navn, String medlemskab, int medlemsNummer, String mail, LocalDate foedselsdag) {
+    public Medlem(String navn, int medlemsNummer, boolean aktivPassiv, String foedselsdag, String mail) {
         this.navn = navn;
-        this.medlemskab = medlemskab;
+        this.medlemskab = aktivPassiv;
         this.mail = mail;
         this.medlemsNummer = Medlemsnummer.hentNytMedlemsnummer();   //Får næste ledige medlemsnummer
-        this.foedselsdag = foedselsdag;
+        this.foedselsdag = LocalDate.parse(foedselsdag, formatter);
 
         skrivMedlemTilFil();              //Skriv medlemmet i filen
         sorterFilEfterMedlemsnummer();    //Sorter filen så numrene altid står i rækkefølge
@@ -43,7 +51,7 @@ public class Medlem {
             }
             String linje = navn + "_" + medlemsNummer + "_" + foedselsdag + "_" + mail + "_" + medlemskab + "\n";    //Format på linjen der skrives
 
-            Files.writeString(FIL, linje, StandardOpenOption.APPEND);                             //Tilføj til linjen nederst i filen
+            Files.writeString(FIL, linje, StandardOpenOption.APPEND); //Tilføj til linjen nederst i filen
 
         } catch (IOException e) {
             throw new RuntimeException("Kunne ikke skrive til medlem.txt");
@@ -107,7 +115,11 @@ public class Medlem {
         return navn;
     }
 
-    public String getMedlemskab() {
+    public int getMedlemsNummer() {
+        return medlemsNummer;
+    }
+
+    public boolean getMedlemskab() {
         return medlemskab;
     }
 
@@ -130,7 +142,7 @@ public class Medlem {
 
 
     @Override
-    public String toString(){
-        return navn + " (Medlemsnr.: "+ medlemsNummer + ")";
+    public String toString() {
+        return navn + " (Medlemsnr.: " + medlemsNummer + ")";
     }
 }

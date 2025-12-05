@@ -1,9 +1,2 @@
-toki_1_2000-07-03_tokiarb@gmail.com_true
-toki_2_2000-07-03_tokiarb@gmail.com_true
-toki_3_2000-07-03_tokiarb@gmail.com_true
-arzola_4_2000-07-03_tokiarb@gmail.com_true
-Mariam_5_20-09-2002_mariamghaznavi7@gmail.com
-toki_6_2000-07-03_tokiarb@gmail.com_true
-ditlev_7_2000-07-03_tokiarb@gmail.com_true
-arzola_8_2000-07-03_tokiarb@gmail.com_true
-Signe_9_20-12-1990_mabfdkjvd
+medlem_cass_0_true_19-03-2001_casdasds<dfs_konkurrencespiller
+medlem_lina_0_true_10-12-2004_lsdfin_konkurrencespiller

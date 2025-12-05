@@ -7,10 +7,12 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static java.lang.String.format;
 
-//Klassen repræsentere ét medlem i klubben
-//Hvert medlem har: navn, medlemskabstype, medlemsnummer, mail og fødselsdag
+/*
+Klassen repræsentere ét medlem i klubben
+Hvert medlem har: navn, medlemskabstype, medlemsnummer, mail og fødselsdag
+ */
+
 public abstract class Medlem {
 
 
@@ -21,31 +23,42 @@ public abstract class Medlem {
     private String position;
     private String navn;
     private int medlemsNummer;
-    private boolean medlemskab;
+    private boolean medlemskab;  //true = aktiv, false = passiv
     private String mail;
     private LocalDate foedselsdag;
     private boolean betaling;
 
-    //Sti til filen hvor ALT gemmes
-    private static final Path FIL = Path.of("medlem.txt");
 
-    public Medlem(String position, String navn, boolean aktivPassiv, String foedselsdag, String mail) {
+    private static final Path FIL = Path.of("medlem.txt");   //Sti til filen hvor ALT gemmes
 
+    public Medlem(String position, String navn,boolean aktivPassiv, String foedselsdag, String mail) {
         this.position = position;
         this.navn = navn;
         this.medlemskab = aktivPassiv;
         this.mail = mail;
-        this.medlemsNummer = Medlemsnummer.hentNytMedlemsnummer();   //Får næste ledige medlemsnummer
         this.foedselsdag = LocalDate.parse(foedselsdag, formatter);
         this.betaling = true;
 
-        skrivMedlemTilFil();              //Skriv medlemmet i filen
-        sorterFilEfterMedlemsnummer();    //Sorter filen så numrene altid står i rækkefølge
+        //ALTID nyt nummer her
+        this.medlemsNummer = Medlemsnummer.hentNytMedlemsnummer();
 
-
+        //skrivMedlemTilFil();              //Skriv medlemmet i filen
+        //sorterFilEfterMedlemsnummer();    //Sorter filen så numrene altid står i rækkefølge
     }
 
-    /// Skriver et medlem i medlem.txt i formatet: navn_medlemsnummer_fødselsdato_mail
+    public Medlem(String position, String navn, int medlemsNummer, boolean aktivPassiv, String foedselsdag, String mail, boolean betaling){
+        this.position = position;
+        this.navn = navn;
+        this.medlemskab = aktivPassiv;
+        this.mail = mail;
+        this.foedselsdag = LocalDate.parse(foedselsdag, formatter);
+        this.betaling = betaling;
+
+        //Brug det nummer vi læser fra fil - INGEN ny generering
+        this.medlemsNummer = medlemsNummer;
+    }
+
+    /// Skriver et medlem i melem.txt i formatet: navn_medlemsnummer_fødselsdato_mail
     private void skrivMedlemTilFil() {
         try {
             if (!Files.exists(FIL)) {         //Sørg for at filen findes (ellers opret tom fil)
@@ -53,7 +66,7 @@ public abstract class Medlem {
             }
             String linje = navn + "_" + medlemsNummer + "_" + foedselsdag + "_" + mail + "_" + medlemskab + "\n";    //Format på linjen der skrives
 
-            Files.writeString(FIL, linje, StandardOpenOption.APPEND); //Tilføj til linjen nederst i filen
+            Files.writeString(FIL, linje, StandardOpenOption.APPEND);     //Tilføj til linjen nederst i filen
 
         } catch (IOException e) {
             throw new RuntimeException("Kunne ikke skrive til medlem.txt");
@@ -61,11 +74,12 @@ public abstract class Medlem {
     }
 
 
-    ///Sortere medlem.txt efter medlemsnummer
+    ///Sortere edlem.txt efter medlemsnummer
     public static void sorterFilEfterMedlemsnummer(){
         try {
 
             if (!Files.exists(FIL)) {
+                return; //intet at sortere
         }
 
             List<String> linjer = Files.readAllLines(FIL);   //Læser alle linjer
@@ -78,8 +92,8 @@ public abstract class Medlem {
                 String[] d1 = l1.split("_");      //Tag linjen l1. split den ved hver _ og gem delene i et array
                 String[] d2 = l2.split("_");      //Tag linjen l2. split den ved hver _ og gem delene i et array
 
-                int n1 = Integer.parseInt(d1[1].trim());  //Find medlemsnr. i linje 1 (felt 2 -> d1[1], fjern mellemrum (.trim()) og lav teksten om til et tal med parseInt
-                int n2 = Integer.parseInt(d2[1].trim());   //Find medlemsnr. i linje 2 (felt 2 -> d1[1], fjern mellemrum (.trim()) og lav teksten om til et tal med parseInt
+                int n1 = Integer.parseInt(d1[2].trim());  //Find medlemsnr. i linje 1 (felt 2 -> d1[1], fjern mellemrum (.trim()) og lav teksten om til et tal med parseInt
+                int n2 = Integer.parseInt(d2[2].trim());   //Find medlemsnr. i linje 2 (felt 2 -> d1[1], fjern mellemrum (.trim()) og lav teksten om til et tal med parseInt
 
                 return Integer.compare(n1,n2);   //Selve sammenligningen: Hvis n1 < n2 -> l1 skal stå før l2
                                                  //Hvis n1 > n2 -> l1 skal stå efter l2
@@ -91,7 +105,7 @@ public abstract class Medlem {
             Files.write(FIL, linjer);           //Efter sorteringen overskrives hele filen med den sorterede udgave af linjerne
 
         } catch (IOException e) {
-            throw new RuntimeException("Fejl ved sortering af medlem.txt");
+            throw new RuntimeException("Fejl ved sortering af edlem.txt");
         }
     }
 

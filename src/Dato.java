@@ -3,46 +3,46 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 public class Dato {
 
+    /*
+    Klassen bruges til at finde dagens dato.
+    Bliver også brugt mht. hvornår der skal betales kontingent og hvad fristen er.
+    Der bliver lavet rykkere, hvis betalingen ikke er lavet.
+     */
+
     public Dato(){} //Default Constructor
 
     public void ligMedDato(){}
 
-    //Metode som skriver datoen med dato, måned og år
-    public static DateTimeFormatter Dato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    public static DateTimeFormatter Dato = DateTimeFormatter.ofPattern("dd-MM-yyyy");      //Metode som skriver datoen med dato, måned og år
 
-    //Henter dagen dato
-    public static String getDato(){
+
+    public static String getDato(){         //Henter dagens dato
         return LocalDate.now().format(Dato);
     }
 
-    //Boolean bliver true hvis dagens dato er d.1 januar og false hvis det ikke er
-    public static boolean betalingsDato(){
+    public static boolean betalingsDato(){         //Boolean bliver true hvis dagens dato er d.1 januar og false hvis det ikke er
         LocalDate iDag = LocalDate.now();
 
         return (iDag.getDayOfMonth() == 1 && iDag.getMonthValue() == 1);
     }
 
-    //Metode der tjekker om medlem skal have rykker
-    public static boolean skalHaveRykker(LocalDate sidsteBetalingDato) {
+    public static boolean skalHaveRykker(LocalDate sidsteBetalingDato) {        //Metode der tjekker om medlem skal have rykker
 
-    //betalingsdato i nuværende år
-    LocalDate betalingsdato = LocalDate.of(LocalDate.now().getYear(), 1, 1);
 
-    // Betalingsfrist: 1. februar på nuværende år.
-    LocalDate deadline = LocalDate.of(LocalDate.now().getYear(), 2, 1);
+    LocalDate betalingsdato = LocalDate.of(LocalDate.now().getYear(), 1, 1);     //Betalingsdato i nuværende år
 
-    // Hvis medlem aldrig har betalt (dato = null), fx ved nyt medlem
-    if (sidsteBetalingDato == null) {
+    LocalDate deadline = LocalDate.of(LocalDate.now().getYear(), 2, 1);   //Betalingsfrist: 1. februar på nuværende år.
+
+
+    if (sidsteBetalingDato == null) {       // Hvis medlem aldrig har betalt (dato = null), fx ved nyt medlem
         return LocalDate.now().isAfter(deadline);
     }
 
-    // Hvis sidste betaling var efter betalingsdato og før rykkerfristen, så ingen rykker
-    if (!sidsteBetalingDato.isBefore(deadline)) {
+    if (!sidsteBetalingDato.isBefore(deadline)) {      //Hvis sidste betaling var efter betalingsdato og før rykkerfristen, så ingen rykker
         return false;
     }
 
-    // Hvis sidste betaling var før betalingsdato og dagensdato er over rykkerfristen, så rykker
-    return LocalDate.now().isAfter(deadline);
+    return LocalDate.now().isAfter(deadline);      //Hvis sidste betaling var før betalingsdato og dagens dato er over rykkerfristen, så rykker
 }
 
 

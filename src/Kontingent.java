@@ -1,6 +1,6 @@
 public class Kontingent {
 
-    //Klassen har ansvaret for at beregne kontingent for et medlem
+//Klassen har ansvaret for at beregne kontingent for det enkelte medlem
 
     public Kontingent(){} //Default Constructor
 

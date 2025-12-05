@@ -1,6 +1,12 @@
 import java.io.File;
 import java.time.LocalDate;
 
+/*
+Klassen oprettet objektet Coach.
+Funktionerne for hvad coachen gerne vil se, top 5 osv.
+Samt hvordan Coach logger ind (interface)
+ */
+
 public class Coach extends Medlem implements Bruger {
 
     public Coach(){} //Default Constructor
@@ -8,13 +14,11 @@ public class Coach extends Medlem implements Bruger {
     private String brugernavn;
     private String password;
 
-    public Coach(String navn, boolean medlemskab, String foedselsdag, String mail, String brugernavn, String password) {
-        super("coach", navn, medlemskab, foedselsdag, mail);
+    public Coach(String navn, int medlemsNummer, boolean medlemskab, String foedselsdag, String mail, String brugernavn, String password) {
+        super("coach", navn, medlemsNummer, medlemskab, foedselsdag, mail);
         this.brugernavn = brugernavn;
         this.password = password;
 
-        FileUtil.appendTilFil(new File("medlem.txt"), this.getPosition() + "_" + navn + "_" + this.getMedlemsNummer() + "_" + medlemskab + "_" + foedselsdag + "_" + mail);
-        FileUtil.appendTilFil(new File("personale.txt"), this.getPosition() + "_" + navn + "_" + this.getMedlemsNummer() + "_" + medlemskab + "_" + foedselsdag + "_" + mail + "_" + brugernavn + "_" + password);
     }
 
     @Override
@@ -37,9 +41,7 @@ public class Coach extends Medlem implements Bruger {
 
     }
 
-
     public void topFem(){}
-
 
     public void opdaterResultat(){}
 

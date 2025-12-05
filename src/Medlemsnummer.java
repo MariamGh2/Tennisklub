@@ -1,15 +1,16 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/* Klassen har ansvaret for at finde næste medlemsnummer
+/*
+Klassen har ansvaret for at finde næste medlemsnummer
 Den læser alle eksisterende medlemmer fra medlem.txt
 og finder det mindste ledige tal (genbruger huller)
  */
+
 public class Medlemsnummer {
 
     public Medlemsnummer(){}   //Default constructor
@@ -57,7 +58,7 @@ public class Medlemsnummer {
             }
             return brugteNumre.size() + 1;    //fallback (burde aldrig bruges)
         } catch (IOException e){
-            throw new RuntimeException("Fejl ved læsning af medlem.txt");    //RuntimeException bruges til at vise hvis der er en fejl
+            throw new RuntimeException("Fejl ved læsning af edlem.txt");    //RuntimeException bruges til at vise hvis der er en fejl
                                                                              //Stopper programmet, så fejlen ikke skjules
         }
     }

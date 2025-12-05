@@ -1,24 +1,28 @@
 import java.io.*;
-import java.time.LocalDate;
 import java.io.File;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Scanner;
 
+
+/*
+Klassen oprettet objektet Formand.
+Funktionerne for hvordan der oprettes et nyt medlem.
+Samt hvordan Formand logger ind (interface)
+ */
+
+
 public class Formand extends Medlem implements Bruger {
+
     public Formand(){} //Default Constructor
 
     private String brugernavn;
     private String password;
 
-    public Formand (String navn, boolean medlemskab, String foedselsdag, String mail, String brugernavn, String password) {
-        super("formand", navn, medlemskab, foedselsdag, mail);
+    public Formand (String navn, int medlemsNummer, boolean medlemskab, String foedselsdag, String mail, String brugernavn, String password) {
+        super("formand", navn, medlemsNummer, medlemskab, foedselsdag, mail);
         this.brugernavn = brugernavn;
         this.password = password;
 
-        FileUtil.appendTilFil(new File("medlem.txt"), this.getPosition() + "_" + navn + "_" + this.getMedlemsNummer() + "_" + medlemskab + "_" + foedselsdag + "_" + mail);
-        FileUtil.appendTilFil(new File("personale.txt"), this.getPosition() + "_" + navn + "_" + this.getMedlemsNummer() + "_" + medlemskab + "_" + foedselsdag + "_" + mail + "_" + brugernavn + "_" + password);
+
     }
 
     @Override
@@ -40,7 +44,6 @@ public class Formand extends Medlem implements Bruger {
     public void menu() {
 
     }
-
 
     public void opretMedlem(){
 
@@ -71,12 +74,25 @@ public class Formand extends Medlem implements Bruger {
             System.out.println("Du har valgt konkurrencespiller");
         }
 
-        Spiller s = new Spiller("medlem", navn, true, foedselsdag, mail, type);  //opret medlem (Medlem klarer medlemsnummer + filskrivning + sortering)
+        Spiller s = new Spiller(navn, 0, true, foedselsdag, mail, type);  //opret medlem (Medlem klarer medlemsnummer + filskrivning + sortering)
+
+        int medlemsNummer = s.getMedlemsNummer();
+
+        File fil = new File("medlem.txt");
+        FileUtil.appendTilFil(new File("medlem.txt"), "medlem" + "_" + navn + "_" + medlemsNummer + "_" +
+                "true" + "_" + foedselsdag + "_" + mail + "_" + type);
+
+        /*if(type.equals("Konkurrencespiller")) {
+            FileUtil.opretSpillerFil(s);
+
+        }
+
+         */
     }
 
 
     public void sletMedlem(int medlemsNummer) throws IOException {
-        File originalFil = new  File("medlem.txt");
+        File originalFil = new  File("edlem.txt");
         File nyFil = new File("ny_medlems_fil.txt");
 
         BufferedReader reader = new BufferedReader(new FileReader(originalFil));

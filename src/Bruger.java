@@ -1,5 +1,11 @@
 import java.io.File;
 
+/*
+Henter brugernavn og password.
+Interface for Coach, formand og kasserer
+Interface er tom funktion - super klasse som har tomme funktioner
+ */
+
 public interface Bruger {
 
     //Funktion for at hente brugernavnet

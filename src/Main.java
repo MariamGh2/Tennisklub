@@ -1,57 +1,103 @@
-import java.io.File;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
 
-    public static String bruger;
-    public static boolean taendt = true;
-          
+    /*
+    Variabel der fortæller hvilken typer bruger der er logget ind
+    */
+
+
+                                       /// LOGIN METODE
+    //Spørger efter brugernavn og password indtil en af de tre roller logger ind
+    public static void login(Coach coach, Formand formand, Kasserer kasserer) throws InterruptedException {
+
+        Scanner input = new Scanner(System.in);
+
+
+        while (bruger.equals("")) {   //Kører så længe der ikke er logget ind
+            System.out.println("=== LOGIN =============");
+            System.out.println("Brugernavn: ");
+            String brugernavn = input.next();
+
+            System.out.println("Password: ");
+            String password = input.next();
+
+            //Coach login
+            if (coach.getBrugernavn().equals(brugernavn)
+                    && coach.getPassword().equals(password)) {
+
+                bruger = "coach";
+                System.out.println("Du er nu logget ind som coach");
+            }
+
+            //Kasserer login
+            else if (kasserer.getBrugernavn().equals(brugernavn)
+                    && kasserer.getPassword().equals(password)) {
+
+                bruger = "kasserer";
+                System.out.println("Du er nu logget ind som kasserer");
+            }
+
+            //Formand login
+            else if (formand.getBrugernavn().equals(brugernavn)
+                    && formand.getPassword().equals(password)) {
+
+                bruger = "formand";
+                System.out.println("Du er nu logget ind som formand");
+            }
+
+            //Hvis ingen passede -> fejlbesked + prøv igen
+            else {
+                System.out.println("Forkert brugernavn eller kodeord.");
+                System.out.println("Prøv igen");
+                System.out.println();
+                Thread.sleep(1000); //Lille pause før næste forsøg
+            }
+        }
+    }
+
+
+    public static String bruger = "";
 
     public static void main(String[] args) throws InterruptedException {
 
         //opretter mappen
-        File m = FileUtilKonkurrence.OpretKonkurrenceMappe();
+        //File m = FileUtilKonkurrence.OpretKonkurrenceMappe();
 
-        boolean formandExistens = false;
-        boolean coachExistens = false;
-        boolean kassererExistens = false;
+        //Opretter de tre system brugere
+        Formand formand = new Formand("Cass", 0, true, "03-07-2000",
+                "tokiarb@gmail.com", "Formand", "123");
 
-        if (!formandExistens) {Formand formand = new Formand("toki", true, "03-07-2000","tokiarb@gmail.com","TheFormand", "123");}
-        if (!coachExistens) {Coach coach = new Coach("ditlev", true, "03-07-2000","tokiarb@gmail.com","TheFormand", "123");}
-        if (!kassererExistens) {Kasserer kasserer = new Kasserer("arzola", true, "03-07-2000","tokiarb@gmail.com","TheFormand", "123");}
+        Coach coach = new Coach("Lina", 0, true, "03-07-2000",
+                "tokiarb@gmail.com", "Coach", "123");
 
-        while (taendt) {
+        Kasserer kasserer = new Kasserer("toki", 0, true, "03-07-2000",
+                "tokiarb@gmail.com", "Kassere", "123");
 
-            //Login.login();
+        //login
+        login(coach, formand, kasserer);
 
-            if (bruger == "coach") {
-                //Coach.menu();
-            } else if (bruger == "formand") {
-                //Formand.menu();
-            } else if (bruger == "kasserer") {
-                //Kasserer.menu();
+        //Når login lykkedes, er Main.bruger sat til coach, formand eller kasserer
+        if ("coach".equals(bruger)) {
+            System.out.println("Der er ingen funktion endnu");
+
+        } else if ("formand".equals(bruger)) {
+            System.out.println("Skriv - opret - for at oprette et medlem");
+
+            Scanner sc = new Scanner(System.in);
+            String input = sc.nextLine();
+
+            if (input.equalsIgnoreCase("Opret")) {
+                formand.opretMedlem(); //kalder opret-medlem-funktion
+                Medlem.sorterFilEfterMedlemsnummer(); //Sortere filen efter oprettelse
+            } else {
+                System.out.println("Jeg genkender ikke denne kommando");
             }
+        } else if ("kasserer".equals(bruger)) {
+            System.out.println("Der er ingen funktioner endnu");
         }
-
-
     }
-
-/*
-    // Kontingent
-    public static void main(String[] args) {
-        {
-
-            // Opretter et nyt medlem med navn "medlem", alder 22 og aktivt medlemskab
-            Medlem m = new Medlem("medlem", 22, true);
-
-            // Beregner et kontingent-objekt, som kan beregne medlemskontingent
-            Kontingent k = new Kontingent();
-
-            // Beregner kontingentet for medlemmet "m" og gemmer resultatet i variablen pris
-            double pris = k.beregnKontingent(m);
-            System.out.println("Kontingent: " + pris + " kr");
-        }
- */
 }
+
+
 

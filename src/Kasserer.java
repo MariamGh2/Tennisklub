@@ -1,6 +1,13 @@
 import java.io.File;
 import java.time.LocalDate;
 
+/*
+Klassen oprettet objektet Kasserer.
+Funktionerne for oversigt over betaling og rykkere
+Samt hvordan Kasserer logger ind (interface)
+ */
+
+
 public class Kasserer extends Medlem implements Bruger {
 
 
@@ -9,16 +16,14 @@ public class Kasserer extends Medlem implements Bruger {
     private String brugernavn;
     private String password;
 
-    public Kasserer (String navn, boolean medlemskab, String foedselsdag, String mail, String brugernavn, String password) {
-        super("kasserer", navn, medlemskab, foedselsdag, mail);
+    public Kasserer (String navn, int medlemsNummer, boolean medlemskab, String foedselsdag, String mail, String brugernavn, String password) {
+        super("kasserer", navn, medlemsNummer, medlemskab, foedselsdag, mail);
         this.brugernavn = brugernavn;
         this.password = password;
 
-        FileUtil.appendTilFil(new File("medlem.txt"), this.getPosition() + "_" + navn + "_" + this.getMedlemsNummer() + "_" + medlemskab + "_" + foedselsdag + "_" + mail);
-        FileUtil.appendTilFil(new File("personale.txt"), this.getPosition() + "_" + navn + "_" + this.getMedlemsNummer() + "_" + medlemskab + "_" + foedselsdag + "_" + mail + "_" + brugernavn + "_" + password);
     }
 
-
+    @Override
     public String getBrugernavn() {
         return brugernavn;
     }

@@ -1,5 +1,10 @@
 import java.io.File;
 
+/*
+Klassen har ansvaret for Turnering og hvordan en turnering er stillet op
+ */
+
+
 public class Turnering {
 
 

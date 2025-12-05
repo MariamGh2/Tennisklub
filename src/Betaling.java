@@ -1,6 +1,9 @@
 public class Betaling {
 
-
+/*
+Denne klasse bruges til at finde ud af om et medlem har betalt kontingentet.
+Hvis de ikke har, beregnes prisen for medlemmet og derefter sættes det som true (medlem har betalt)
+ */
     public Betaling(){}   //Deafult constructor
 
 
@@ -12,10 +15,9 @@ public class Betaling {
     }
 
     public void betalKontigent(int alder, boolean aktiv){
-       //Hvis medlem har betalt
-        if (harBetalt) {
+        if (harBetalt) {     //Hvis medlem har betalt
             System.out.println("Kontingent betalt");
-        } else {       //Hvis medlem IKKE har betalt
+        } else {            //Hvis medlem IKKE har betalt
             Pris prisberegner = new Pris();                          //Beregner kontingent prisen for medlemmet
             int pris = prisberegner.beregnPris(alder, aktiv);        //Beregner prisen udfra alder og om man er aktiv
 

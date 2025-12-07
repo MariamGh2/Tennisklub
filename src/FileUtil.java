@@ -109,7 +109,7 @@ public class FileUtil {
         return medlemsListe;
     }
 
-/*
+
     public static File OpretKonkurrenceMappe() {                                    //Opretter mappe objekt
         File mappe = new File("konkurrenceSpillere");
 
@@ -126,45 +126,43 @@ public class FileUtil {
         return mappe;                                                                       //Returnerer mappen uanset om den er blevet oprettet eller ej
     }
 
-    public static File opretSpillerFil(Spiller spiller //Medlem medlem, KonkurrenceSpillere ks) {
+    public static File opretSpillerFil(Spiller spiller, KonkurrenceSpillere ks) {    //Medlem medlem, KonkurrenceSpillere ks) {
         File mappe = OpretKonkurrenceMappe();                                               //Sikrer at mappen eksisterer
 
-        String filnavn = spiller.getNavn().replace(" ", "") + ".txt";       //Henter spillernavn og tilføjer ".txt" til filnavnvet
+        String filnavn = spiller.getMedlemsNummer() + "_" + spiller.getNavn().replace(" ", "") + ".txt";       //Henter spillernavn og tilføjer ".txt" til filnavnvet
 
         File spillerFil = new File(mappe, filnavn);                                         //Opretter fil objektet som peger på filen i mappen
 
         try {                                                                               //en try-blok fordi filoperationer kan kaste IOException.
             if (!spillerFil.exists()) {                                                     //Tjekker om filen allerede eksisterer
                 spillerFil.createNewFile();                                                 //Forsøger at oprette filen
-                //startDataTilFil(spillerFil, ks);
-                System.out.println("Filen " + spillerFil.getPath() + " er oprettet");       //Printer i consollen når den er oprettet
+                StartDataTilFil(spillerFil, ks);
+                System.out.println("Filen " + spillerFil.getPath() + " er oprettet"); }  //Printer i consollen når den er oprettet
 
-        } catch (IOException e) {
-            System.out.println("Kunne ikke oprette spillerfil: " + e.getMessage());        //Hvis der er fejl så printer den sætningen ud
+            } catch(IOException e){
+                System.out.println("Kunne ikke oprette spillerfil: " + e.getMessage());        //Hvis der er fejl så printer den sætningen ud
+            }
+
+            return spillerFil;
         }
 
-        return spillerFil;
-    }
 
-    private static void StartDataTilFil(File fil, KonkurrenceSpillere spiller //ks) {    //Åbner en FileWriter i en try-with-resources blok. false betyder overskriv filens eksisterende indhold (ikke append). Try-with-resources sikrer at fw automatisk lukkes efter blokken, også hvis en undtagelse sker.
-        try (FileWriter fw = new FileWriter(fil, false)) {
-            fw.write("Hold: " + spiller.getHold() + "\n");                               // junior/senior
-            fw.write("Disciplin: " + spiller.getDisciplin() + "\n");
-            fw.write("Rangering: " + spiller.getRangering() + "\n");
-            fw.write("Seneste kampresultat: " + spiller.getResultat() + "\n");
-            fw.write("Dato: " + ks.getDato() + "\n");
+        private static void StartDataTilFil (File fil, KonkurrenceSpillere ks) { //ks) {    //Åbner en FileWriter i en try-with-resources blok. false betyder overskriv filens eksisterende indhold (ikke append). Try-with-resources sikrer at fw automatisk lukkes efter blokken, også hvis en undtagelse sker.
+            try (FileWriter fw = new FileWriter(fil, false)) {
+                fw.write("Hold: " + ks.getHold() + "\n");                               // junior/senior
+                fw.write("Disciplin: " + ks.getDisciplin() + "\n");
+                fw.write("Rangering: " + ks.getRangering() + "\n");
+                fw.write("Seneste kampresultat: " + ks.getResultat() + "\n");
+                fw.write("Dato: " + ks.getDato() + "\n");
 
-        } catch (IOException e) {
-            System.out.println("Fejl under skrivning til fil: " + e.getMessage());
+            } catch (IOException e) {
+                System.out.println("Fejl under skrivning til fil: " + e.getMessage());
+            }
         }
     }
 
 
 
- */
-
-
-}
 
 
 

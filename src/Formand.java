@@ -76,18 +76,20 @@ public class Formand extends Medlem implements Bruger {
 
         Spiller s = new Spiller(navn, 0, true, foedselsdag, mail, type);  //opret medlem (Medlem klarer medlemsnummer + filskrivning + sortering)
 
-        int medlemsNummer = s.getMedlemsNummer();
+        int medlemsNummer = s.getMedlemsNummer();           //Kalder metoden getmedlemsnummer på objektet s
 
         File fil = new File("medlem.txt");
         FileUtil.appendTilFil(new File("medlem.txt"), "medlem" + "_" + navn + "_" + medlemsNummer + "_" +
                 "true" + "_" + foedselsdag + "_" + mail + "_" + type);
 
-        /*if(type.equals("Konkurrencespiller")) {
-            FileUtil.opretSpillerFil(s);
+        KonkurrenceSpillere ks = new KonkurrenceSpillere();
+
+        if (type.equals("konkurrencespiller")) {
+            FileUtil.opretSpillerFil(s, ks);
 
         }
 
-         */
+
     }
 
 

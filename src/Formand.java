@@ -23,6 +23,8 @@ public class Formand extends Medlem implements Bruger {
         super("formand", navn, medlemskab, foedselsdag, mail);
         this.brugernavn = brugernavn;
         this.password = password;
+
+
     }
 
     @Override
@@ -81,12 +83,14 @@ public class Formand extends Medlem implements Bruger {
                 new File("medlem.txt"),
                 navn + "_" + medlemsNummer + "_" + foedselsdag + "_" + mail + "_" + "true" + System.lineSeparator());
 
-        /*if(type.equals("Konkurrencespiller")) {
-            FileUtil.opretSpillerFil(s);
+        KonkurrenceSpillere ks = new KonkurrenceSpillere();
+
+        if (type.equals("konkurrencespiller")) {
+            FileUtil.opretSpillerFil(s, ks);
 
         }
 
-         */
+
     }
 
 

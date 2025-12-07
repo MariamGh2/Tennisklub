@@ -1,6 +1,3 @@
-import java.io.File;
-import java.time.LocalDate;
-
 /*
 Klassen oprettet objektet Kasserer.
 Funktionerne for oversigt over betaling og rykkere
@@ -16,11 +13,11 @@ public class Kasserer extends Medlem implements Bruger {
     private String brugernavn;
     private String password;
 
-    public Kasserer (String navn, int medlemsNummer, boolean medlemskab, String foedselsdag, String mail, String brugernavn, String password) {
-        super("kasserer", navn, medlemsNummer, medlemskab, foedselsdag, mail);
+    public Kasserer (String navn, boolean medlemskab, String foedselsdag, String mail, String brugernavn, String password) {
+        //Kasserer får ikke et medlemsnummer
+        super("kasserer", navn, medlemskab, foedselsdag, mail);
         this.brugernavn = brugernavn;
         this.password = password;
-
     }
 
     @Override

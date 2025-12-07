@@ -17,12 +17,12 @@ public class Formand extends Medlem implements Bruger {
     private String brugernavn;
     private String password;
 
-    public Formand (String navn, int medlemsNummer, boolean medlemskab, String foedselsdag, String mail, String brugernavn, String password) {
-        super("formand", navn, medlemsNummer, medlemskab, foedselsdag, mail);
+    public Formand (String navn, boolean medlemskab, String foedselsdag, String mail,
+                    String brugernavn, String password) {
+        //Formand får ikke et medlemsnummer
+        super("formand", navn, medlemskab, foedselsdag, mail);
         this.brugernavn = brugernavn;
         this.password = password;
-
-
     }
 
     @Override
@@ -74,13 +74,12 @@ public class Formand extends Medlem implements Bruger {
             System.out.println("Du har valgt konkurrencespiller");
         }
 
-        Spiller s = new Spiller(navn, 0, true, foedselsdag, mail, type);  //opret medlem (Medlem klarer medlemsnummer + filskrivning + sortering)
-
+        Spiller s = new Spiller(navn, true, foedselsdag, mail, type);  //opret medlem (Medlems klassen klarer medlemsnummer + filskrivning + sortering)
         int medlemsNummer = s.getMedlemsNummer();
 
-        File fil = new File("medlem.txt");
-        FileUtil.appendTilFil(new File("medlem.txt"), "medlem" + "_" + navn + "_" + medlemsNummer + "_" +
-                "true" + "_" + foedselsdag + "_" + mail + "_" + type);
+        FileUtil.appendTilFil(
+                new File("medlem.txt"),
+                navn + "_" + medlemsNummer + "_" + foedselsdag + "_" + mail + "_" + "true" + System.lineSeparator());
 
         /*if(type.equals("Konkurrencespiller")) {
             FileUtil.opretSpillerFil(s);
@@ -92,7 +91,7 @@ public class Formand extends Medlem implements Bruger {
 
 
     public void sletMedlem(int medlemsNummer) throws IOException {
-        File originalFil = new  File("edlem.txt");
+        File originalFil = new  File("medlem.txt");
         File nyFil = new File("ny_medlems_fil.txt");
 
         BufferedReader reader = new BufferedReader(new FileReader(originalFil));

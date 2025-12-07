@@ -65,20 +65,20 @@ public class Main {
         //File m = FileUtilKonkurrence.OpretKonkurrenceMappe();
 
         //Opretter de tre system brugere
-        Formand formand = new Formand("Cass", 0, true, "03-07-2000",
+        Formand formand = new Formand("Cass", true, "03-07-2000",
                 "tokiarb@gmail.com", "Formand", "123");
 
-        Coach coach = new Coach("Lina", 0, true, "03-07-2000",
+        Coach coach = new Coach("Lina", true, "03-07-2000",
                 "tokiarb@gmail.com", "Coach", "123");
 
-        Kasserer kasserer = new Kasserer("toki", 0, true, "03-07-2000",
+        Kasserer kasserer = new Kasserer("toki", true, "03-07-2000",
                 "tokiarb@gmail.com", "Kassere", "123");
 
-        //login
-        login(coach, formand, kasserer);
 
-        //Når login lykkedes, er Main.bruger sat til coach, formand eller kasserer
-        if ("coach".equals(bruger)) {
+        login(coach, formand, kasserer);   //login
+
+
+        if ("coach".equals(bruger)) {     //Når login lykkedes, er Main.bruger sat til coach, formand eller kasserer
             System.out.println("Der er ingen funktion endnu");
 
         } else if ("formand".equals(bruger)) {
@@ -88,8 +88,8 @@ public class Main {
             String input = sc.nextLine();
 
             if (input.equalsIgnoreCase("Opret")) {
-                formand.opretMedlem(); //kalder opret-medlem-funktion
-                Medlem.sorterFilEfterMedlemsnummer(); //Sortere filen efter oprettelse
+                formand.opretMedlem();     //kalder opret-medlem-funktion
+                Medlem.sorterFilEfterMedlemsnummer();    //Sortere filen efter oprettelse
             } else {
                 System.out.println("Jeg genkender ikke denne kommando");
             }

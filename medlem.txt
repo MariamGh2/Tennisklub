@@ -1,2 +1,5 @@
-medlem_cass_0_true_19-03-2001_casdasds<dfs_konkurrencespiller
-medlem_lina_0_true_10-12-2004_lsdfin_konkurrencespiller
+Cas_1_18-01-2001_casm,_true
+toki_2_19-02-2003_tokse_true
+lina_3_18-02-2004_linse_true
+Mariam_4_18-02-2004_mars_true
+Sonja_5_18-02-2004_sonjasss_true

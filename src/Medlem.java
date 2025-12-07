@@ -31,19 +31,16 @@ public abstract class Medlem {
 
     private static final Path FIL = Path.of("medlem.txt");   //Sti til filen hvor ALT gemmes
 
-    public Medlem(String position, String navn,boolean aktivPassiv, String foedselsdag, String mail) {
+    public Medlem(String position, String navn, boolean aktivPassiv, String foedselsdag, String mail) {
         this.position = position;
         this.navn = navn;
         this.medlemskab = aktivPassiv;
         this.mail = mail;
         this.foedselsdag = LocalDate.parse(foedselsdag, formatter);
-        this.betaling = true;
+        this.betaling = true;   //Nyt medlem -> har betalt
 
         //ALTID nyt nummer her
         this.medlemsNummer = Medlemsnummer.hentNytMedlemsnummer();
-
-        //skrivMedlemTilFil();              //Skriv medlemmet i filen
-        //sorterFilEfterMedlemsnummer();    //Sorter filen så numrene altid står i rækkefølge
     }
 
     public Medlem(String position, String navn, int medlemsNummer, boolean aktivPassiv, String foedselsdag, String mail, boolean betaling){
@@ -52,7 +49,7 @@ public abstract class Medlem {
         this.medlemskab = aktivPassiv;
         this.mail = mail;
         this.foedselsdag = LocalDate.parse(foedselsdag, formatter);
-        this.betaling = betaling;
+        this.betaling = betaling;  //betalingsstatus som står i filen
 
         //Brug det nummer vi læser fra fil - INGEN ny generering
         this.medlemsNummer = medlemsNummer;
@@ -65,7 +62,6 @@ public abstract class Medlem {
                 Files.writeString(FIL, "");
             }
             String linje = navn + "_" + medlemsNummer + "_" + foedselsdag + "_" + mail + "_" + medlemskab + "\n";    //Format på linjen der skrives
-
             Files.writeString(FIL, linje, StandardOpenOption.APPEND);     //Tilføj til linjen nederst i filen
 
         } catch (IOException e) {
@@ -74,10 +70,9 @@ public abstract class Medlem {
     }
 
 
-    ///Sortere edlem.txt efter medlemsnummer
+    ///Sortere medlem.txt efter medlemsnummer
     public static void sorterFilEfterMedlemsnummer(){
         try {
-
             if (!Files.exists(FIL)) {
                 return; //intet at sortere
         }
@@ -88,24 +83,20 @@ public abstract class Medlem {
             linjer.removeIf(l -> l.trim().isEmpty());     //trim() fjerner mellemrum og skjulte tegn
                                                                  //isEmpthy() tjekker om den er tom, hvis ja, fjernes linjen
 
-            linjer.sort((l1, l2) -> {      //For hver to linjer (l1 og l2), sammenlign dem - og bestem hvilken der skal stå først
-                String[] d1 = l1.split("_");      //Tag linjen l1. split den ved hver _ og gem delene i et array
-                String[] d2 = l2.split("_");      //Tag linjen l2. split den ved hver _ og gem delene i et array
+            linjer.sort((l1, l2) -> {          //Sorter listens linjer ved at sammenligne to linjer ad gangen, kaldet l1 og l2
 
-                int n1 = Integer.parseInt(d1[2].trim());  //Find medlemsnr. i linje 1 (felt 2 -> d1[1], fjern mellemrum (.trim()) og lav teksten om til et tal med parseInt
-                int n2 = Integer.parseInt(d2[2].trim());   //Find medlemsnr. i linje 2 (felt 2 -> d1[1], fjern mellemrum (.trim()) og lav teksten om til et tal med parseInt
-
-                return Integer.compare(n1,n2);   //Selve sammenligningen: Hvis n1 < n2 -> l1 skal stå før l2
-                                                 //Hvis n1 > n2 -> l1 skal stå efter l2
-                                                  //Hvis de er ens -> rækkefølgen betyder ikke noget
-                                                 //Listen bliver sorteret fra laveste medlemsnr. til højeste
-            });
-
+                int n1 = hentMedlemsnummerFraLinje(l1);    //Sorteringen læser to linjer, finder medlemsnummeret i hver linje
+                int n2 = hentMedlemsnummerFraLinje(l2);    // og bruger Integer.compare til at bestemme hvilken linje der skal stå først.
+                return Integer.compare(n1,n2);             //På den måde sorteres hele filen korrekt efter medlemsnumre.
+            });                                            /*Sorterer linjerne efter medlemsnummer.
+                                                           Tuborg {} hører til lambdaens krop: (l1, l2) -> { ... }
+                                                           Parentesen ) hører til funktionskaldet sort( ... )
+                                                           Derfor slutter udtrykket med });*/
 
             Files.write(FIL, linjer);           //Efter sorteringen overskrives hele filen med den sorterede udgave af linjerne
 
         } catch (IOException e) {
-            throw new RuntimeException("Fejl ved sortering af edlem.txt");
+            throw new RuntimeException("Fejl ved sortering af medlem.txt");
         }
     }
 
@@ -119,13 +110,12 @@ public abstract class Medlem {
         try {
             return Integer.parseInt(dele[1].trim());
         } catch (NumberFormatException e) {
-            return Integer.MAX_VALUE;   //Hvis format er forkert, skub den linje ned i bunden
+            return Integer.MAX_VALUE;       //Hvis format er forkert, skub den linje ned i bunden
         }
     }
 
 
-    /// GETTERS
-
+                               /// GETTERS
     public String getPosition() {return position;}
 
     public String getNavn() {

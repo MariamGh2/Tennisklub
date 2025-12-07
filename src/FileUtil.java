@@ -100,7 +100,7 @@ public class FileUtil {
                 String mail = data[5];
                 String spillerType = data[6];
 
-                Spiller medlem = new Spiller(navn, medlemsNummer, medlemskab, foedselsdag, mail, spillerType);
+                Spiller medlem = new Spiller(navn, medlemsNummer, medlemskab, foedselsdag, mail, spillerType, true);
                 medlemsListe.add(medlem);
             }
         } catch (IOException e) {

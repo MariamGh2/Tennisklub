@@ -1,6 +1,3 @@
-import java.io.File;
-import java.time.LocalDate;
-
 /*
 Klassen oprettet objektet Coach.
 Funktionerne for hvad coachen gerne vil se, top 5 osv.
@@ -14,8 +11,8 @@ public class Coach extends Medlem implements Bruger {
     private String brugernavn;
     private String password;
 
-    public Coach(String navn, int medlemsNummer, boolean medlemskab, String foedselsdag, String mail, String brugernavn, String password) {
-        super("coach", navn, medlemsNummer, medlemskab, foedselsdag, mail);
+    public Coach(String navn, boolean medlemskab, String foedselsdag, String mail, String brugernavn, String password) {
+        super("coach", navn, medlemskab, foedselsdag, mail);
         this.brugernavn = brugernavn;
         this.password = password;
 

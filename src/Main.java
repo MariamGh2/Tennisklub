@@ -12,20 +12,25 @@ public class Main {
     public static String bruger = "";
 
 
-        /// LOGIN METODE
     public static void main(String[] args) throws InterruptedException {
 
-        //opretter mappen
-        //File m = FileUtilKonkurrence.OpretKonkurrenceMappe();
+        //Login funktion der logger ind og opretter personalet
+        Login.login();
 
-        Login.login();//login
-
+        //Objekt arrayliste for personalet
         List<Object> personaleListe = new ArrayList<>();
         personaleListe = FileUtil.laesPersonaleFraFil();
 
-        if ("coach".equals(bruger)) {     //Når login lykkedes, er Main.bruger sat til coach, formand eller kasserer
-            System.out.println("Der er ingen funktion endnu");
-
+        //Finder menuen for den bruger der er logget ind
+        if ("coach".equals(bruger)) {
+            for (Object o : personaleListe) {
+                if (o instanceof Coach c) {
+                    while (bruger == "formand") {
+                        //c.menu();
+                        System.out.println("Ingen funktion endnu");
+                    }
+                }
+            }
         } else if ("formand".equals(bruger)) {
             for (Object o : personaleListe) {
                 if (o instanceof Formand f) {

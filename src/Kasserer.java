@@ -5,7 +5,13 @@ Samt hvordan Kasserer logger ind (interface)
  */
 
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.Scanner;
 
 public class Kasserer extends Medlem implements Bruger {
 
@@ -41,6 +47,41 @@ public class Kasserer extends Medlem implements Bruger {
 
     @Override
     public void menu() {}
+
+    //Sender rykker for en manglende betaling
+    /*public void rykker(){
+        Scanner sc = new Scanner(System.in);
+
+        LocalDate dagsDato = Dato.getDato();
+        LocalDate frist = Dato.fristDato();
+
+        if (dagsDato.isBefore(frist)) {
+            System.out.println("Det er den " + dagsDato.getDayOfMonth() + "-" + dagsDato.getMonth() + ". Er du sikker på at du vil sende en rykker?");
+            String input = sc.nextLine();
+
+            if (input.equalsIgnoreCase("ja")) {
+                try (BufferedReader br = new BufferedReader(new FileReader("betaling.txt"))) {
+                    String linje;
+
+                    while ((linje = br.readLine()) != null) {
+                        String[] dele = linje.split("_");
+
+                        String nummer = dele[0];
+                        boolean betalt = Boolean.parseBoolean(dele [1]);
+                        String restance = dele[2];
+
+                        if (!betalt) {
+
+                        }
+                    }
+                }
+            }
+        }
+
+
+     */
+
+
 
     //Funktion for at give oversigt over betalinger
     public void oversigt() throws Exception {

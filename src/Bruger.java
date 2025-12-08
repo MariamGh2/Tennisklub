@@ -1,5 +1,3 @@
-import java.io.File;
-
 /*
 Henter brugernavn og password.
 Interface for Coach, formand og kasserer

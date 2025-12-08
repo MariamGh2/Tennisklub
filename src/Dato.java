@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 public class Dato {
 
@@ -13,11 +14,16 @@ public class Dato {
 
     public void ligMedDato(){}
 
-    public static DateTimeFormatter Dato = DateTimeFormatter.ofPattern("dd-MM-yyyy");      //Metode som skriver datoen med dato, måned og år
+    public static DateTimeFormatter Dato = DateTimeFormatter.ofPattern("dd-MM");      //Metode som skriver datoen med dato, måned og år
 
 
-    public static String getDato(){         //Henter dagens dato
-        return LocalDate.now().format(Dato);
+    public static LocalDate getDato(){        //Henter dagens dato
+        return LocalDate.now();
+    }
+
+    public static LocalDate fristDato() {
+        LocalDate dato = LocalDate.of(LocalDate.now().getYear(), 2, 1);
+        return dato;
     }
 
     public static boolean betalingsDato(){         //Boolean bliver true hvis dagens dato er d.1 januar og false hvis det ikke er

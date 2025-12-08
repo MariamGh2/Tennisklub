@@ -39,12 +39,52 @@ public class Formand extends Medlem implements Bruger {
 
     @Override
     public void logud() {
-
+        Main.bruger = "";
     }
 
     @Override
     public void menu() {
+        Scanner sc = new Scanner(System.in);
 
+        System.out.println("=== Menu ==========================");
+        System.out.println("Mulige kommandoer:");
+        System.out.println("    opret - opretter en ny medlem");
+        System.out.println("    slet - sletter en eksisterende medlem");
+        System.out.println("    logud - Logger ud af bruger");
+
+        String input = sc.nextLine();
+
+        //Opret medlem
+        if (input.equals("opret")) {
+            opretMedlem();
+
+        //Slet medlem
+        } else if (input.equals("slet")) {
+            boolean loop = true;
+            System.out.println("Indtast medlemsnummeret");
+            int nummer = Integer.parseInt(sc.nextLine());
+            System.out.println("Er du sikker på at du vil slette medlem " + nummer + "?");
+            String svar = sc.nextLine();
+            while (loop) {
+                if (svar.equalsIgnoreCase("ja")) {
+                    try {
+                        sletMedlem(nummer);
+                        loop = false;
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else if (svar.equalsIgnoreCase("nej")) {
+                    System.out.println("Annuleret.");
+                    loop = false;
+                } else {
+                    System.out.println("Genkender ikke inputtet. Prøv igen.");
+                }
+            }
+        } else if (input.equals("logud")) {
+            logud();
+        } else {
+            System.out.println("Genkender ikke denne kommando. Prøv igen.");
+        }
     }
 
     public void opretMedlem(){
@@ -81,20 +121,22 @@ public class Formand extends Medlem implements Bruger {
 
         FileUtil.appendTilFil(
                 new File("medlem.txt"),
-                navn + "_" + medlemsNummer + "_" + foedselsdag + "_" + mail + "_" + "true" + System.lineSeparator());
+                navn + "_" + medlemsNummer + "_" + "true" + "_" + foedselsdag + "_" + mail + "_" + type + "_" + "true" + System.lineSeparator());
 
         KonkurrenceSpillere ks = new KonkurrenceSpillere();
 
         if (type.equals("konkurrencespiller")) {
             FileUtil.opretSpillerFil(s, ks);
-
         }
 
+        Medlem.sorterFilEfterMedlemsnummer(); //Sortere filen efter oprettelse
 
     }
 
-
     public void sletMedlem(int medlemsNummer) throws IOException {
+
+        boolean medlemFundet = false;
+
         File originalFil = new  File("medlem.txt");
         File nyFil = new File("ny_medlems_fil.txt");
 
@@ -105,11 +147,15 @@ public class Formand extends Medlem implements Bruger {
 
         while ((linje = reader.readLine()) != null) {
             String[] dele = linje.split("_");
-
-            if (String.valueOf(medlemsNummer).equals(dele[2])) {
+            if (String.valueOf(medlemsNummer).equals(dele[1])) {
+                medlemFundet = true;
                 continue;
             }
             writer.write(linje + System.lineSeparator());
+        }
+
+        if (!medlemFundet) {
+            System.out.println("Medlem kunne ikke findes.");
         }
 
         writer.close();
@@ -121,5 +167,4 @@ public class Formand extends Medlem implements Bruger {
         }
         nyFil.renameTo(originalFil);
     }
-
 }

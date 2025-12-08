@@ -5,6 +5,7 @@ import java.util.List;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Objects;
 
 /*FileUtil har ansvaret for at læse medlemmer fra filen og bygge Medlem-objekt, andre ændringer til txt filerne samt
 at oprette mappe og filer til konkurrencespillere
@@ -14,7 +15,6 @@ public class FileUtil {
 
     public FileUtil() {
     } //Default Constructor
-
 
     //Tilføj en linje til en angivet fil --- (Filens path, String der skal tilføjes)
     public static void appendTilFil(File file, String linje) {                      //Append en linje til dagens fil
@@ -81,6 +81,65 @@ public class FileUtil {
     }
 
 
+    public static List<Object> laesPersonaleFraFil() {
+
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String deler = "_";
+        String linje = "";
+        String personaleFil = "personale.txt";
+        List<Object> personaleListe = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(personaleFil))) {
+            while ((linje = reader.readLine()) != null) {
+                int lineNumber = 0;
+                lineNumber++;
+                String[] data = linje.split(deler);
+                String position =  data[0];
+
+                if (position.equals("formand")) {
+                    String navn = data[1];
+                    boolean medlemskab = Boolean.parseBoolean(data[2]);
+                    String foedselsdag = data[3];
+                    String mail = data[4];
+                    String brugernavn = data[5];
+                    String password = data[6];
+
+                    Formand personale = new Formand(navn, medlemskab, foedselsdag, mail, brugernavn, password);
+                    personaleListe.add(personale);
+
+                } else if (position.equals("kasserer")) {
+                    String navn = data[1];
+                    boolean medlemskab = Boolean.parseBoolean(data[2]);
+                    String foedselsdag = data[3];
+                    String mail = data[4];
+                    String brugernavn = data[5];
+                    String password = data[6];
+
+                    Kasserer personale = new Kasserer(navn, medlemskab, foedselsdag, mail, brugernavn, password);
+                    personaleListe.add(personale);
+
+                } else if (position.equals("coach")) {
+                    String navn = data[1];
+                    boolean medlemskab = Boolean.parseBoolean(data[2]);
+                    String foedselsdag = data[3];
+                    String mail = data[4];
+                    String brugernavn = data[5];
+                    String password = data[6];
+
+                    Coach personale = new Coach(navn, medlemskab, foedselsdag, mail, brugernavn, password);
+                    personaleListe.add(personale);
+
+                } else {
+                    System.out.println("Error: Kunne ikke genkende personale på linje" + lineNumber + " i fil personale.txt");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return personaleListe;
+    }
+
+
     public static List<Medlem> laesMedlemFraFil() {
 
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -93,14 +152,15 @@ public class FileUtil {
         try (BufferedReader reader = new BufferedReader(new FileReader(medlemFil))) {
             while ((linje = reader.readLine()) != null) {
                 String[] data = linje.split(deler);
-                String navn = data[1];
-                int medlemsNummer = Integer.parseInt(data[2]);
-                boolean medlemskab = Boolean.parseBoolean(data[3]);
-                String foedselsdag = data[4];
-                String mail = data[5];
-                String spillerType = data[6];
+                String navn = data[0];
+                int medlemsNummer = Integer.parseInt(data[1]);
+                boolean medlemskab = Boolean.parseBoolean(data[2]);
+                String foedselsdag = data[3];
+                String mail = data[4];
+                String spillerType = data[5];
+                boolean betaling = Boolean.parseBoolean(data[6]);
 
-                Spiller medlem = new Spiller(navn, medlemsNummer, medlemskab, foedselsdag, mail, spillerType, true);
+                Spiller medlem = new Spiller(navn, medlemsNummer, medlemskab, foedselsdag, mail, spillerType, betaling);
                 medlemsListe.add(medlem);
             }
         } catch (IOException e) {

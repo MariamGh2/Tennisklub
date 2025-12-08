@@ -4,6 +4,8 @@ Funktionerne for hvad coachen gerne vil se, top 5 osv.
 Samt hvordan Coach logger ind (interface)
  */
 
+import java.io.File;
+
 public class Coach extends Medlem implements Bruger {
 
     public Coach(){} //Default Constructor
@@ -15,6 +17,7 @@ public class Coach extends Medlem implements Bruger {
         super("coach", navn, medlemskab, foedselsdag, mail);
         this.brugernavn = brugernavn;
         this.password = password;
+
 
     }
 

@@ -4,51 +4,93 @@ import java.util.List;
 import java.util.Scanner;
 
 /*
-Klassen har ansvaret for de forskellige login funktioner for Coach, kasserer og formand.
+Klassen har ansvaret for oprettelse og login for Coach, kasserer og formand.
  */
 
 public class Login {
 
-
     //Login Funktionen
-    /*public static void login() throws InterruptedException {
-        List<Medlem> medlemmer = new ArrayList<>();
-        medlemmer = FileUtil.laesMedlemFraFil();
+    public static void login() throws InterruptedException {
 
+        boolean coachExists = false;
+        boolean kassererExists = false;
+        boolean formandExists = false;
+
+        List<Object> personaleListe = new ArrayList<>();
+        personaleListe = FileUtil.laesPersonaleFraFil();
+
+        for (Object o : personaleListe) {
+
+            if (o instanceof Coach) {
+                coachExists = true;
+            } else if (o instanceof Kasserer) {
+                kassererExists = true;
+            } else if  (o instanceof Formand) {
+                formandExists = true;
+            }
+        }
+
+        if (!coachExists) {
+            Coach coach = new Coach("Lina", true, "03-07-2000",
+                    "tokiarb@gmail.com", "Coach", "123");
+            FileUtil.appendTilFil(new File("personale.txt"),
+                    "coach_Lina_true_03-07-2000_tokiarb@gmail.com_Coach_123");
+        }
+
+        if (!kassererExists) {
+            Kasserer kasserer = new Kasserer("toki", true, "03-07-2000",
+                    "tokiarb@gmail.com", "Kasserer", "123");
+            FileUtil.appendTilFil(new File("personale.txt"),
+                    "kasserer_toki_true_03-07-2000_tokiarb@gmail.com_Kasserer_123");
+        }
+
+        if (!formandExists) {
+            Formand formand = new Formand("Cass", true, "03-07-2000",
+                    "tokiarb@gmail.com", "Formand", "123");
+            FileUtil.appendTilFil(new File("personale.txt"),
+                    "formand_Cass_true_03-07-2000_tokiarb@gmail.com_Formand_123");
+        }
 
         while (Main.bruger == "") {
             Scanner input = new Scanner(System.in);
 
             System.out.println("=== LOGIN =============");
             System.out.println("Brugernavn:");
-            String brugernavn = input.next();
+            String brugernavn = input.nextLine();
 
-            System.out.println("Brugernavn: " + brugernavn);
-            System.out.println("Password:");
-            for (Medlem m : medlemmer) {
-                if (m.getBrugernavn().equals(brugernavn)) {
-                    String password = input.next();
+            for (Object o : personaleListe) {
+                if (o instanceof Coach c) {
+                    if (c.getBrugernavn().equals(brugernavn)) {
+                        System.out.println("Brugernavn: " + brugernavn);
 
-                    if (m.getPassword("coach").equals(password)) {
-                        Main.bruger = "coach";
-                        System.out.println("Du er nu logget ind som coach");
-
+                        System.out.println("Password:");
+                        String password = input.nextLine();
+                        if (c.getPassword().equals(password)) {
+                            Main.bruger = "coach";
+                            System.out.println("Du er nu logget ind som coach");
+                        }
                     }
-                } else if (Kasserer.getBrugernavn().equals(brugernavn)) {
-                    String password = input.next();
+                } else if (o instanceof Formand f) {
+                    if (f.getBrugernavn().equals(brugernavn)) {
+                        System.out.println("Brugernavn: " + brugernavn);
 
-                    if (getPassword("kasserer").equals(password)) {
-                        Main.bruger = "kasserer";
-                        System.out.println("Du er nu logget ind som kasserer");
-                        loggetInt = true;
+                        System.out.println("Password:");
+                        String password = input.nextLine();
+                        if (f.getPassword().equals(password)) {
+                            Main.bruger = "formand";
+                            System.out.println("Du er nu logget ind som formand");
+                        }
                     }
-                } else if (getBrugernavn("formand").equals(brugernavn)) {
-                    String password = input.next();
+                } else if (o instanceof Kasserer k) {
+                    if (k.getBrugernavn().equals(brugernavn)) {
+                        System.out.println("Brugernavn: " + brugernavn);
 
-                    if (getPassword("formand").equals(password)) {
-                        Main.bruger = "formand";
-                        System.out.println("Du er nu logget ind som formand");
-                        loggetInt = true;
+                        System.out.println("Password:");
+                        String password = input.nextLine();
+                        if (k.getPassword().equals(password)) {
+                            Main.bruger = "kasserer";
+                            System.out.println("Du er nu logget ind som kasserer");
+                        }
                     }
                 } else {
                     System.out.println("");
@@ -60,5 +102,4 @@ public class Login {
             }
         }
     }
-    */
 }

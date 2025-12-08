@@ -5,6 +5,8 @@ Samt hvordan Kasserer logger ind (interface)
  */
 
 
+import java.io.File;
+
 public class Kasserer extends Medlem implements Bruger {
 
 
@@ -18,6 +20,8 @@ public class Kasserer extends Medlem implements Bruger {
         super("kasserer", navn, medlemskab, foedselsdag, mail);
         this.brugernavn = brugernavn;
         this.password = password;
+
+
     }
 
     @Override

@@ -15,6 +15,7 @@ public class Coach extends Medlem implements Bruger {
     private String brugernavn;
     private String password;
 
+    //Constructor for Coach
     public Coach(String navn, boolean medlemskab, String foedselsdag, String mail, String brugernavn, String password) {
         super("coach", navn, medlemskab, foedselsdag, mail);
         this.brugernavn = brugernavn;
@@ -33,8 +34,8 @@ public class Coach extends Medlem implements Bruger {
 
     @Override
     public void logud() {
+        Main.bruger = "coach";
     }
-
 
     @Override
     public void menu() {
@@ -49,7 +50,7 @@ public class Coach extends Medlem implements Bruger {
 
         //Opret kamp
         if (input.equalsIgnoreCase("opret kamp")) {
-            opretKamp();
+            //opretKamp();
 
         } else if (input.equals("logud")) {
             logud();

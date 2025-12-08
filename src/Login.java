@@ -9,7 +9,7 @@ Klassen har ansvaret for oprettelse og login for Coach, kasserer og formand.
 
 public class Login {
 
-    //Login Funktionen
+    //Login Funktionen og oprettelse af brugere
     public static void login() throws InterruptedException {
 
         boolean coachExists = false;

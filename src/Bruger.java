@@ -16,5 +16,5 @@ public interface Bruger {
     void logud();
 
     //Funktion der giver menuen for brugeren
-    void menu();
+    void menu() throws Exception;
 }

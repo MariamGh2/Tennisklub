@@ -11,8 +11,7 @@ public class Main {
 
     public static String bruger = "";
 
-
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws Exception {
 
         //Login funktion der logger ind og opretter personalet
         Login.login();
@@ -43,8 +42,7 @@ public class Main {
             for (Object o : personaleListe) {
                 if (o instanceof Kasserer k) {
                     while (bruger == "kasserer") {
-                        //k.menu();
-                        System.out.println("Ingen funktion endnu");
+                        k.menu();
                     }
                 }
             }

@@ -43,8 +43,36 @@ public class Kasserer extends Medlem implements Bruger {
     public void menu() {}
 
     //Funktion for at give oversigt over betalinger
-    public void oversigt(){}
+    public void oversigt() throws Exception {
+        //Udskriver medlemmer i restance og hvor meget restancen er (Kun medlemmer der har en aktiv restance) fra betaling.txt
+        File file = new File("betaling.txt.");
+        Scanner scanner = new Scanner(file);
 
-    //Sender rykker for en manglende betaling
-    public void rykker(){}
-}
+        while (scanner.hasNextLine()) {
+            String linje = scanner.nextLine();
+            String[] data = linje.split("_");
+
+            boolean betalt = Boolean.parseBoolean(data[1]);
+
+            if (!betalt) {
+                System.out.println(data[0] + "skylder" + data[2] + " kr.");
+            }
+
+        }
+
+    }}
+
+//scanner.close();
+//
+//} catch (Exception e) {
+//    System.out.println("kunne ikke læse betaling.txt");
+//        }
+
+
+
+
+
+
+
+
+

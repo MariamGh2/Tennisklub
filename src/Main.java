@@ -35,7 +35,14 @@ public class Main {
                 }
             }
         } else if ("kasserer".equals(bruger)) {
-            System.out.println("Der er ingen funktioner endnu");
+            for (Object o : personaleListe) {
+                if (o instanceof Kasserer k) {
+                    while (bruger == "kasserer") {
+                        //k.menu();
+                        System.out.println("Ingen funktion endnu");
+                    }
+                }
+            }
         }
     }
 }

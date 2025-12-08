@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 /*
 Klassen oprettet objektet Formand.
-Funktionerne for hvordan der oprettes et nyt medlem.
+Funktionerne for hvordan der oprettes et nyt medlem samt turnering.
 Samt hvordan Formand logger ind (interface)
  */
 
@@ -48,18 +48,23 @@ public class Formand extends Medlem implements Bruger {
 
         System.out.println("=== Menu ==========================");
         System.out.println("Mulige kommandoer:");
-        System.out.println("    opret - opretter en ny medlem");
+        System.out.println("    opret nyt medlem");
+        System.out.println("    opret ny turnering");
         System.out.println("    slet - sletter en eksisterende medlem");
         System.out.println("    logud - Logger ud af bruger");
 
         String input = sc.nextLine();
 
         //Opret medlem
-        if (input.equals("opret")) {
+        if (input.equalsIgnoreCase("opret medlem")) {
             opretMedlem();
 
+            //Opret turnering
+        } else if (input.equalsIgnoreCase("opret turnering")){
+            opretTurnering();
+
         //Slet medlem
-        } else if (input.equals("slet")) {
+        } else if (input.equalsIgnoreCase("slet")) {
             boolean loop = true;
             System.out.println("Indtast medlemsnummeret");
             int nummer = Integer.parseInt(sc.nextLine());
@@ -74,7 +79,7 @@ public class Formand extends Medlem implements Bruger {
                         throw new RuntimeException(e);
                     }
                 } else if (svar.equalsIgnoreCase("nej")) {
-                    System.out.println("Annuleret.");
+                    System.out.println("Annulleret.");
                     loop = false;
                 } else {
                     System.out.println("Genkender ikke inputtet. Prøv igen.");
@@ -131,6 +136,28 @@ public class Formand extends Medlem implements Bruger {
 
         Medlem.sorterFilEfterMedlemsnummer(); //Sortere filen efter oprettelse
 
+    }
+
+    public void opretTurnering(){
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("=== Opret ny turnering ===");
+
+        System.out.println("Skriv turneringsnavn: ");
+        String navn = sc.nextLine();
+
+        System.out.println("Skriv disciplin: ");
+        String disciplin = sc.nextLine();
+
+        System.out.println("Skriv dato: ");
+        String dato = sc.nextLine();
+
+        //Opretter turneringen.
+        //Turnerings-klassen skriver selv data til turneringer.txt
+        Turnering t = new Turnering(navn, disciplin, dato);
+
+        System.out.println("Turnering oprettet: " + t.getTurnering() + " (" + t.getDisciplinen() + ", " + t.getDatoen()
+        + ")");
     }
 
     public void sletMedlem(int medlemsNummer) throws IOException {

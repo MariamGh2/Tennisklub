@@ -1,56 +1,73 @@
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+
+/*
+Denne klasse styrer betaling af kontingent.
+Den har ansvaret for:
+    - Registrere om et medlem har betalt kontingengent
+    - Beregne restancen ud fra medlemskabstypen,
+        - Aktov
+        - Passiv
+        - Junior (<18 år)
+        - Senior (18+ år)
+        - Over 60 år
+    - Opdatere betalingsstatua i betaling.txt
+    - Læse betalingaoplysninger fra fil
+    - Sikre at nye medlemmer oprettes uden betaling (betaling = false)
+*/
 
 public class Betaling {
 
-/*
-Denne klasse bruges til at finde ud af om et medlem har betalt kontingentet.
-Hvis de ikke har, beregnes prisen for medlemmet og derefter sættes det som true (medlem har betalt)
- */
-    public Betaling(){}   //Deafult constructor
+    private double kontingentPris;  //Kontingentprisen for medlem (beregnes når medlem betaler)
+    private double betaltBeloeb;    //Hvor meget medlemmet faktisk har betalt
+    private boolean harBetalt;      //Variabel for om medlem har betalt (true/false)
+    private int medlemsNummer;
+    private int restance;
 
-    private double kontingentPris; //Kontingentprisen for medlem (beregnes når medlem betaler)
-    private double betaltBeloeb;    //Gemmer hvor meget medlem har betalt
-    private boolean harBetalt;     //Variabel for om medlem har betalt (true/false)
+    public Betaling() {         // Returnerer om medlemmet har betalt kontingent.Bruges fx når vi skal skrive betalingsstatus til filen.
+        this.harBetalt = false;
+        this.betaltBeloeb = 0;
+        this.kontingentPris = 0;
+    }
 
-    public boolean betaling() {   // Returnerer om medlemmet har betalt kontingent.Bruges fx når vi skal skrive betalingsstatus til filen.
+    public Betaling(int medlemsNummer, boolean harBetalt, int restance) {
+        this.medlemsNummer = medlemsNummer;
+        this.harBetalt = harBetalt;
+        this.restance = restance;
+    }
+
+    public boolean betaling() {
         return harBetalt;
     }
 
-    public void betalKontigent(int alder, boolean aktiv){
-        if (harBetalt) {                                               //Hvis medlem har betalt
-            System.out.println("Kontingent betalt");
-        } else {                                                     //Hvis medlem IKKE har betalt
-            Pris prisberegner = new Pris();                          //Beregner kontingent prisen for medlemmet
-            int pris = prisberegner.beregnPris(alder, aktiv);        //Beregner prisen udfra alder og om man er aktiv
+    public void betalKontigent(int alder, boolean aktiv) {
 
-            kontingentPris = pris;                                  //gemmer kontigentprisen
-            betaltBeloeb = pris;                                    //Gemmer beløbet medlem har betalt
+        Pris prisberegner = new Pris();                          //Beregner kontingent prisen for medlemmet
+        double pris = prisberegner.beregnPris(alder, aktiv);        //Beregner prisen udfra alder og om man er aktiv
 
-            System.out.println("Kontigent pris: " + pris + "kr.");
+        kontingentPris = pris;                                  //gemmer kontigentprisen
 
-            harBetalt = true;
-
-            System.out.println("Du har betalt kontingent");
+        if (harBetalt) {
+            System.out.println("Kontingent er allerede betalt.");
+            return;
         }
+
+        harBetalt = true;
+        betaltBeloeb = pris;
+
+        System.out.println("Kontingent betalt");
     }
 
 
     public double beregnRestance() {
-        if(harBetalt) {
-            return 0.0;                                 //Hvis medlemmet har betalt det hele, så skylder de ikke noget
-        } else {
-            return kontingentPris - betaltBeloeb;       //Ellers beregnes hvor meget de skylder
-        }
+        return kontingentPris - betaltBeloeb;
     }
 
-    public void skrivBetalingTilFil (Medlem medlem, Betaling betaling) {
+    public void skrivBetalingTilFil(int medlemsnummer) {
         try {
             FileWriter writer = new FileWriter("betaling.txt", true);   // Åbner filen i append-mode (= vi skriver længst ned i filen)
 
-            int medlemsnummer = medlem.getMedlemsNummer();              //henter medlemsnr
-            boolean harBetalt = betaling.betaling();                    //finder ud af om de har betalt
-            double restance = betaling.beregnRestance();                //Beregner hvor meget medlemmet mangler
+            boolean harBetalt = this.harBetalt;                    //finder ud af om de har betalt
+            double restance = beregnRestance();                //Beregner hvor meget medlemmet mangler
 
             String linje = medlemsnummer + "_" + harBetalt + "_" + restance + "kr.";
 
@@ -62,6 +79,25 @@ Hvis de ikke har, beregnes prisen for medlemmet og derefter sættes det som true
             System.out.println("Fejl ved skrivning til filen");
         }
     }
+
+
+    public void modtagBetaling(double beloeb) {
+        betaltBeloeb += beloeb;
+
+        if (betaltBeloeb >= kontingentPris) {
+            harBetalt = true;
+        }
+    }
+
+    public int getMedlemsNummer() {
+        return medlemsNummer;
+    }
+
+    public boolean getHarBetalt() {
+        return harBetalt;
+    }
+
+    public int getRestance() {
+        return restance;
+    }
 }
-
-

@@ -1,7 +1,16 @@
 import java.io.File;
 
-//Denne klasse repræsenterer alle spillerne altså både motionister og konkurrence
-
+/*
+Klassen har ansvaret for:
+    - At repræsentere klubbens spiller både,
+        - Motionister
+        - Konkurrence spillere
+    - At gemme hvilken type spiller det er,
+        - "motionist"
+        - "konkurrenceSpiller"
+    - At håndtere oprettelse af nye spillere med automatisk medlemsnummer
+    - At kunne genopbygge spillere ved indlæsning fra fil (med eksistrerende data)
+ */
 
 public class Spiller extends Medlem {
 
@@ -14,7 +23,7 @@ public class Spiller extends Medlem {
                    String mail, String spillerType) {
 
         // Her genererer Medlem SELV medlemsnummer med Medlemsnummer.hentNytMedlemsnummer()
-        super("spiller", navn, medlemskab, foedselsdag, mail);
+        super(navn, medlemskab, foedselsdag, mail);
         this.spillerType = spillerType;
     }
 
@@ -22,7 +31,7 @@ public class Spiller extends Medlem {
     public Spiller(String navn, int medlemsNummer, boolean medlemskab,
                    String foedselsdag, String mail, String spillerType, boolean betaling) {
 
-        super("spiller", navn, medlemsNummer, medlemskab, foedselsdag, mail, betaling);
+        super(navn, medlemsNummer, medlemskab, foedselsdag, mail, betaling);
         this.spillerType = spillerType;
     }
 

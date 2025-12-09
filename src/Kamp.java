@@ -1,7 +1,14 @@
 import java.time.LocalDate;
+
 /*
-Beskriver konkrete kampe (som coach kan opdatere med opdaterResultat()).
- */
+Klassen bruges til at definere en kamp.
+Den indeholder:
+    - Spiller 1 og spiller 2 (deltagerne)
+    - Dato for kampen
+    - Disciplinen kampen spilles i (single, double, mixed)
+    - Kampens resultat
+    - En markering af om kampen er afviklet eller ej
+*/
 
 public class Kamp {
 

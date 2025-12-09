@@ -11,7 +11,7 @@ public class Main {
 
     public static String bruger = "";
 
-    public static void main(String[] args) throws Exception {
+        public static void main(String[] args) throws Exception {
 
         //Login funktion der logger ind og opretter personalet
         Login.login();

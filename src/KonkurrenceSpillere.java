@@ -1,11 +1,18 @@
 /*
-Beskriver spillerens "profil" som konkurrencespiller: disciplin, hold, rangering, bedste træningsresultat
+Klassen bruges til at beskrive en spillers profil som konkurrencespiller.
+Den indeholder:
+    - Spillerens disciplin (single, double, mixed)
+    - Hvilket hold spilleren tilhører (junior eller senior)
+    - Spillerens rangering i klubben
+    - Bedste træningsresultat og dato for dette
 
-Klassen har ansvaret for de forskellige attributer mht. hvad der indgår i en konkurrence for spillerne
-Samt viser funktionerne for disciplin, hold osv.
+Klassen har ansvaret for:
+    - At gemme og håndtere konkurrence-relaterede oplysninger for hver spiller
+    - At give adgang til disciplin, hold, rangering og træningsresultater
 */
 
- public class KonkurrenceSpillere {
+public class KonkurrenceSpillere {
+
     public KonkurrenceSpillere() {} //Default Constructor
 
         private Spiller spiller;  //Hvilken spiller det drejer sig om
@@ -54,7 +61,7 @@ Samt viser funktionerne for disciplin, hold osv.
 
     }
 
- }
+}
 
 
 

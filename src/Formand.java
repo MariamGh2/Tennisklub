@@ -1,12 +1,15 @@
-/*
-Klassen oprettet objektet Formand.
-Funktionerne for hvordan der oprettes et nyt medlem samt turnering.
-Samt hvordan Formand logger ind (interface)
-*/
-
 import java.io.*;
 import java.io.File;
 import java.util.Scanner;
+
+/*
+Klassen opretter objektet Formand.
+Funktionerne for Formand:
+    - Logge ind og ud (via Bruger-interfacet)
+    - Oprette nye medlemmer i klubben
+    - Slette eksisterende medlemmer fra systemet
+    - Oprette nye turneringer og gemme dem i fil
+*/
 
 public class Formand extends Medlem implements Bruger {
 
@@ -19,7 +22,7 @@ public class Formand extends Medlem implements Bruger {
     public Formand (String navn, boolean medlemskab, String foedselsdag, String mail,
                     String brugernavn, String password) {
         //Formand får ikke et medlemsnummer
-        super("formand", navn, medlemskab, foedselsdag, mail);
+        super(navn, medlemskab, foedselsdag, mail);
         this.brugernavn = brugernavn;
         this.password = password;
     }
@@ -47,7 +50,7 @@ public class Formand extends Medlem implements Bruger {
         System.out.println("Mulige kommandoer:");
         System.out.println("    opret m - Opretter nyt medlem");
         System.out.println("    opret t - Opretter ny turnering");
-        System.out.println("    slet - sletter en eksisterende medlem");
+        System.out.println("    slet - sletter et eksisterende medlem");
         System.out.println("    logud - Logger ud af bruger");
 
         String input = sc.nextLine();

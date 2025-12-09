@@ -24,9 +24,9 @@ public class Main {
         if ("coach".equals(bruger)) {
             for (Object o : personaleListe) {
                 if (o instanceof Coach c) {
-                    while (bruger == "formand") {
-                        //c.menu();
-                        System.out.println("Ingen funktion endnu");
+                    while (bruger == "coach") {
+                        c.menu();
+
                     }
                 }
             }

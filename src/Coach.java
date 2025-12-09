@@ -16,7 +16,8 @@ public class Coach extends Medlem implements Bruger {
     private String password;
 
     //Constructor for Coach
-    public Coach(String navn, boolean medlemskab, String foedselsdag, String mail, String brugernavn, String password) {
+    public Coach(String navn, boolean medlemskab, String foedselsdag, String mail,
+                 String brugernavn, String password) {
         super("coach", navn, medlemskab, foedselsdag, mail);
         this.brugernavn = brugernavn;
         this.password = password;
@@ -34,7 +35,7 @@ public class Coach extends Medlem implements Bruger {
 
     @Override
     public void logud() {
-        Main.bruger = "coach";
+        Main.bruger = "";
     }
 
     @Override
@@ -43,14 +44,14 @@ public class Coach extends Medlem implements Bruger {
 
         System.out.println("=== Menu ==========================");
         System.out.println("Mulige kommandoer:");
-        System.out.println("    opret ny kamp");
+        System.out.println("    opret kamp");
         System.out.println("    logud - Logger ud af bruger");
 
         String input = sc.nextLine();
 
         //Opret kamp
         if (input.equalsIgnoreCase("opret kamp")) {
-            //opretKamp();
+            opretKamp();
 
         } else if (input.equals("logud")) {
             logud();
@@ -84,7 +85,7 @@ public class Coach extends Medlem implements Bruger {
         Turnering valgtTurnering = turneringer.get(turneringsValg - 1);
 
         //2. Væl spiller 1
-        System.out.println("=== vælg spiller 1 ===");
+        System.out.println("=== Vælg spiller 1 ===");
         for (int i = 0; i < konkurrenceList.size(); i++) {
             System.out.println((i + 1) + ". " + konkurrenceList.get(i).getSpiller().getNavn());
         }
@@ -95,7 +96,7 @@ public class Coach extends Medlem implements Bruger {
         Spiller spiller1 = konkurrenceList.get(spiller1valg - 1).getSpiller();
 
         //3. Vælg spiller 2
-        System.out.println("\n=== vælg spiller 2 ===");
+        System.out.println("\n=== Vælg spiller 2 ===");
         for (int i = 0; i < konkurrenceList.size(); i++) {
             System.out.println((i + 1) + ". " + konkurrenceList.get(i).getSpiller().getNavn());
         }

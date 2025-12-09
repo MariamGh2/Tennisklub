@@ -1,12 +1,12 @@
-import java.io.*;
-import java.io.File;
-import java.util.Scanner;
-
 /*
 Klassen oprettet objektet Formand.
 Funktionerne for hvordan der oprettes et nyt medlem samt turnering.
 Samt hvordan Formand logger ind (interface)
 */
+
+import java.io.*;
+import java.io.File;
+import java.util.Scanner;
 
 public class Formand extends Medlem implements Bruger {
 

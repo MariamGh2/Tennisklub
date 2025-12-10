@@ -4,61 +4,162 @@ import java.util.List;
 import java.util.Scanner;
 
 /*
-Klassen har ansvaret for de forskellige login funktioner for Coach, kasserer og formand.
- */
+Klassen har ansvaret for:
+    - Oprettelse af systemets brugere:
+        - Coach
+        - Kasserer
+        - Formand
+    - Login-funktionalitet baseret på brugernavn og kodeord
+    - At identificere hvilken bruger der logger ind
+    - At håndtere udlogning
+*/
 
 public class Login {
 
+    //Login funktionen og oprettelse af brugere
+    public static void login() throws Exception {
 
-    //Login Funktionen
-    /*public static void login() throws InterruptedException {
-        List<Medlem> medlemmer = new ArrayList<>();
-        medlemmer = FileUtil.laesMedlemFraFil();
+        boolean coachExists = false;
+        boolean kassererExists = false;
+        boolean formandExists = false;
+
+        //Fælles lister som coach skal bruge
+        List<Turnering> turneringer = FileUtil.laesTurneringerFraFil();
+        List<KonkurrenceSpillere> konkurrenceListe = new ArrayList<>();
+        List<Kamp> kampe = new ArrayList<>();
+
+        //Læs personale fra fil (coach, kassere, formand)
+        List<Object> personaleListe = FileUtil.laesPersonaleFraFil();
 
 
-        while (Main.bruger == "") {
-            Scanner input = new Scanner(System.in);
+        //Tjek om de tre roller findes i filen
+        for (Object o : personaleListe) {
+            if (o instanceof Coach) {
+                coachExists = true;
+            } else if (o instanceof Kasserer) {
+                kassererExists = true;
+            } else if  (o instanceof Formand) {
+                formandExists = true;
+            }
+        }
 
+        //His coach ikke findes i filen -> opret standard coach
+        if (!coachExists) {
+            Coach coach = new Coach("Lina", true, "03-07-2000",
+                    "tokiarb@gmail.com", "Coach", "123");
+
+            //Giv coach adgang til listerne
+            coach.setTurneringer(turneringer);
+            coach.setKonkurrenceList(konkurrenceListe);
+            coach.setKampe(kampe);
+
+            //Tilføj til personaleliste i hukommelsen
+            personaleListe.add(coach);
+
+            //Skriv til fil
+            FileUtil.appendTilFil(new File("personale.txt"),
+                    "coach_Lina_true_03-07-2000_tokiarb@gmail.com_Coach_123");
+        }
+
+        //His kasserer ikke findes i filen -> opret standard coach
+        if (!kassererExists) {
+            Kasserer kasserer = new Kasserer("toki", true, "03-07-2000",
+                    "tokiarb@gmail.com", "Kasserer", "123");
+
+            //Skriv til til
+            FileUtil.appendTilFil(new File("personale.txt"),
+                    "kasserer_toki_true_03-07-2000_tokiarb@gmail.com_Kasserer_123");
+        }
+
+        //Hvis formand ikke findes i filen -> opret standard formand
+        if (!formandExists) {
+            Formand formand = new Formand("Cass", true, "03-07-2000",
+                    "tokiarb@gmail.com", "Formand", "123");
+
+            //SKriv til fil
+            FileUtil.appendTilFil(new File("personale.txt"),
+                    "formand_Cass_true_03-07-2000_tokiarb@gmail.com_Formand_123");
+        }
+
+        //Hvis laesPersonaleFraFil IKKE læste de nye, bruges personaleListe med de tilføjede objekter
+
+        Scanner input = new Scanner(System.in);
+
+        while (Main.bruger.equals("")) {
             System.out.println("=== LOGIN =============");
             System.out.println("Brugernavn:");
-            String brugernavn = input.next();
+            String brugernavn = input.nextLine();
 
-            System.out.println("Brugernavn: " + brugernavn);
-            System.out.println("Password:");
-            for (Medlem m : medlemmer) {
-                if (m.getBrugernavn().equals(brugernavn)) {
-                    String password = input.next();
+            boolean foundUser = false;
 
-                    if (m.getPassword("coach").equals(password)) {
-                        Main.bruger = "coach";
-                        System.out.println("Du er nu logget ind som coach");
+            for (Object o : personaleListe) {
 
+                // ====== Coach login ======
+                if (o instanceof Coach c) {
+                    if (c.getBrugernavn().equals(brugernavn)) {
+                    foundUser = true;
+                        System.out.println("Brugernavn: " + brugernavn);
+
+                        System.out.println("Password:");
+                        String password = input.nextLine();
+                        if (c.getPassword().equals(password)) {
+
+                            //Sørg for at coach har listerne (i tilfælde af at den er læst fra fil)
+                            c.setTurneringer(turneringer);
+                            c.setKonkurrenceList(konkurrenceListe);
+                            c.setKampe(kampe);
+
+                            Main.bruger = "coach";
+                            System.out.println("Du er nu logget ind som coach");
+
+                            //Kald coach-menuen direkte
+                            c.menu();
+                            break;
+                        }
                     }
-                } else if (Kasserer.getBrugernavn().equals(brugernavn)) {
-                    String password = input.next();
 
-                    if (getPassword("kasserer").equals(password)) {
-                        Main.bruger = "kasserer";
-                        System.out.println("Du er nu logget ind som kasserer");
-                        loggetInt = true;
-                    }
-                } else if (getBrugernavn("formand").equals(brugernavn)) {
-                    String password = input.next();
+                    // ======= Formand login ======
+                } else if (o instanceof Formand f) {
+                    if (f.getBrugernavn().equals(brugernavn)) {
+                        foundUser = true;
+                        System.out.println("Brugernavn: " + brugernavn);
 
-                    if (getPassword("formand").equals(password)) {
-                        Main.bruger = "formand";
-                        System.out.println("Du er nu logget ind som formand");
-                        loggetInt = true;
+                        System.out.println("Password:");
+                        String password = input.nextLine();
+                        if (f.getPassword().equals(password)) {
+                            Main.bruger = "formand";
+                            System.out.println("Du er nu logget ind som formand");
+
+                            f.menu();
+                            break;
+                        }
                     }
-                } else {
-                    System.out.println("");
-                    System.out.println("Forkert brugernavn eller kodeord.");
-                    System.out.println("Prøv igen");
-                    System.out.println("");
-                    Thread.sleep(1000);
+
+                    // ====== Kasserer login ======
+                } else if (o instanceof Kasserer k) {
+                    if (k.getBrugernavn().equals(brugernavn)) {
+                        foundUser = true;
+                        System.out.println("Brugernavn: " + brugernavn);
+
+                        System.out.println("Password:");
+                        String password = input.nextLine();
+                        if (k.getPassword().equals(password)) {
+                            Main.bruger = "kasserer";
+                            System.out.println("Du er nu logget ind som kasserer");
+
+                            k.menu();
+                            break;
+                        }
+                    }
                 }
+            }
+            if (!foundUser) {
+                System.out.println();
+                System.out.println("Forkert brugernavn eller kodeord.");
+                System.out.println("Prøv igen.");
+                System.out.println();
+                Thread.sleep(1000);
             }
         }
     }
-    */
 }

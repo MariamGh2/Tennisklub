@@ -1,24 +1,33 @@
+/*
+Klassen har ansvaret for at håndtere kontingentpriser.
+Den definerer prisen for:
+    - Aktivt medlemskab
+    - Passivt medlemskab
+    - Junior (under 18 år)
+    - Senior (18 til 59 år)
+    - Over 60 år
+
+Klassen bruges til at beregne, hvilken pris et medlem skal betale
+ud fra alder og medlemskabstype.
+*/
+
 public class Pris {
 
-/*
-Klassen har ansvaret for hvad prisen er for de forskellige kontingenter
- */
+    public Pris(){}   //Default constructor
 
-    public Pris(){}
+    public double beregnPris(int alder, boolean aktiv){
+        double pris;
 
-    public int beregnPris(int alder, boolean aktiv){
-        int pris;
-
-        if (!aktiv) {      //Passivt medlemskab. "!" betyder er det er det omvendte
-            return 250;
+        if (!aktiv) {      //Passivt medlemskab. "!" betyder at er det er det omvendte
+            return 250.0;
         }
 
         if (alder < 18) {   //Aktiv medlemskab for junior
-            pris = 800;
+            pris = 800.0;
         }
 
         else {           //Senior medlemskab
-            pris = 1500;
+            pris = 1500.0;
 
 
             if (alder >= 60) {              //Hvis medlem er 60 år eller ældre, så er det 25% billigere

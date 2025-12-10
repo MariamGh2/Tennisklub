@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.Set;
 
 /*
-Klassen har ansvaret for at finde næste medlemsnummer
-Den læser alle eksisterende medlemmer fra medlem.txt
-og finder det mindste ledige tal (genbruger huller)
- */
+Klassen bruges til at:
+    - Generere nye medlemsnumre til medlemmer
+    - Læse alle eksisterende medlemsnumre fra medlem.txt
+    - Finde det mindste ledige nummer (genbruge huller i rækken)
+    - Sikre at medlemsnumre altid er unikke og i stigende orden uden unødige spring
+*/
 
 public class Medlemsnummer {
 

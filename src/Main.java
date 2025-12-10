@@ -11,21 +11,25 @@ public class Main {
 
     public static String bruger = "";
 
+        public static void main(String[] args) throws Exception {
 
-        /// LOGIN METODE
-    public static void main(String[] args) throws InterruptedException {
+        //Login funktion der logger ind og opretter personalet
+        Login.login();
 
-        //opretter mappen
-        //File m = FileUtilKonkurrence.OpretKonkurrenceMappe();
-
-        Login.login();//login
-
+        //Objekt arrayliste for personalet
         List<Object> personaleListe = new ArrayList<>();
         personaleListe = FileUtil.laesPersonaleFraFil();
 
-        if ("coach".equals(bruger)) {     //Når login lykkedes, er Main.bruger sat til coach, formand eller kasserer
-            System.out.println("Der er ingen funktion endnu");
+        //Finder menuen for den bruger der er logget ind
+        if ("coach".equals(bruger)) {
+            for (Object o : personaleListe) {
+                if (o instanceof Coach c) {
+                    while (bruger == "coach") {
+                        c.menu();
 
+                    }
+                }
+            }
         } else if ("formand".equals(bruger)) {
             for (Object o : personaleListe) {
                 if (o instanceof Formand f) {
@@ -35,7 +39,13 @@ public class Main {
                 }
             }
         } else if ("kasserer".equals(bruger)) {
-            System.out.println("Der er ingen funktioner endnu");
+            for (Object o : personaleListe) {
+                if (o instanceof Kasserer k) {
+                    while (bruger == "kasserer") {
+                        k.menu();
+                    }
+                }
+            }
         }
     }
 }

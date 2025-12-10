@@ -7,11 +7,21 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-
 /*
-Klassen repræsentere ét medlem i klubben
-Hvert medlem har: navn, medlemskabstype, medlemsnummer, mail og fødselsdag
- */
+Klassen repræsenterer ét medlem i klubben.
+Hvert medlem har:
+    - Navn
+    - Medlemskabstype (aktiv / passiv)
+    - Medlemsnummer (genereres automatisk)
+    - Mailadresse
+    - Fødselsdato
+    - Betalingsstatus for kontingent
+
+Klassen har desuden ansvaret for:
+    - At tildele medlemsnummer gennem Medlemsnummer-klassen
+    - At kunne gemme og indlæse medlemsdata fra medlem.txt
+    - At beregne alder ud fra fødselsdato
+*/
 
 public abstract class Medlem {
 
@@ -20,31 +30,28 @@ public abstract class Medlem {
 
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    private String position;
     private String navn;
     private int medlemsNummer;
     private boolean medlemskab;  //true = aktiv, false = passiv
     private String mail;
     private LocalDate foedselsdag;
     private boolean betaling;
-
+    private Betaling betalingObjekt = new Betaling();
 
     private static final Path FIL = Path.of("medlem.txt");   //Sti til filen hvor ALT gemmes
 
-    public Medlem(String position, String navn, boolean aktivPassiv, String foedselsdag, String mail) {
-        this.position = position;
+    public Medlem(String navn, boolean aktivPassiv, String foedselsdag, String mail) {
         this.navn = navn;
         this.medlemskab = aktivPassiv;
         this.mail = mail;
         this.foedselsdag = LocalDate.parse(foedselsdag, formatter);
-        this.betaling = true;   //Nyt medlem -> har betalt
+        this.betaling = false;   //Nyt medlem -> ikke betalt
 
         //ALTID nyt nummer her
         this.medlemsNummer = Medlemsnummer.hentNytMedlemsnummer();
     }
 
-    public Medlem(String position, String navn, int medlemsNummer, boolean aktivPassiv, String foedselsdag, String mail, boolean betaling){
-        this.position = position;
+    public Medlem(String navn, int medlemsNummer, boolean aktivPassiv, String foedselsdag, String mail, boolean betaling){
         this.navn = navn;
         this.medlemskab = aktivPassiv;
         this.mail = mail;
@@ -55,7 +62,7 @@ public abstract class Medlem {
         this.medlemsNummer = medlemsNummer;
     }
 
-    /// Skriver et medlem i melem.txt i formatet: navn_medlemsnummer_fødselsdato_mail
+    /// Skriver et medlem i medlem.txt i formatet: navn_medlemsnummer_fødselsdato_mail
     private void skrivMedlemTilFil() {
         try {
             if (!Files.exists(FIL)) {         //Sørg for at filen findes (ellers opret tom fil)
@@ -116,8 +123,6 @@ public abstract class Medlem {
 
 
                                /// GETTERS
-    public String getPosition() {return position;}
-
     public String getNavn() {
         return navn;
     }
@@ -145,6 +150,9 @@ public abstract class Medlem {
         return medlemskab;
     }
 
+    public Betaling getBetaling() {
+        return betalingObjekt;
+    }
 
 
     @Override

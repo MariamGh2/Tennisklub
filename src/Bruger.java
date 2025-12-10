@@ -1,10 +1,21 @@
-import java.io.File;
-
 /*
 Henter brugernavn og password.
 Interface for Coach, formand og kasserer
 Interface er tom funktion - super klasse som har tomme funktioner
  */
+
+/*
+Dette interface definerer fælles funktionalitet for alle brugertyper.
+Det gør det muligt at:
+    - Logge ind vha. brugernavn og kodeord
+    - Hente brugerens brugernavn
+    - Hente brugerens kodeord
+    - Logge ud af systemet
+    - Tilgå en menu, der afhænger af brugerens rolle
+        - Coach
+        - Formand
+        - Kasserer
+*/
 
 public interface Bruger {
 
@@ -18,5 +29,5 @@ public interface Bruger {
     void logud();
 
     //Funktion der giver menuen for brugeren
-    void menu();
+    void menu() throws Exception;
 }

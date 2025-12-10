@@ -2,13 +2,14 @@ import java.io.*;
 import java.io.File;
 import java.util.Scanner;
 
-
 /*
-Klassen oprettet objektet Formand.
-Funktionerne for hvordan der oprettes et nyt medlem.
-Samt hvordan Formand logger ind (interface)
- */
-
+Klassen opretter objektet Formand.
+Funktionerne for Formand:
+    - Logge ind og ud (via Bruger-interfacet)
+    - Oprette nye medlemmer i klubben
+    - Slette eksisterende medlemmer fra systemet
+    - Oprette nye turneringer og gemme dem i fil
+*/
 
 public class Formand extends Medlem implements Bruger {
 
@@ -17,14 +18,13 @@ public class Formand extends Medlem implements Bruger {
     private String brugernavn;
     private String password;
 
+    //Constructor for Formand
     public Formand (String navn, boolean medlemskab, String foedselsdag, String mail,
                     String brugernavn, String password) {
         //Formand får ikke et medlemsnummer
-        super("formand", navn, medlemskab, foedselsdag, mail);
+        super(navn, medlemskab, foedselsdag, mail);
         this.brugernavn = brugernavn;
         this.password = password;
-
-
     }
 
     @Override
@@ -48,18 +48,23 @@ public class Formand extends Medlem implements Bruger {
 
         System.out.println("=== Menu ==========================");
         System.out.println("Mulige kommandoer:");
-        System.out.println("    opret - opretter en ny medlem");
-        System.out.println("    slet - sletter en eksisterende medlem");
+        System.out.println("    opret m - Opretter nyt medlem");
+        System.out.println("    opret t - Opretter ny turnering");
+        System.out.println("    slet - sletter et eksisterende medlem");
         System.out.println("    logud - Logger ud af bruger");
 
         String input = sc.nextLine();
 
         //Opret medlem
-        if (input.equals("opret")) {
+        if (input.equalsIgnoreCase("opret m")) {
             opretMedlem();
 
+        //Opret turnering
+        } else if (input.equalsIgnoreCase("opret t")){
+            opretTurnering();
+
         //Slet medlem
-        } else if (input.equals("slet")) {
+        } else if (input.equalsIgnoreCase("slet")) {
             boolean loop = true;
             System.out.println("Indtast medlemsnummeret");
             int nummer = Integer.parseInt(sc.nextLine());
@@ -74,19 +79,24 @@ public class Formand extends Medlem implements Bruger {
                         throw new RuntimeException(e);
                     }
                 } else if (svar.equalsIgnoreCase("nej")) {
-                    System.out.println("Annuleret.");
+                    System.out.println("Annulleret.");
                     loop = false;
                 } else {
                     System.out.println("Genkender ikke inputtet. Prøv igen.");
                 }
             }
+
+        //Logud
         } else if (input.equals("logud")) {
             logud();
+
+        //Forkert input
         } else {
             System.out.println("Genkender ikke denne kommando. Prøv igen.");
         }
     }
 
+    //Opretter medlem
     public void opretMedlem(){
 
         String navn;
@@ -133,6 +143,7 @@ public class Formand extends Medlem implements Bruger {
 
     }
 
+    //Sletter medlem
     public void sletMedlem(int medlemsNummer) throws IOException {
 
         boolean medlemFundet = false;
@@ -166,5 +177,27 @@ public class Formand extends Medlem implements Bruger {
             return;
         }
         nyFil.renameTo(originalFil);
+    }
+
+    public void opretTurnering(){
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("=== Opret ny turnering ===");
+
+        System.out.println("Skriv turneringsnavn: ");
+        String navn = sc.nextLine();
+
+        System.out.println("Skriv disciplin: ");
+        String disciplin = sc.nextLine();
+
+        System.out.println("Skriv dato: ");
+        String dato = sc.nextLine();
+
+        //Opretter turneringen.
+        //Turnerings-klassen skriver selv data til turneringer.txt
+        Turnering t = new Turnering(navn, disciplin, dato);
+
+        System.out.println("Turnering oprettet: " + t.getTurnering() + " (" + t.getDisciplinen() + ", " + t.getDatoen()
+        + ")");
     }
 }

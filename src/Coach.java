@@ -371,7 +371,7 @@ public class Coach extends Medlem implements Bruger {
             KonkurrenceSpillere ks = filtreret.get(i);
             System.out.println((i + 1) + ". " + ks.getSpiller().getNavn() +
                     " | Rangering: " + ks.getRangering() +
-                    " | Bedste resultat: " + ks.getResultat());
+                    " | Seneste resultat: " + ks.getResultat());
         }
         if (filtreret.isEmpty()) {
             System.out.println("Ingen spillere i denne kategori endnu.");

@@ -1,43 +1,40 @@
+/*
+Klassen har ansvaret for at håndtere kontingentpriser.
+Den definerer prisen for:
+    - Aktivt medlemskab
+    - Passivt medlemskab
+    - Junior (under 18 år)
+    - Senior (18 til 59 år)
+    - Over 60 år
+
+Klassen bruges til at beregne, hvilken pris et medlem skal betale
+ud fra alder og medlemskabstype.
+*/
+
 public class Kontingent {
 
-//Klassen har ansvaret for at beregne kontingent for det enkelte medlem
+    public Kontingent(){}   //Default constructor
 
-    public Kontingent(){} //Default Constructor
+    public double beregnKontingent(int alder, boolean aktiv){
+        double pris;
+
+        if (!aktiv) {      //Passivt medlemskab. "!" betyder at er det er det omvendte
+            return 250.0;
+        }
+
+        if (alder < 18) {   //Aktiv medlemskab for junior
+            pris = 800.0;
+        }
+
+        else {           //Senior medlemskab
+            pris = 1500.0;
 
 
-                                                                             //double giver bedre mening at anvende end int, så vi kan returnere et decimaltal.
-    public double beregnKontingent(Medlem medlem) {                 //Medlem medlem = klassens navn & parameteren der anvendes i metoder.
-        if(!medlem.erAktivtMedlem()){   //Hvis medlem ikke er aktiv (passiv)
-        return 250.0;                   //Passivt medlem takst
+            if (alder >= 60) {              //Hvis medlem er 60 år eller ældre, så er det 25% billigere
+                pris = (int)(pris * 0.75); // 25% trukket fra
+            }
+        }
+
+        return pris;   //Returnere den korrekte pris inden for hvilket medlemskab de er en del af
     }
-
-    int alder = medlem.getBeregnAlder(); //getAlder() skal returnere medlemmets alder i hele år, så vi ved hvilken takt de hører indunder
-
-    if (alder < 18) {   //Under 18
-        return 800.0;  //Junior takst
-    }
-
-    if(alder < 60){     //Under 60
-        return 1500.0;  //Senior takst
-    }
-
-    return 1500.0 * 0.75;  //Medlemmer fra over 60 år får 25% rabat af seniortaksten
-    }
-
-
-
-
-
-
-
-
-    public void prisBestemmelse(){}
-
-
-    public void getKontingent(){}
-
-
-    public void getRestance(){}
-
-
 }

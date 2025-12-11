@@ -1,0 +1,5 @@
+Hold: null
+Disciplin: null
+Rangering: 0
+Seneste kampresultat: 7
+Dato: 11-12-2025

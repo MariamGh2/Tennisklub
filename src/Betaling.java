@@ -41,8 +41,8 @@ public class Betaling {
 
     public void betalKontigent(int alder, boolean aktiv) {
 
-        Pris prisberegner = new Pris();                          //Beregner kontingent prisen for medlemmet
-        double pris = prisberegner.beregnPris(alder, aktiv);        //Beregner prisen udfra alder og om man er aktiv
+        Kontingent prisberegner = new Kontingent();                          //Beregner kontingent prisen for medlemmet
+        double pris = prisberegner.beregnKontingent(alder, aktiv);        //Beregner prisen udfra alder og om man er aktiv
 
         kontingentPris = pris;                                  //gemmer kontigentprisen
 

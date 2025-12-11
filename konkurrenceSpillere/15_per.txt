@@ -1,0 +1,5 @@
+Hold: junior
+Disciplin: double
+Rangering: 2
+Seneste kampresultat: 10
+Dato: 11-12-2025

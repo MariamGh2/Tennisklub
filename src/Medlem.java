@@ -37,6 +37,7 @@ public abstract class Medlem {
     private LocalDate foedselsdag;
     private boolean betaling;
     private Betaling betalingObjekt = new Betaling();
+    private String hold;
 
     private static final Path FIL = Path.of("medlem.txt");   //Sti til filen hvor ALT gemmes
 
@@ -152,6 +153,15 @@ public abstract class Medlem {
 
     public Betaling getBetaling() {
         return betalingObjekt;
+    }
+
+    public String getHold(){
+        return hold;
+    }
+
+
+    public void setHold(String hold){
+        this.hold = hold;
     }
 
 

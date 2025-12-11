@@ -50,7 +50,6 @@ public class Login {
 
             //Giv coach adgang til listerne
             coach.setTurneringer(turneringer);
-            coach.setKonkurrenceList(konkurrenceListe);
             coach.setKampe(kampe);
 
             //Tilføj til personaleliste i hukommelsen
@@ -106,7 +105,6 @@ public class Login {
 
                             //Sørg for at coach har listerne (i tilfælde af at den er læst fra fil)
                             c.setTurneringer(turneringer);
-                            c.setKonkurrenceList(konkurrenceListe);
                             c.setKampe(kampe);
 
                             Main.bruger = "coach";

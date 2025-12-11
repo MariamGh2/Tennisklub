@@ -19,10 +19,11 @@ public class KonkurrenceSpillere {
         private String disciplin;  //Single, Double eller Mixed Double
         private String hold;       //Junior eller Senior
         private int resultat;      //Fx bedste træningsresultat
-        private int dato;
+        private String dato;       //Dato for resultat, dd-MM-yyyy
         private int rangering;    //Lavere tal = bedre
 
-    public KonkurrenceSpillere(Spiller spiller, String disciplin, String hold, int rangering, int resultat, int dato) {
+    //Bruges når vi bygger objekt ud fra kamp- eller spiller-data
+    public KonkurrenceSpillere(Spiller spiller, String disciplin, String hold, int rangering, int resultat, String dato) {
         this.spiller = spiller;
         this.disciplin = disciplin;
         this.hold = hold;
@@ -32,33 +33,39 @@ public class KonkurrenceSpillere {
     }
 
 
+                        /// GETTERS
     public Spiller getSpiller(){
         return spiller;
     }
 
-    public String getDisciplin () {
+    public String getDisciplin() {
         return disciplin;
     }
 
-    public String getHold () {
+    public String getHold() {
         return hold;
     }
 
-    public int getResultat () {
+    public int getResultat() {
         return resultat;
     }
 
-    public int getDato () {
+    public String getDato() {
         return dato;
     }
 
-
-    public int getRangering () {
+    public int getRangering() {
         return rangering;
     }
 
-    public void setResultat () {
 
+                        /// SETTERS
+    public void setResultat(int resultat) {
+        this.resultat = resultat;
+    }
+
+    public void setDato(String dato) {
+        this.dato = dato;
     }
 
 }

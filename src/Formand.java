@@ -1,5 +1,8 @@
 import java.io.*;
 import java.io.File;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 /*
@@ -27,6 +30,21 @@ public class Formand extends Medlem implements Bruger {
         this.password = password;
     }
 
+    //Hjælpemetode: beregn hold (junior/senior) ud fra fødselsdag
+    private String beregnHold(String foedselsdag) {
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate fodt = LocalDate.parse(foedselsdag, fmt);
+        int alder = Period.between(fodt, LocalDate.now()). getYears();
+
+        if (alder < 18) {
+            return "junior";
+        } else {
+            return "senior";
+        }
+    }
+
+
+                                        /// Bruger Interface
     @Override
     public String getBrugernavn() {
         return brugernavn;
@@ -96,7 +114,7 @@ public class Formand extends Medlem implements Bruger {
         }
     }
 
-    //Opretter medlem
+                                    ///Opretter medlem
     public void opretMedlem(){
 
         String navn;
@@ -124,26 +142,85 @@ public class Formand extends Medlem implements Bruger {
         } else if (type.equals("2")){
             type = "konkurrencespiller";
             System.out.println("Du har valgt konkurrencespiller");
+        } else {
+            System.out.println("Ugyldigt valg. Afbryder oprettelse.");
+            return;
         }
 
+        //Opretter selve medlemmet
         Spiller s = new Spiller(navn, true, foedselsdag, mail, type);  //opret medlem (Medlems klassen klarer medlemsnummer + filskrivning + sortering)
         int medlemsNummer = s.getMedlemsNummer();
 
+        //Beregner hold
+        String hold = beregnHold (foedselsdag);
+        s.setHold(hold);
+
+        //NYT MEDLEM: betaling = false (ikke betalt endnu)
+        boolean betaling = false;
+
+        //Skriver medlemmet i medlem.txt
         FileUtil.appendTilFil(
                 new File("medlem.txt"),
-                navn + "_" + medlemsNummer + "_" + "true" + "_" + foedselsdag + "_" + mail + "_" + type + "_" + "true" + System.lineSeparator());
+                navn + "_" +
+                        medlemsNummer + "_" +
+                        "true" + "_" +
+                        foedselsdag + "_" +
+                        mail + "_" +
+                        type + "_" +
+                        betaling + "_" +
+                        hold);
 
-        KonkurrenceSpillere ks = new KonkurrenceSpillere();
-
+        //Hvis konkurrencespiller -> spørg om disciplin og rangering og opret konkurrencefil
         if (type.equals("konkurrencespiller")) {
+
+            System.out.println("Vælg disciplin:");
+            System.out.println("   1 = single");
+            System.out.println("   2 = double");
+            System.out.println("   3 = mixed");
+            String valg = sc.nextLine();
+
+            String disciplin = "";
+            if (valg.equals("1")) {
+                disciplin = "singles";
+            } else if (valg.equals("2")) {
+                disciplin = "double";
+            } else if (valg.equals("3")) {
+                disciplin = "mixed";
+            } else {
+                System.out.println("Ugyldigt valg for disciplin");
+            }
+
+            System.out.println("Indtast start-rangering (lavt tal = bedre). Tom = 999:");
+            String rangInput = sc.nextLine();
+            int rangering;
+            if (rangInput.isBlank()) {
+                rangering = 999;   // ingen rigtig rangering endnu
+            } else {
+                rangering = Integer.parseInt(rangInput);
+            }
+
+            int startResultat = 0;
+            String dato = "";   //Ingen dato endnu
+
+            //Opret konkurrencespiller-objekt med alle data
+            KonkurrenceSpillere ks = new KonkurrenceSpillere(
+                    s,
+                    disciplin,
+                    hold,
+                    rangering,
+                    startResultat,
+                    dato
+            );
+
             FileUtil.opretSpillerFil(s, ks);
         }
 
         Medlem.sorterFilEfterMedlemsnummer(); //Sortere filen efter oprettelse
 
+        System.out.println("Medlem oprette med medlemsnummer: " + medlemsNummer);
     }
 
-    //Sletter medlem
+                                ///Sletter medlem
     public void sletMedlem(int medlemsNummer) throws IOException {
 
         boolean medlemFundet = false;
@@ -179,6 +256,7 @@ public class Formand extends Medlem implements Bruger {
         nyFil.renameTo(originalFil);
     }
 
+                        /// Opretter turnering
     public void opretTurnering(){
         Scanner sc = new Scanner(System.in);
 

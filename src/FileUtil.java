@@ -225,7 +225,13 @@ public class FileUtil {
                 String spillerType = data[5];
                 boolean betaling = Boolean.parseBoolean(data[6]);
 
+                String hold = "Ukendt";
+                if (data.length > 7) {
+                    hold = data[7];
+                }
+
                 Spiller medlem = new Spiller(navn, medlemsNummer, medlemskab, foedselsdag, mail, spillerType, betaling);
+                medlem.setHold(hold);
                 medlemsListe.add(medlem);
             }
         } catch (IOException e) {
@@ -325,7 +331,51 @@ public class FileUtil {
         return turneringsListe;
     }
 
+    public static void opdaterSpillerResultat(Spiller spiller, int nytResultat, String nyDato) {
+        File mappe = OpretKonkurrenceMappe();   //Sikrer at mappen findes
 
+        String filnavn = spiller.getMedlemsNummer() + "_" +
+                spiller.getNavn().replace(" ","") + ".txt";
+
+        File spillerFil = new File(mappe, filnavn);
+
+        if (!spillerFil.exists()) {
+            System.out.println("Kunne ikke finde konkurrencefil for spiller: " + spiller.getNavn());
+            return;
+        }
+
+        List<String> linjer = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(spillerFil))) {
+            String linje;
+            while ((linje = br.readLine()) != null) {
+                String trimmed = linje.trim();
+
+                if (trimmed.startsWith("Seneste kampresultat:")) {
+                    linje = "Seneste kampresultat: " + nytResultat;
+                } else if (trimmed.startsWith("Dato:")) {
+                    linje = "Dato: " + nyDato;
+                }
+                linjer.add(linje);
+            }
+        } catch (IOException e) {
+                System.out.println("Fejl ved læsning af spillerfil: " + e.getMessage());
+                return;
+        }
+
+            //Skriv de opdaterede linjer tilbage
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(spillerFil, false))) {
+                for (String l : linjer) {
+                    bw.write(l);
+                    bw.newLine();
+                }
+        } catch (IOException e) {
+            System.out.println("Fejl ved skrivning til spillerfil: " + e.getMessage());
+            return;
+        }
+
+        System.out.println("Resultat + dato opdateret for " + spiller.getNavn());
+    }
 }
 
 

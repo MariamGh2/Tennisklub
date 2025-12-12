@@ -408,7 +408,7 @@ public class Coach extends Medlem implements Bruger {
                     nytResultat++;
                 }
             }
-            FileUtil.opdaterSpillerResultat(ks.getSpiller(),nytResultat, String.valueOf(LocalTime.now()));
+            FileUtil.opdaterSpillerResultat(ks.getSpiller(),nytResultat, String.valueOf(LocalDate.now()));
         }
     }
 

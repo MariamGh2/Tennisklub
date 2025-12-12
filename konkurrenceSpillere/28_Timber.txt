@@ -1,5 +1,5 @@
 Hold: junior
 Disciplin: mixed
-Rangering: 21
+Rangering: 22
 Antal kampe vundet: 0
-Dato: 00:27:20.222053100
+Dato: 08:45:36.139559400

@@ -31,5 +31,5 @@
 31_false_800
 32_false_1500
 33_false_1500
-34_false_1500
-35_false_1500
+34_true_-5
+35_true_0

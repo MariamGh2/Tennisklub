@@ -75,18 +75,18 @@ public class Coach extends Medlem implements Bruger {
         String input = sc.nextLine();
 
         //Opret kamp
-        if (input.equalsIgnoreCase("Opret k")) {
+        if (input.equalsIgnoreCase("Opret k") || input.equalsIgnoreCase("pret k") || input.equalsIgnoreCase("Oret k") || input.equalsIgnoreCase("Opet k") || input.equalsIgnoreCase("Oprt k") || input.equalsIgnoreCase("Opre k") || input.equalsIgnoreCase("Opretk") || input.equalsIgnoreCase("Opret kamp")|| input.equalsIgnoreCase("Opret kam") || input.equalsIgnoreCase("Opret kmp") || input.equalsIgnoreCase("Opret kap") || input.equalsIgnoreCase("Opret kam")) {
             opretKamp();
 
         //Se top 5 spillere
-        } else if (input.equalsIgnoreCase("Top5")) {
+        } else if (input.equalsIgnoreCase("Top5") || input.equalsIgnoreCase("op5") || input.equalsIgnoreCase("Tp5") || input.equalsIgnoreCase("To5") || input.equalsIgnoreCase("Top") || input.equalsIgnoreCase("Top 5") || input.equalsIgnoreCase("op 5") || input.equalsIgnoreCase("Tp 5") || input.equalsIgnoreCase("To 5")) {
             topFem();
 
         //Logud
-        } else if (input.equalsIgnoreCase("logud")) {
+        } else if (input.equalsIgnoreCase("logud") || input.equalsIgnoreCase("ogud") || input.equalsIgnoreCase("lgud") || input.equalsIgnoreCase("loud") || input.equalsIgnoreCase("logd") || input.equalsIgnoreCase("logu")) {
             logud();
 
-        } else if (input.equalsIgnoreCase("sluk")) {
+        } else if (input.equalsIgnoreCase("sluk") || input.equalsIgnoreCase("luk") || input.equalsIgnoreCase("suk") || input.equalsIgnoreCase("slk") || input.equalsIgnoreCase("slu")) {
             sluk();
 
         //Forkert input

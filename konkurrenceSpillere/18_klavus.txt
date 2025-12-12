@@ -1,5 +1,5 @@
 Hold: junior
 Disciplin: singles
-Rangering: 10
+Rangering: 11
 Antal kampe vundet: 0
-Dato: 00:27:20.191270500
+Dato: 08:45:36.126836500

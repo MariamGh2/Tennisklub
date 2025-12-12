@@ -61,7 +61,7 @@ public class Kasserer extends Medlem implements Bruger {
 
         System.out.println("=== Menu ==========================");
         System.out.println("Mulige kommandoer:");
-        System.out.println("    Betal - Betal kontingent for medlem");
+        System.out.println("    betal - Betal kontingent for medlem");
         System.out.println("    oversigt - Viser oversigt over medlemmer i restance");
         System.out.println("    rykker - Sender rykker til alle medlemmer i restance");
         System.out.println("    logud - Logger ud af bruger");
@@ -69,22 +69,22 @@ public class Kasserer extends Medlem implements Bruger {
 
         String input = sc.nextLine();
 
-        if (input.equalsIgnoreCase("Betal")) {
+        if (input.equalsIgnoreCase("Betal") || input.equalsIgnoreCase("etal") || input.equalsIgnoreCase("beta") || input.equalsIgnoreCase("btal") || input.equalsIgnoreCase("beal") || input.equalsIgnoreCase("betl")) {
             Kontingent.betalKontingent(); }
 
             //Viser oversigt
-        else if (input.equalsIgnoreCase("Oversigt")) {
+        else if (input.equalsIgnoreCase("Oversigt") || input.equalsIgnoreCase("versigt") || input.equalsIgnoreCase("oersigt") || input.equalsIgnoreCase("ovrsigt") || input.equalsIgnoreCase("ovesigt") || input.equalsIgnoreCase("overigt") || input.equalsIgnoreCase("oversgt") || input.equalsIgnoreCase("oversit")) {
             oversigt();
 
         //Send Rykker
-        } else if (input.equalsIgnoreCase("Rykker")){
+        } else if (input.equalsIgnoreCase("Rykker") || input.equalsIgnoreCase("ykker") || input.equalsIgnoreCase("Rkker") || input.equalsIgnoreCase("Ryker") || input.equalsIgnoreCase("Rykkr") || input.equalsIgnoreCase("Rykke")){
             rykker();
 
         //Logud
-        } else if (input.equalsIgnoreCase("logud")) {
+        } else if (input.equalsIgnoreCase("logud") || input.equalsIgnoreCase("ogud") || input.equalsIgnoreCase("lgud") || input.equalsIgnoreCase("loud") || input.equalsIgnoreCase("logd") || input.equalsIgnoreCase("logu")) {
             logud();
 
-        } else if (input.equalsIgnoreCase("sluk")) {
+        } else if (input.equalsIgnoreCase("sluk") || input.equalsIgnoreCase("luk") || input.equalsIgnoreCase("suk") || input.equalsIgnoreCase("slk") || input.equalsIgnoreCase("slu")) {
             sluk();
 
             //Forkert Input
@@ -105,11 +105,11 @@ public class Kasserer extends Medlem implements Bruger {
         LocalDate frist = Dato.fristDato();
 
         if (dagsDato.isAfter(frist) || dagsDato.isEqual(frist)) {
-            System.out.println("Send rykker?");
+            System.out.println("Send rykker til alle medlemmer i restance? (ja) (nej)");
             String input = sc.nextLine();
-            if (input.equalsIgnoreCase("ja")) {
+            if (input.equalsIgnoreCase("ja") || input.equalsIgnoreCase("j")) {
                 sendRykker = true;
-            } else if  (input.equalsIgnoreCase("nej")) {
+            } else if  (input.equalsIgnoreCase("nej") || input.equalsIgnoreCase("ne") || input.equalsIgnoreCase("ej")) {
                 sendRykker = false;
                 System.out.println("Annulleret");
             } else {

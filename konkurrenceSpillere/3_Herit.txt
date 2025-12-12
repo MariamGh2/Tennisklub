@@ -1,5 +1,5 @@
 Hold: senior
 Disciplin: double
-Rangering: 6
+Rangering: 28
 Antal kampe vundet: 0
-Dato: 08:45:36.120600500
+Dato: 08:45:36.147365200

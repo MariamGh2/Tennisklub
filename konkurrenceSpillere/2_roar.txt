@@ -1,5 +1,5 @@
 Hold: senior
 Disciplin: singles
-Rangering: 5
+Rangering: 24
 Antal kampe vundet: 0
-Dato: 08:45:36.118520400
+Dato: 08:45:36.141631

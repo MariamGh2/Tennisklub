@@ -1,5 +1,5 @@
 Hold: senior
 Disciplin: mixed
-Rangering: 10
+Rangering: 29
 Antal kampe vundet: 0
-Dato: 08:45:36.125817400
+Dato: 08:45:36.148457

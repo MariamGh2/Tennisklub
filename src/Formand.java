@@ -80,29 +80,29 @@ public class Formand extends Medlem implements Bruger {
         String input = sc.nextLine();
 
         //Opret medlem
-        if (input.equalsIgnoreCase("opret m")) {
+        if (input.equalsIgnoreCase("Opret m") || input.equalsIgnoreCase("pret m") || input.equalsIgnoreCase("Oret m") || input.equalsIgnoreCase("Opet m") || input.equalsIgnoreCase("Oprt m") || input.equalsIgnoreCase("Opre m") || input.equalsIgnoreCase("Opretm") || input.equalsIgnoreCase("Opret medlem") || input.equalsIgnoreCase("Opretmedlem") || input.equalsIgnoreCase("Opret edlem") || input.equalsIgnoreCase("Opret mdlem") || input.equalsIgnoreCase("Opret melem") || input.equalsIgnoreCase("Opret medem") || input.equalsIgnoreCase("Opret medlm") || input.equalsIgnoreCase("Opret medle") || input.equalsIgnoreCase("Opretedlem") || input.equalsIgnoreCase("Opretmdlem") || input.equalsIgnoreCase("Opretmelem") || input.equalsIgnoreCase("Opretmedem") || input.equalsIgnoreCase("Opretmedlm") || input.equalsIgnoreCase("Opretmedle")) {
             opretMedlem();
 
         //Opret turnering
-        } else if (input.equalsIgnoreCase("opret t")){
+        } else if (input.equalsIgnoreCase("Opret t") || input.equalsIgnoreCase("pret t") || input.equalsIgnoreCase("Oret t") || input.equalsIgnoreCase("Opet t") || input.equalsIgnoreCase("Oprt t") || input.equalsIgnoreCase("Opre t") || input.equalsIgnoreCase("Oprett") || input.equalsIgnoreCase("Opretturnering") || input.equalsIgnoreCase("Opret turnering")){
             opretTurnering();
 
         //Slet medlem
-        } else if (input.equalsIgnoreCase("slet")) {
+        } else if (input.equalsIgnoreCase("slet") || input.equalsIgnoreCase("let") || input.equalsIgnoreCase("set") || input.equalsIgnoreCase("slt") || input.equalsIgnoreCase("sle")) {
             boolean loop = true;
             System.out.println("Indtast medlemsnummeret");
             int nummer = Integer.parseInt(sc.nextLine());
             System.out.println("Er du sikker på at du vil slette medlem " + nummer + "?");
             String svar = sc.nextLine();
             while (loop) {
-                if (svar.equalsIgnoreCase("ja")) {
+                if (svar.equalsIgnoreCase("ja") || svar.equalsIgnoreCase("j")) {
                     try {
                         sletMedlem(nummer);
                         loop = false;
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                } else if (svar.equalsIgnoreCase("nej")) {
+                } else if (svar.equalsIgnoreCase("nej") || svar.equalsIgnoreCase("ne") || svar.equalsIgnoreCase("ej")) {
                     System.out.println("Annulleret.");
                     loop = false;
                 } else {
@@ -111,10 +111,10 @@ public class Formand extends Medlem implements Bruger {
             }
 
         //Logud
-        } else if (input.equalsIgnoreCase("logud")) {
+        } else if (input.equalsIgnoreCase("logud") || input.equalsIgnoreCase("ogud") || input.equalsIgnoreCase("lgud") || input.equalsIgnoreCase("loud") || input.equalsIgnoreCase("logd") || input.equalsIgnoreCase("logu")) {
             logud();
 
-        } else if (input.equalsIgnoreCase("sluk")) {
+        } else if (input.equalsIgnoreCase("sluk") || input.equalsIgnoreCase("luk") || input.equalsIgnoreCase("suk") || input.equalsIgnoreCase("slk") || input.equalsIgnoreCase("slu")) {
             sluk();
             //Forkert input
         } else {

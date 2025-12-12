@@ -205,15 +205,7 @@ public class Formand extends Medlem implements Bruger {
                 System.out.println("Ugyldigt valg for disciplin");
             }
 
-            System.out.println("Indtast start-rangering (lavt tal = bedre). Tom = 999:");
-            String rangInput = sc.nextLine();
-            int rangering;
-            if (rangInput.isBlank()) {
-                rangering = 999;   // ingen rigtig rangering endnu
-            } else {
-                rangering = Integer.parseInt(rangInput);
-            }
-
+            int rangering = 0;
             int startResultat = 0;
             String dato = "";   //Ingen dato endnu
 

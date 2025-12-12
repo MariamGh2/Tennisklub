@@ -2,8 +2,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.SQLOutput;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +23,13 @@ Funktionerne for Coach:
 
 public class Coach extends Medlem implements Bruger {
 
+    private KonkurrenceSpillere p;
+
     public Coach() {} //Default Constructor
 
     private String brugernavn;
     private String password;
 
-    //Lister som coach arbejder med
-    private List<Turnering> turneringer;
-    private List<Kamp> kampe;
 
     //Constructor for Coach
     public Coach(String navn, boolean medlemskab, String foedselsdag, String mail,
@@ -35,30 +37,6 @@ public class Coach extends Medlem implements Bruger {
         super(navn, medlemskab, foedselsdag, mail);
         this.brugernavn = brugernavn;
         this.password = password;
-    }
-
-    ///Settere til at give coach adgang til listerne
-    public void setTurneringer(List<Turnering> turneringer) {
-        this.turneringer = turneringer;
-    }
-
-    public void setKampe(List<Kamp> kampe) {
-        this.kampe = kampe;
-    }
-
-
-    //Hjælpemetode: find en Spiller ud fra medlemsnummer ved at læse medlem.txt
-    private Spiller findSpillerVedMedlemsnummer(int medlemsNummer) {
-        List<Medlem> medlemmer = FileUtil.laesMedlemFraFil();   //Læser alle medlemmer (Spiller-objekt)
-
-        for (Medlem m : medlemmer) {
-            if (m instanceof Spiller s) {
-                if (s.getMedlemsNummer() == medlemsNummer) {
-                    return s;
-                }
-            }
-        }
-        return null;   //Hvis ingen fundet
     }
 
                                 ///GETTERS
@@ -77,6 +55,11 @@ public class Coach extends Medlem implements Bruger {
         Main.bruger = "";
     }
 
+    @Override
+    public void sluk() {
+        System.exit(0);
+    }
+
                                 ///MENU
     @Override
     public void menu() {
@@ -84,28 +67,27 @@ public class Coach extends Medlem implements Bruger {
 
         System.out.println("=== Menu ==========================");
         System.out.println("Mulige kommandoer:");
-        System.out.println("    opret kamp - Opretter en kamp i en turnering");
-        System.out.println("    top 5 spillere - Viser top 5 inden for hver disciplin");
-        System.out.println("    opdater resultat - Opdatere resultatet for en spiller");
+        System.out.println("    opret k - Opretter en kamp i en turnering");
+        System.out.println("    top5 - Viser top 5 inden for hver disciplin");
         System.out.println("    logud - Logger ud af bruger");
+        System.out.println("    sluk - Slukker for systemet");
 
         String input = sc.nextLine();
 
         //Opret kamp
-        if (input.equalsIgnoreCase("Opret kamp")) {
+        if (input.equalsIgnoreCase("Opret k")) {
             opretKamp();
 
         //Se top 5 spillere
-        } else if (input.equalsIgnoreCase("Top 5 spillere")) {
+        } else if (input.equalsIgnoreCase("Top5")) {
             topFem();
 
-        //Opdatere resultat for en spiller
-        } else if (input.equalsIgnoreCase("opdater resultat")) {
-            opdaterResultat();
-
         //Logud
-        } else if (input.equals("logud")) {
+        } else if (input.equalsIgnoreCase("logud")) {
             logud();
+
+        } else if (input.equalsIgnoreCase("sluk")) {
+            sluk();
 
         //Forkert input
         } else {
@@ -113,11 +95,28 @@ public class Coach extends Medlem implements Bruger {
         }
     }
 
+
+    //Hjælpemetode: find en Spiller ud fra medlemsnummer ved at læse medlem.txt
+    private Spiller findSpillerVedMedlemsnummer(int medlemsNummer) {
+        List<Medlem> medlemmer = FileUtil.laesMedlemFraFil();   //Læser alle medlemmer (Spiller-objekt)
+
+        for (Medlem m : medlemmer) {
+            if (m instanceof Spiller s) {
+                if (s.getMedlemsNummer() == medlemsNummer) {
+                    return s;
+                }
+            }
+        }
+        return null;   //Hvis ingen fundet
+    }
+
                                 ///OPRET KAMP
     public void opretKamp() {
         Scanner sc = new Scanner(System.in);
 
-        if (turneringer == null || kampe == null) {
+        List<Turnering> turneringer = FileUtil.laesTurneringerFraFil();
+
+        if (turneringer == null) {
             System.out.println("Systemet er ikke sat rigtigt op (lister mangler)");
             return;
         }
@@ -131,7 +130,7 @@ public class Coach extends Medlem implements Bruger {
 
         System.out.println("==== Vælg turnering ====");
         for (Turnering t : turneringer) {
-            System.out.println(t.getTurneringsNummer() + ". " + t.getTurnering() + " (" +
+            System.out.println(t.getTurneringsNummer() + ". " + t.getTurneringsNavn() + " (" +
                     t.getDisciplinen() + ", " + t.getDatoen() + ") ");
         }
 
@@ -235,11 +234,24 @@ public class Coach extends Medlem implements Bruger {
         System.out.println("Indtast kampdato: ");
         String dato = sc.nextLine();
 
+        System.out.println("Indtast vinder: (1)" + spiller1.getNavn() + " or (2)" + spiller2.getNavn());
+        int vinderValg = sc.nextInt();
+        Spiller vinderNr = null;
+        if (vinderValg == 1) {
+            vinderNr = spiller1;
+        } else if (vinderValg == 2) {
+            vinderNr = spiller2;
+        } else {
+            System.out.println("Ikke gyldig vinder.");
+        }
+
         String disciplin = valgtTurnering.getDisciplinen(); //Turnering bestemmer disciplin
 
         //6. Opret kamp
-        Kamp kamp = new Kamp(spiller1, spiller2, dato, disciplin, valgtTurnering);
-        kampe.add(kamp);
+        Kamp kamp = new Kamp(spiller1, spiller2, dato, disciplin, valgtTurnering, vinderNr.getNavn());
+        File fil = new File("kamp.txt");
+        String kampTekst = spiller1.getMedlemsNummer() + "_" + spiller2.getMedlemsNummer() + "_" + dato + "_" + disciplin + "_" + valgtTurnering.getTurneringsNavn() + "_" + vinderNr.getNavn();
+        FileUtil.appendTilFil(fil, kampTekst);
 
         System.out.println("Kamp oprettet: " + spiller1.getNavn() + " VS. " + spiller2.getNavn() + " (" + disciplin + ")");
     }
@@ -259,8 +271,8 @@ public class Coach extends Medlem implements Bruger {
             return;
         }
 
-        topFemForDisciplinOgHold("single", "Junior", konkurrenceList);
-        topFemForDisciplinOgHold("single", "Senior", konkurrenceList);
+        topFemForDisciplinOgHold("singles", "Junior", konkurrenceList);
+        topFemForDisciplinOgHold("singles", "Senior", konkurrenceList);
 
         topFemForDisciplinOgHold("double", "Junior", konkurrenceList);
         topFemForDisciplinOgHold("double", "Senior", konkurrenceList);
@@ -317,8 +329,8 @@ public class Coach extends Medlem implements Bruger {
                         String tal = linje.substring("Rangering: ".length()).trim();
                         rangering = Integer.parseInt(tal);
 
-                    } else if (linje.startsWith("Seneste kampresultat: ")) {
-                        String tal = linje.substring("Seneste kampresultat: ".length()).trim();
+                    } else if (linje.startsWith("Antal kampe vundet: ")) {
+                        String tal = linje.substring("Antal kampe vundet: ".length()).trim();
                         resultat = Integer.parseInt(tal);
 
                     } else if (linje.startsWith("Dato: ")) {
@@ -350,39 +362,57 @@ public class Coach extends Medlem implements Bruger {
     3) udskriver top 5
      */
     private void topFemForDisciplinOgHold(String disciplin, String hold, List<KonkurrenceSpillere> alle) {
-        List<KonkurrenceSpillere> filtreret = new ArrayList<>(); //Filtrer spillere efter disciplin og hold
+        List<KonkurrenceSpillere> filter = new ArrayList<>(); //Filtrer spillere efter disciplin og hold
         for (KonkurrenceSpillere ks : alle) {
             if (ks.getDisciplin().equalsIgnoreCase(disciplin) && ks.getHold().equalsIgnoreCase(hold)) {
-                filtreret.add(ks);
+                filter.add(ks);
             }
         }
 
         //Sorter efter rangering (laveste først)
-        filtreret.sort((k1, k2) -> Integer.compare(k1.getRangering(), k2.getRangering()));
+        filter.sort((k1, k2) -> Integer.compare(k1.getRangering(), k2.getRangering()));
         System.out.println("=== Top 5 - " + disciplin + " (" + hold + ") ===");
 
-        if (filtreret.isEmpty()) {
+        if (filter.isEmpty()) {
             System.out.println("Ingen spillere i denne kategori endnu. \n");
             return;
         }
 
         //Print top 5
-        for (int i = 0; i < Math.min(5, filtreret.size()); i++) {
-            KonkurrenceSpillere ks = filtreret.get(i);
+        for (int i = 0; i < Math.min(5, filter.size()); i++) {
+            KonkurrenceSpillere ks = filter.get(i);
             System.out.println((i + 1) + ". " + ks.getSpiller().getNavn() +
                     " | Rangering: " + ks.getRangering() +
                     " | Seneste resultat: " + ks.getResultat());
         }
-        if (filtreret.isEmpty()) {
+        if (filter.isEmpty()) {
             System.out.println("Ingen spillere i denne kategori endnu.");
         }
         System.out.println();
     }
 
     public void opdaterResultat(){
-        Scanner sc = new Scanner(System.in);
-
         //1. Hent alle konkurrencespillere ud fra deres filer
+        List<KonkurrenceSpillere> konkurrenceList = hentKonkurrenceSpillereFraMappe();
+        List<Kamp> kampList = FileUtil.laesKampFraFil();
+
+        if (konkurrenceList == null || konkurrenceList.isEmpty()) {
+            System.out.println("Der er ingen konkurrencespillere registreret endnu.");
+            return;
+        }
+
+        for (KonkurrenceSpillere ks : konkurrenceList) {
+            int nytResultat = 0;
+            for (Kamp k : kampList) {
+                if (k.getResultat().equals(ks.getSpiller().getNavn())) {
+                    nytResultat++;
+                }
+            }
+            FileUtil.opdaterSpillerResultat(ks.getSpiller(),nytResultat, String.valueOf(LocalTime.now()));
+        }
+    }
+
+    public void opdaterRangering() throws IOException {
         List<KonkurrenceSpillere> konkurrenceList = hentKonkurrenceSpillereFraMappe();
 
         if (konkurrenceList == null || konkurrenceList.isEmpty()) {
@@ -390,55 +420,33 @@ public class Coach extends Medlem implements Bruger {
             return;
         }
 
-        //2. Vis liste over spillere med nuværende data
-        System.out.println("=== Vælg spiller der skal opdateres ===");
+        konkurrenceList.sort((a, b) -> Integer.compare(b.getResultat(), a.getResultat()));
+
         for (int i = 0; i < konkurrenceList.size(); i++) {
             KonkurrenceSpillere ks = konkurrenceList.get(i);
-            Spiller s = ks.getSpiller();
+            int nyRangering = i + 1;
 
-            System.out.println((i + 1) + ". " + s.getNavn() +
-                    " (medlemsnr.: " + s.getMedlemsNummer() + ")" +
-                    " | Hold: " + ks.getHold() +
-                    " | Disciplin: " + ks.getDisciplin() +
-                    " | Seneste resultat: " + ks.getResultat());
+            File mappe = FileUtil.OpretKonkurrenceMappe();
+
+            String filnavn =
+                    ks.getSpiller().getMedlemsNummer() + "_" +
+                            ks.getSpiller().getNavn().replace(" ", "") + ".txt";
+
+
+            File spillerFil = new File(mappe, filnavn);
+
+            List<String> linjer = Files.readAllLines(spillerFil.toPath());
+            List<String> opdateret = new ArrayList<>();
+
+            for (String linje : linjer) {
+                if (linje.startsWith("Rangering: ")) {
+                    opdateret.add("Rangering: " + nyRangering);
+                } else {
+                    opdateret.add(linje);
+                }
+            }
+
+            Files.write(spillerFil.toPath(), opdateret);
         }
-
-        System.out.println("Vælg nummer på spiller: ");
-        int valg = Integer.parseInt(sc.nextLine());
-
-        if (valg < 1 || valg > konkurrenceList.size()) {
-            System.out.println("Ugyldigt valg.");
-            return;
-        }
-
-        KonkurrenceSpillere valgt = konkurrenceList.get(valg - 1);
-        Spiller spiller = valgt.getSpiller();
-
-        //3. Spørg efter nye værdier (tomt input = behold gammel værdi)
-        System.out.println("Indtast nyt resultat for " + spiller.getNavn() + " (tal): ");
-        int nytResultat = Integer.parseInt(sc.nextLine());
-
-        //4. Spørg efter ny dato
-        System.out.println("Indtast ny dato for resultat: ");
-        String nyDato = sc.nextLine();
-
-        //Valider formatet
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        try {
-            LocalDate.parse(nyDato, fmt);   //Kaster fejl hvis format er forkert
-        } catch (Exception e) {
-            System.out.println("Ugyldigt format. Brug dd-MM-yyyy");
-            return;
-        }
-
-        //5. Opdater i objekt (så top 5, der bruger ks.getResultat(), også ser det)
-        valgt.setResultat(nytResultat);
-        valgt.setDato(nyDato);
-
-        //6. Skriv ændringen til spilleren konkurrencefil
-        FileUtil.opdaterSpillerResultat(spiller, nytResultat, nyDato);
-
-        System.out.println("Resultat opdateret for " + spiller.getNavn() + ".");
     }
-
 }

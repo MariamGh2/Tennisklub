@@ -1,5 +1,0 @@
-Hold: junior
-Disciplin: mixed
-Rangering: 2
-Seneste kampresultat: 0
-Dato: 

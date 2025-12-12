@@ -64,4 +64,46 @@ public class Medlemsnummer {
                                                                              //Stopper programmet, så fejlen ikke skjules
         }
     }
+
+    public static void sorterFilEfterMedlemsnummer(){
+        try {
+            if (!Files.exists(FIL)) {
+                return; //intet at sortere
+            }
+
+            List<String> linjer = Files.readAllLines(FIL);   //Læser alle linjer
+
+            linjer.removeIf(l -> l.trim().isEmpty());     //trim() fjerner mellemrum og skjulte tegn
+            //isEmpthy() tjekker om den er tom, hvis ja, fjernes linjen
+
+            linjer.sort((l1, l2) -> {          //Sorter listens linjer ved at sammenligne to linjer ad gangen, kaldet l1 og l2
+
+                int n1 = hentMedlemsnummerFraLinje(l1);    //Sorteringen læser to linjer, finder medlemsnummeret i hver linje
+                int n2 = hentMedlemsnummerFraLinje(l2);    // og bruger Integer.compare til at bestemme hvilken linje der skal stå først.
+                return Integer.compare(n1,n2);             //På den måde sorteres hele filen korrekt efter medlemsnumre.
+            });                                            /*Sorterer linjerne efter medlemsnummer.
+                                                           Tuborg {} hører til lambdaens krop: (l1, l2) -> { ... }
+                                                           Parentesen ) hører til funktionskaldet sort( ... )
+                                                           Derfor slutter udtrykket med });*/
+
+            Files.write(FIL, linjer);           //Efter sorteringen overskrives hele filen med den sorterede udgave af linjerne
+
+        } catch (IOException e) {
+            throw new RuntimeException("Fejl ved sortering af medlem.txt");
+        }
+    }
+
+    private static int hentMedlemsnummerFraLinje(String linje){     //Hjælpemetode til at finde medlemsnr. i en linje
+        String trimmed = linje.trim();
+        if (trimmed.isEmpty()) return Integer.MAX_VALUE;
+
+        String[] dele = trimmed.split("_");
+        if (dele.length < 2) return Integer.MAX_VALUE;   //Hvis der ikke er noget felt nr. 2
+
+        try {
+            return Integer.parseInt(dele[1].trim());
+        } catch (NumberFormatException e) {
+            return Integer.MAX_VALUE;       //Hvis format er forkert, skub den linje ned i bunden
+        }
+    }
 }

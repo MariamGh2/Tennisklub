@@ -1,5 +1,0 @@
-Hold: null
-Disciplin: null
-Rangering: 0
-Seneste kampresultat: 0
-Dato: null

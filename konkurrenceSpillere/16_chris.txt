@@ -1,5 +1,0 @@
-Hold: senior
-Disciplin: mixed
-Rangering: 1
-Seneste kampresultat: 0
-Dato: 

@@ -1,0 +1,5 @@
+Hold: junior
+Disciplin: mixed
+Rangering: 25
+Antal kampe vundet: 0
+Dato: 00:27:20.233461600

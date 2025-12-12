@@ -61,6 +61,11 @@ public class Formand extends Medlem implements Bruger {
     }
 
     @Override
+    public void sluk() {
+        System.exit(0);
+    }
+
+    @Override
     public void menu() {
         Scanner sc = new Scanner(System.in);
 
@@ -68,8 +73,9 @@ public class Formand extends Medlem implements Bruger {
         System.out.println("Mulige kommandoer:");
         System.out.println("    opret m - Opretter nyt medlem");
         System.out.println("    opret t - Opretter ny turnering");
-        System.out.println("    slet - sletter et eksisterende medlem");
+        System.out.println("    slet - Sletter et eksisterende medlem");
         System.out.println("    logud - Logger ud af bruger");
+        System.out.println("    sluk - Slukker for systemet");
 
         String input = sc.nextLine();
 
@@ -105,16 +111,18 @@ public class Formand extends Medlem implements Bruger {
             }
 
         //Logud
-        } else if (input.equals("logud")) {
+        } else if (input.equalsIgnoreCase("logud")) {
             logud();
 
-        //Forkert input
+        } else if (input.equalsIgnoreCase("sluk")) {
+            sluk();
+            //Forkert input
         } else {
             System.out.println("Genkender ikke denne kommando. Prøv igen.");
         }
     }
 
-                                    ///Opretter medlem
+    ///Opretter medlem
     public void opretMedlem(){
 
         String navn;
@@ -151,6 +159,13 @@ public class Formand extends Medlem implements Bruger {
         Spiller s = new Spiller(navn, true, foedselsdag, mail, type);  //opret medlem (Medlems klassen klarer medlemsnummer + filskrivning + sortering)
         int medlemsNummer = s.getMedlemsNummer();
 
+        //Opretter betaling for medlem
+        Betaling b = new Betaling(medlemsNummer, false, Kontingent.beregnKontingent(s.getBeregnAlder(),s.getMedlemskab()));
+
+        File bFil = new File("betaling.txt");
+        String filTekst = getMedlemsNummer() + "_" + b.getHarBetalt() + "_" + b.getRestance();
+        FileUtil.appendTilFil(bFil, filTekst);
+
         //Beregner hold
         String hold = beregnHold (foedselsdag);
         s.setHold(hold);
@@ -162,13 +177,13 @@ public class Formand extends Medlem implements Bruger {
         FileUtil.appendTilFil(
                 new File("medlem.txt"),
                 navn + "_" +
-                        medlemsNummer + "_" +
-                        "true" + "_" +
-                        foedselsdag + "_" +
-                        mail + "_" +
-                        type + "_" +
-                        betaling + "_" +
-                        hold);
+                     medlemsNummer + "_" +
+                     "true" + "_" +
+                     foedselsdag + "_" +
+                     mail + "_" +
+                     type + "_" +
+                     betaling + "_" +
+                     hold);
 
         //Hvis konkurrencespiller -> spørg om disciplin og rangering og opret konkurrencefil
         if (type.equals("konkurrencespiller")) {
@@ -215,9 +230,9 @@ public class Formand extends Medlem implements Bruger {
             FileUtil.opretSpillerFil(s, ks);
         }
 
-        Medlem.sorterFilEfterMedlemsnummer(); //Sortere filen efter oprettelse
+        Medlemsnummer.sorterFilEfterMedlemsnummer(); //Sortere filen efter oprettelse
 
-        System.out.println("Medlem oprette med medlemsnummer: " + medlemsNummer);
+        System.out.println("Medlem oprettet med medlemsnummer: " + medlemsNummer);
     }
 
                                 ///Sletter medlem
@@ -275,7 +290,7 @@ public class Formand extends Medlem implements Bruger {
         //Turnerings-klassen skriver selv data til turneringer.txt
         Turnering t = new Turnering(navn, disciplin, dato);
 
-        System.out.println("Turnering oprettet: " + t.getTurnering() + " (" + t.getDisciplinen() + ", " + t.getDatoen()
+        System.out.println("Turnering oprettet: " + t.getTurneringsNavn() + " (" + t.getDisciplinen() + ", " + t.getDatoen()
         + ")");
     }
 }

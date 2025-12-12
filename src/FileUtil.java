@@ -19,7 +19,6 @@ public class FileUtil {
 
     public FileUtil() {} //Default Constructor
 
-
     //Tilføj en linje til en angivet fil --- (Filens path, String der skal tilføjes)
     public static void appendTilFil(File file, String linje) {                      //Append en linje til dagens fil
         try (FileWriter myWriter = new FileWriter(file, true)) {
@@ -71,59 +70,6 @@ public class FileUtil {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }}
-
-    public static void aendreDataIFil(File file, String sogning, int dataPunkt, String aendring) {  //Ændre i en angivet fil --- (Filens path, linjen vi søger, dataets position, ændringen til dataet)
-
-        String aendringString = aendring;                                                           //Det input den ønsker at ændre eller indsætte
-        int dataIndex = dataPunkt - 1;                                                              //Laver data punkt om til et index
-
-        List<String> linjer = new ArrayList<>();                                                    //Arrayliste vi gæmmer linjerne på da vi har ændret dem, og senere skriver tilbage til filen
-
-        try (BufferedReader aflaeser = new BufferedReader(new FileReader(file))) {               //Læser fra angivet fil, //Læser alle linjerne i filen
-            String linje;
-            while ((linje = aflaeser.readLine()) != null) {                                       //Checker en bestemt linje
-                if (linje.contains(sogning)) {                                                  //Er søgningen på den linje?
-
-                    String[] dele = linje.split("_");                                         //Splitter linjen i dele med "_" som deler
-                    dele[dataIndex] = aendringString;                                               //Ændrer dataet
-                    linje = String.join("_", dele);                                         //Sætter linjen sammen igen med ændring
-                }
-                linjer.add(linje);                                                                  //Tilføjer alle linjerne til arraylisten
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-        try (BufferedWriter skriver = new BufferedWriter(new FileWriter(file))) {    //Skriver alle linjerne der er inde i arraylisten tilbage til filen
-            for (String linje : linjer) {
-                skriver.write(linje);
-                skriver.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public static String laesDataFraFil(File file, String sogning, int dataPunkt) {     //Returner et specifikt data fra en søgt linje som string --- (Filens path, linjen vi søger, dataets position)
-        int dataIndex = dataPunkt - 1;                                                              //Laver data punkt om til et index
-        String data = "";
-
-        try (BufferedReader aflaeser = new BufferedReader(new FileReader(file))) {
-            String linje;
-            while ((linje = aflaeser.readLine()) != null) {
-                if (linje.contains(sogning)) {                                                  //Er søgningen på den linje?
-
-                    String[] dele = linje.split("_");                                         //Splitter linjen i dele med "_" som deler
-                    data = dele[dataIndex];
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return data;
-    }
-
 
     public static List<Object> laesPersonaleFraFil() {
 
@@ -240,7 +186,6 @@ public class FileUtil {
         return medlemsListe;
     }
 
-
     public static File OpretKonkurrenceMappe() {                                    //Opretter mappe objekt
         File mappe = new File("konkurrenceSpillere");
 
@@ -251,8 +196,6 @@ public class FileUtil {
             } else {
                 System.out.println("kunne ikke oprette mappen" + mappe.getPath());
             }
-        } else {                                                                            //Hvis mappen allerede findes
-            System.out.println("mappen " + mappe.getPath() + " eksisterer allerede");
         }
         return mappe;                                                                       //Returnerer mappen uanset om den er blevet oprettet eller ej
     }
@@ -278,7 +221,6 @@ public class FileUtil {
         return spillerFil;
     }
 
-
     private static void StartDataTilFil(File fil, KonkurrenceSpillere ks) { //ks) {    //Åbner en FileWriter i en try-with-resources blok. false betyder overskriv filens eksisterende indhold (ikke append). Try-with-resources sikrer at fw automatisk lukkes efter blokken, også hvis en undtagelse sker.
         try (FileWriter fw = new FileWriter(fil, false)) {
             fw.write("Hold: " + ks.getHold() + "\n");                               // junior/senior
@@ -291,7 +233,6 @@ public class FileUtil {
             System.out.println("Fejl under skrivning til fil: " + e.getMessage());
         }
     }
-
 
     public static List<Turnering> laesTurneringerFraFil() {
 
@@ -331,6 +272,56 @@ public class FileUtil {
         return turneringsListe;
     }
 
+    public static List<Kamp> laesKampFraFil() {
+        List<Kamp> kampListe = new ArrayList<>();
+
+        List<Medlem>  medlemListe = laesMedlemFraFil();
+        List<Turnering> turneringListe = laesTurneringerFraFil();
+
+        try (BufferedReader br = new BufferedReader(new FileReader("kamp.txt"))) {
+            String linje;
+
+
+            while ((linje = br.readLine()) != null) {
+                String[] dele = linje.split("_");
+
+                String medlemsNr1 = dele[0];
+                String medlemsNr2 = dele[1];
+                String dato = dele[2];
+                String disciplin = dele[3];
+                String turneringsNavn = dele[4];
+                String vinder = dele[5];
+
+                Spiller spiller1 = null;
+                Spiller spiller2 = null;
+                Turnering turnering = null;
+
+
+                for (Medlem m : medlemListe) {
+                    if (m.getMedlemsNummer() == Integer.parseInt(medlemsNr1)) {
+                        spiller1 = (Spiller) m;
+                    }
+                }
+                for (Medlem m : medlemListe) {
+                    if (m.getMedlemsNummer() == Integer.parseInt(medlemsNr2)) {
+                        spiller2 = (Spiller) m;
+                    }
+                }
+                for (Turnering t : turneringListe) {
+                    if (t.getTurneringsNavn().equals(turneringsNavn)) {
+                        turnering = t;
+                    }
+                }
+
+                Kamp kamp = new Kamp(spiller1, spiller2, dato, disciplin, turnering, vinder);
+                kampListe.add(kamp);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return kampListe;
+    }
+
     public static void opdaterSpillerResultat(Spiller spiller, int nytResultat, String nyDato) {
         File mappe = OpretKonkurrenceMappe();   //Sikrer at mappen findes
 
@@ -351,8 +342,8 @@ public class FileUtil {
             while ((linje = br.readLine()) != null) {
                 String trimmed = linje.trim();
 
-                if (trimmed.startsWith("Seneste kampresultat:")) {
-                    linje = "Seneste kampresultat: " + nytResultat;
+                if (trimmed.startsWith("Antal kampe vundet:")) {
+                    linje = "Antal kampe vundet: " + nytResultat;
                 } else if (trimmed.startsWith("Dato:")) {
                     linje = "Dato: " + nyDato;
                 }
@@ -373,14 +364,6 @@ public class FileUtil {
             System.out.println("Fejl ved skrivning til spillerfil: " + e.getMessage());
             return;
         }
-
-        System.out.println("Resultat + dato opdateret for " + spiller.getNavn());
     }
+
 }
-
-
-
-
-
-
-

@@ -1,0 +1,5 @@
+Hold: junior
+Disciplin: double
+Rangering: 20
+Antal kampe vundet: 0
+Dato: 08:45:36.137546700

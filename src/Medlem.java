@@ -36,7 +36,7 @@ public abstract class Medlem {
     private String mail;
     private LocalDate foedselsdag;
     private boolean betaling;
-    private Betaling betalingObjekt = new Betaling();
+    private String hold;
 
     private static final Path FIL = Path.of("medlem.txt");   //Sti til filen hvor ALT gemmes
 
@@ -62,66 +62,6 @@ public abstract class Medlem {
         this.medlemsNummer = medlemsNummer;
     }
 
-    /// Skriver et medlem i medlem.txt i formatet: navn_medlemsnummer_fødselsdato_mail
-    private void skrivMedlemTilFil() {
-        try {
-            if (!Files.exists(FIL)) {         //Sørg for at filen findes (ellers opret tom fil)
-                Files.writeString(FIL, "");
-            }
-            String linje = navn + "_" + medlemsNummer + "_" + foedselsdag + "_" + mail + "_" + medlemskab + "\n";    //Format på linjen der skrives
-            Files.writeString(FIL, linje, StandardOpenOption.APPEND);     //Tilføj til linjen nederst i filen
-
-        } catch (IOException e) {
-            throw new RuntimeException("Kunne ikke skrive til medlem.txt");
-        }
-    }
-
-
-    ///Sortere medlem.txt efter medlemsnummer
-    public static void sorterFilEfterMedlemsnummer(){
-        try {
-            if (!Files.exists(FIL)) {
-                return; //intet at sortere
-        }
-
-            List<String> linjer = Files.readAllLines(FIL);   //Læser alle linjer
-
-
-            linjer.removeIf(l -> l.trim().isEmpty());     //trim() fjerner mellemrum og skjulte tegn
-                                                                 //isEmpthy() tjekker om den er tom, hvis ja, fjernes linjen
-
-            linjer.sort((l1, l2) -> {          //Sorter listens linjer ved at sammenligne to linjer ad gangen, kaldet l1 og l2
-
-                int n1 = hentMedlemsnummerFraLinje(l1);    //Sorteringen læser to linjer, finder medlemsnummeret i hver linje
-                int n2 = hentMedlemsnummerFraLinje(l2);    // og bruger Integer.compare til at bestemme hvilken linje der skal stå først.
-                return Integer.compare(n1,n2);             //På den måde sorteres hele filen korrekt efter medlemsnumre.
-            });                                            /*Sorterer linjerne efter medlemsnummer.
-                                                           Tuborg {} hører til lambdaens krop: (l1, l2) -> { ... }
-                                                           Parentesen ) hører til funktionskaldet sort( ... )
-                                                           Derfor slutter udtrykket med });*/
-
-            Files.write(FIL, linjer);           //Efter sorteringen overskrives hele filen med den sorterede udgave af linjerne
-
-        } catch (IOException e) {
-            throw new RuntimeException("Fejl ved sortering af medlem.txt");
-        }
-    }
-
-    private static int hentMedlemsnummerFraLinje(String linje){     //Hjælpemetode til at finde medlemsnr. i en linje
-        String trimmed = linje.trim();
-        if (trimmed.isEmpty()) return Integer.MAX_VALUE;
-
-        String[] dele = trimmed.split("_");
-        if (dele.length < 2) return Integer.MAX_VALUE;   //Hvis der ikke er noget felt nr. 2
-
-        try {
-            return Integer.parseInt(dele[1].trim());
-        } catch (NumberFormatException e) {
-            return Integer.MAX_VALUE;       //Hvis format er forkert, skub den linje ned i bunden
-        }
-    }
-
-
                                /// GETTERS
     public String getNavn() {
         return navn;
@@ -135,9 +75,6 @@ public abstract class Medlem {
         return mail;
     }
 
-    public void alder() {
-    }
-
     public int getMedlemsNummer() {
         return medlemsNummer;
     }
@@ -146,14 +83,13 @@ public abstract class Medlem {
         return Period.between(foedselsdag, LocalDate.now()).getYears();
     }
 
-    public boolean erAktivtMedlem(){
-        return medlemskab;
+    public String getHold(){
+        return hold;
     }
 
-    public Betaling getBetaling() {
-        return betalingObjekt;
+    public void setHold(String hold){
+        this.hold = hold;
     }
-
 
     @Override
     public String toString() {

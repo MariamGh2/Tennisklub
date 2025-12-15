@@ -1,0 +1,5 @@
+Hold: senior
+Disciplin: double
+Rangering: 2
+Antal kampe vundet: 1
+Dato: 08:45:36.112269800

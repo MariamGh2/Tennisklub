@@ -1,5 +1,8 @@
 import java.io.*;
 import java.io.File;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 /*
@@ -27,6 +30,21 @@ public class Formand extends Medlem implements Bruger {
         this.password = password;
     }
 
+    //Hjælpemetode: beregn hold (junior/senior) ud fra fødselsdag
+    private String beregnHold(String foedselsdag) {
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate fodt = LocalDate.parse(foedselsdag, fmt);
+        int alder = Period.between(fodt, LocalDate.now()). getYears();
+
+        if (alder < 18) {
+            return "junior";
+        } else {
+            return "senior";
+        }
+    }
+
+
+                                        /// Bruger Interface
     @Override
     public String getBrugernavn() {
         return brugernavn;
@@ -43,6 +61,11 @@ public class Formand extends Medlem implements Bruger {
     }
 
     @Override
+    public void sluk() {
+        System.exit(0);
+    }
+
+    @Override
     public void menu() {
         Scanner sc = new Scanner(System.in);
 
@@ -50,35 +73,36 @@ public class Formand extends Medlem implements Bruger {
         System.out.println("Mulige kommandoer:");
         System.out.println("    opret m - Opretter nyt medlem");
         System.out.println("    opret t - Opretter ny turnering");
-        System.out.println("    slet - sletter et eksisterende medlem");
+        System.out.println("    slet - Sletter et eksisterende medlem");
         System.out.println("    logud - Logger ud af bruger");
+        System.out.println("    sluk - Slukker for systemet");
 
         String input = sc.nextLine();
 
         //Opret medlem
-        if (input.equalsIgnoreCase("opret m")) {
+        if (input.equalsIgnoreCase("Opret m") || input.equalsIgnoreCase("pret m") || input.equalsIgnoreCase("Oret m") || input.equalsIgnoreCase("Opet m") || input.equalsIgnoreCase("Oprt m") || input.equalsIgnoreCase("Opre m") || input.equalsIgnoreCase("Opretm") || input.equalsIgnoreCase("Opret medlem") || input.equalsIgnoreCase("Opretmedlem") || input.equalsIgnoreCase("Opret edlem") || input.equalsIgnoreCase("Opret mdlem") || input.equalsIgnoreCase("Opret melem") || input.equalsIgnoreCase("Opret medem") || input.equalsIgnoreCase("Opret medlm") || input.equalsIgnoreCase("Opret medle") || input.equalsIgnoreCase("Opretedlem") || input.equalsIgnoreCase("Opretmdlem") || input.equalsIgnoreCase("Opretmelem") || input.equalsIgnoreCase("Opretmedem") || input.equalsIgnoreCase("Opretmedlm") || input.equalsIgnoreCase("Opretmedle")) {
             opretMedlem();
 
         //Opret turnering
-        } else if (input.equalsIgnoreCase("opret t")){
+        } else if (input.equalsIgnoreCase("Opret t") || input.equalsIgnoreCase("pret t") || input.equalsIgnoreCase("Oret t") || input.equalsIgnoreCase("Opet t") || input.equalsIgnoreCase("Oprt t") || input.equalsIgnoreCase("Opre t") || input.equalsIgnoreCase("Oprett") || input.equalsIgnoreCase("Opretturnering") || input.equalsIgnoreCase("Opret turnering")){
             opretTurnering();
 
         //Slet medlem
-        } else if (input.equalsIgnoreCase("slet")) {
+        } else if (input.equalsIgnoreCase("slet") || input.equalsIgnoreCase("let") || input.equalsIgnoreCase("set") || input.equalsIgnoreCase("slt") || input.equalsIgnoreCase("sle")) {
             boolean loop = true;
             System.out.println("Indtast medlemsnummeret");
             int nummer = Integer.parseInt(sc.nextLine());
             System.out.println("Er du sikker på at du vil slette medlem " + nummer + "?");
             String svar = sc.nextLine();
             while (loop) {
-                if (svar.equalsIgnoreCase("ja")) {
+                if (svar.equalsIgnoreCase("ja") || svar.equalsIgnoreCase("j")) {
                     try {
                         sletMedlem(nummer);
                         loop = false;
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                } else if (svar.equalsIgnoreCase("nej")) {
+                } else if (svar.equalsIgnoreCase("nej") || svar.equalsIgnoreCase("ne") || svar.equalsIgnoreCase("ej")) {
                     System.out.println("Annulleret.");
                     loop = false;
                 } else {
@@ -87,16 +111,18 @@ public class Formand extends Medlem implements Bruger {
             }
 
         //Logud
-        } else if (input.equals("logud")) {
+        } else if (input.equalsIgnoreCase("logud") || input.equalsIgnoreCase("ogud") || input.equalsIgnoreCase("lgud") || input.equalsIgnoreCase("loud") || input.equalsIgnoreCase("logd") || input.equalsIgnoreCase("logu")) {
             logud();
 
-        //Forkert input
+        } else if (input.equalsIgnoreCase("sluk") || input.equalsIgnoreCase("luk") || input.equalsIgnoreCase("suk") || input.equalsIgnoreCase("slk") || input.equalsIgnoreCase("slu")) {
+            sluk();
+            //Forkert input
         } else {
             System.out.println("Genkender ikke denne kommando. Prøv igen.");
         }
     }
 
-    //Opretter medlem
+    ///Opretter medlem
     public void opretMedlem(){
 
         String navn;
@@ -124,26 +150,84 @@ public class Formand extends Medlem implements Bruger {
         } else if (type.equals("2")){
             type = "konkurrencespiller";
             System.out.println("Du har valgt konkurrencespiller");
+        } else {
+            System.out.println("Ugyldigt valg. Afbryder oprettelse.");
+            return;
         }
 
+        //Opretter selve medlemmet
         Spiller s = new Spiller(navn, true, foedselsdag, mail, type);  //opret medlem (Medlems klassen klarer medlemsnummer + filskrivning + sortering)
         int medlemsNummer = s.getMedlemsNummer();
 
+        //Opretter betaling for medlem
+        Betaling b = new Betaling(medlemsNummer, false, Kontingent.beregnKontingent(s.getBeregnAlder(),s.getMedlemskab()));
+
+        File bFil = new File("betaling.txt");
+        String filTekst = getMedlemsNummer() + "_" + b.getHarBetalt() + "_" + b.getRestance();
+        FileUtil.appendTilFil(bFil, filTekst);
+
+        //Beregner hold
+        String hold = beregnHold (foedselsdag);
+        s.setHold(hold);
+
+        //NYT MEDLEM: betaling = false (ikke betalt endnu)
+        boolean betaling = false;
+
+        //Skriver medlemmet i medlem.txt
         FileUtil.appendTilFil(
                 new File("medlem.txt"),
-                navn + "_" + medlemsNummer + "_" + "true" + "_" + foedselsdag + "_" + mail + "_" + type + "_" + "true" + System.lineSeparator());
+                navn + "_" +
+                     medlemsNummer + "_" +
+                     "true" + "_" +
+                     foedselsdag + "_" +
+                     mail + "_" +
+                     type + "_" +
+                     betaling + "_" +
+                     hold);
 
-        KonkurrenceSpillere ks = new KonkurrenceSpillere();
-
+        //Hvis konkurrencespiller -> spørg om disciplin og rangering og opret konkurrencefil
         if (type.equals("konkurrencespiller")) {
+
+            System.out.println("Vælg disciplin:");
+            System.out.println("   1 = single");
+            System.out.println("   2 = double");
+            System.out.println("   3 = mixed");
+            String valg = sc.nextLine();
+
+            String disciplin = "";
+            if (valg.equals("1")) {
+                disciplin = "singles";
+            } else if (valg.equals("2")) {
+                disciplin = "double";
+            } else if (valg.equals("3")) {
+                disciplin = "mixed";
+            } else {
+                System.out.println("Ugyldigt valg for disciplin");
+            }
+
+            int rangering = 0;
+            int startResultat = 0;
+            String dato = "";   //Ingen dato endnu
+
+            //Opret konkurrencespiller-objekt med alle data
+            KonkurrenceSpillere ks = new KonkurrenceSpillere(
+                    s,
+                    disciplin,
+                    hold,
+                    rangering,
+                    startResultat,
+                    dato
+            );
+
             FileUtil.opretSpillerFil(s, ks);
         }
 
-        Medlem.sorterFilEfterMedlemsnummer(); //Sortere filen efter oprettelse
+        Medlemsnummer.sorterFilEfterMedlemsnummer(); //Sortere filen efter oprettelse
 
+        System.out.println("Medlem oprettet med medlemsnummer: " + medlemsNummer);
     }
 
-    //Sletter medlem
+                                ///Sletter medlem
     public void sletMedlem(int medlemsNummer) throws IOException {
 
         boolean medlemFundet = false;
@@ -179,6 +263,7 @@ public class Formand extends Medlem implements Bruger {
         nyFil.renameTo(originalFil);
     }
 
+                        /// Opretter turnering
     public void opretTurnering(){
         Scanner sc = new Scanner(System.in);
 
@@ -197,7 +282,7 @@ public class Formand extends Medlem implements Bruger {
         //Turnerings-klassen skriver selv data til turneringer.txt
         Turnering t = new Turnering(navn, disciplin, dato);
 
-        System.out.println("Turnering oprettet: " + t.getTurnering() + " (" + t.getDisciplinen() + ", " + t.getDatoen()
+        System.out.println("Turnering oprettet: " + t.getTurneringsNavn() + " (" + t.getDisciplinen() + ", " + t.getDatoen()
         + ")");
     }
 }

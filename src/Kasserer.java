@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -50,63 +51,46 @@ public class Kasserer extends Medlem implements Bruger {
     }
 
     @Override
+    public void sluk() {
+        System.exit(0);
+    }
+
+    @Override
     public void menu() throws Exception {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("=== Menu ==========================");
         System.out.println("Mulige kommandoer:");
-        System.out.println("    Betal kontingent");
+        System.out.println("    betal - Betal kontingent for medlem");
         System.out.println("    oversigt - Viser oversigt over medlemmer i restance");
         System.out.println("    rykker - Sender rykker til alle medlemmer i restance");
         System.out.println("    logud - Logger ud af bruger");
+        System.out.println("    sluk - Slukker for systemet");
 
         String input = sc.nextLine();
 
-        if (input.equalsIgnoreCase("Betal kontingent")) {
-            betalKontingent(); }
+        if (input.equalsIgnoreCase("Betal") || input.equalsIgnoreCase("etal") || input.equalsIgnoreCase("beta") || input.equalsIgnoreCase("btal") || input.equalsIgnoreCase("beal") || input.equalsIgnoreCase("betl")) {
+            Kontingent.betalKontingent(); }
 
             //Viser oversigt
-        else if (input.equalsIgnoreCase("Oversigt")) {
+        else if (input.equalsIgnoreCase("Oversigt") || input.equalsIgnoreCase("versigt") || input.equalsIgnoreCase("oersigt") || input.equalsIgnoreCase("ovrsigt") || input.equalsIgnoreCase("ovesigt") || input.equalsIgnoreCase("overigt") || input.equalsIgnoreCase("oversgt") || input.equalsIgnoreCase("oversit")) {
             oversigt();
 
         //Send Rykker
-        } else if (input.equalsIgnoreCase("Rykker")){
+        } else if (input.equalsIgnoreCase("Rykker") || input.equalsIgnoreCase("ykker") || input.equalsIgnoreCase("Rkker") || input.equalsIgnoreCase("Ryker") || input.equalsIgnoreCase("Rykkr") || input.equalsIgnoreCase("Rykke")){
             rykker();
 
         //Logud
-        } else if (input.equals("logud")) {
+        } else if (input.equalsIgnoreCase("logud") || input.equalsIgnoreCase("ogud") || input.equalsIgnoreCase("lgud") || input.equalsIgnoreCase("loud") || input.equalsIgnoreCase("logd") || input.equalsIgnoreCase("logu")) {
             logud();
 
-        //Forkert Input
+        } else if (input.equalsIgnoreCase("sluk") || input.equalsIgnoreCase("luk") || input.equalsIgnoreCase("suk") || input.equalsIgnoreCase("slk") || input.equalsIgnoreCase("slu")) {
+            sluk();
+
+            //Forkert Input
         } else {
             System.out.println("Genkender ikke denne kommando. Prøv igen.");
         }
-    }
-
-    public void betalKontingent() throws Exception {
-        List<Betaling> betalingsListe = FileUtil.laesBetalingFraFil();
-
-        Scanner sc = new Scanner(System.in);
-
-        // 1. Hent medlemsnummer
-        System.out.println("Indtast medlemsnummer:");
-        int medlemsnummer = sc.nextInt();
-
-        // 2. Find medlem i fil
-        for (Betaling b: betalingsListe) {
-            if (b.getMedlemsNummer() == medlemsnummer) {
-                // 5. Indtast betaling
-                int nyRestance;
-
-                System.out.println("Hvor meget har medlemmet betalt?");
-                int beloeb = sc.nextInt();
-
-                nyRestance = b.getRestance() - beloeb;
-
-                FileUtil.opdaterBetalingTilFil(b.getMedlemsNummer(), nyRestance);
-            }
-        }
-
     }
 
     //Sender rykker for en manglende betaling
@@ -115,15 +99,17 @@ public class Kasserer extends Medlem implements Bruger {
 
         Scanner sc = new Scanner(System.in);
 
+        List<Medlem> medlemList = FileUtil.laesMedlemFraFil();
+
         LocalDate dagsDato = Dato.getDato();
         LocalDate frist = Dato.fristDato();
 
         if (dagsDato.isAfter(frist) || dagsDato.isEqual(frist)) {
-            System.out.println("Send rykker?");
+            System.out.println("Send rykker til alle medlemmer i restance? (ja) (nej)");
             String input = sc.nextLine();
-            if (input.equalsIgnoreCase("ja")) {
+            if (input.equalsIgnoreCase("ja") || input.equalsIgnoreCase("j")) {
                 sendRykker = true;
-            } else if  (input.equalsIgnoreCase("nej")) {
+            } else if  (input.equalsIgnoreCase("nej") || input.equalsIgnoreCase("ne") || input.equalsIgnoreCase("ej")) {
                 sendRykker = false;
                 System.out.println("Annulleret");
             } else {
@@ -144,8 +130,16 @@ public class Kasserer extends Medlem implements Bruger {
                     boolean betalt = Boolean.parseBoolean(dele[1]);
                     String restance = dele[2];
 
+                    Medlem m = null;
+
+                    for (Medlem medlem : medlemList) {
+                        if (medlem.getMedlemsNummer() == Integer.parseInt(nummer)) {
+                            m = medlem;
+                        }
+                    }
+
                     if (!betalt) {
-                        System.out.println("Sendt rykker til medlemsnummer " +  nummer);
+                        System.out.println("Sendt rykker til medlemsnummer " +  nummer + " på mail: " + m.getMail());
                     }
                 }
             } catch (IOException e) {

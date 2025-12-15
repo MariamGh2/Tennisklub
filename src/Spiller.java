@@ -14,8 +14,6 @@ Klassen har ansvaret for:
 
 public class Spiller extends Medlem {
 
-    private File medlemFil = new File("medlem.txt");
-
     private String spillerType;  // "motionist" eller "konkurrencespiller"
 
     // 1) Bruges når du OPRETTER en ny spiller i programmet

@@ -1,43 +1,106 @@
+/*
+Klassen har ansvaret for at håndtere kontingentpriser.
+Den definerer prisen for:
+    - Aktivt medlemskab
+    - Passivt medlemskab
+    - Junior (under 18 år)
+    - Senior (18 til 59 år)
+    - Over 60 år
+
+Klassen bruges til at beregne, hvilken pris et medlem skal betale
+ud fra alder og medlemskabstype.
+*/
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class Kontingent {
 
-//Klassen har ansvaret for at beregne kontingent for det enkelte medlem
+    public Kontingent(){}   //Default constructor
 
-    public Kontingent(){} //Default Constructor
+    public static int beregnKontingent(int alder, boolean aktiv){
+        double pris;
+
+        if (!aktiv) {      //Passivt medlemskab. "!" betyder at er det er det omvendte
+            return 250;
+        }
+
+        if (alder < 18) {   //Aktiv medlemskab for junior
+            pris = 800;
+        }
+
+        else {           //Senior medlemskab
+            pris = 1500;
 
 
-                                                                             //double giver bedre mening at anvende end int, så vi kan returnere et decimaltal.
-    public double beregnKontingent(Medlem medlem) {                 //Medlem medlem = klassens navn & parameteren der anvendes i metoder.
-        if(!medlem.erAktivtMedlem()){   //Hvis medlem ikke er aktiv (passiv)
-        return 250.0;                   //Passivt medlem takst
+            if (alder >= 60) {              //Hvis medlem er 60 år eller ældre, så er det 25% billigere
+                pris = (int)(pris * 0.75); // 25% trukket fra
+            }
+        }
+
+        return (int) pris;   //Returnere den korrekte pris inden for hvilket medlemskab de er en del af
     }
 
-    int alder = medlem.getBeregnAlder(); //getAlder() skal returnere medlemmets alder i hele år, så vi ved hvilken takt de hører indunder
+    public static void betalKontingent() throws Exception {
+        List<Betaling> betalingsListe = FileUtil.laesBetalingFraFil();
 
-    if (alder < 18) {   //Under 18
-        return 800.0;  //Junior takst
+        Scanner sc = new Scanner(System.in);
+
+        // 1. Hent medlemsnummer
+        System.out.println("Indtast medlemsnummer:");
+        int medlemsnummer = sc.nextInt();
+
+        // 2. Find medlem i fil
+        for (Betaling b: betalingsListe) {
+            if (b.getMedlemsNummer() == medlemsnummer) {
+                // 5. Indtast betaling
+                int nyRestance;
+
+                System.out.println("Hvor meget har medlemmet betalt?");
+                int beloeb = sc.nextInt();
+
+                nyRestance = b.getRestance() - beloeb;
+
+                FileUtil.opdaterBetalingTilFil(b.getMedlemsNummer(), nyRestance);
+            }
+        }
     }
 
-    if(alder < 60){     //Under 60
-        return 1500.0;  //Senior takst
+    public static void nulstilBetalinger() throws IOException {
+
+        LocalDate dagsDato = LocalDate.now();
+        LocalDate nulstillingsDato = LocalDate.of(LocalDate.now().getYear(), 1, 1);
+        if (dagsDato.isEqual(nulstillingsDato) && !Main.betalingOpdateret) {
+
+            List<Betaling> betalingsListe = FileUtil.laesBetalingFraFil();
+            List<Medlem>  medlemsListe = FileUtil.laesMedlemFraFil();
+
+            List<String> linjer = new ArrayList<>();
+
+            for (Betaling b: betalingsListe) {
+                for (Medlem m: medlemsListe) {
+                    if (b.getMedlemsNummer() == m.getMedlemsNummer()) {
+                        String nyLinje = m.getMedlemsNummer() + "_false_" + beregnKontingent(m.getBeregnAlder(),m.getMedlemskab());
+                        linjer.add(nyLinje);
+                    }
+                }
+            }
+
+            Path fil = Paths.get("betaling.txt");
+
+            Files.write(fil, linjer);
+
+            Main.betalingOpdateret = true;
+        }
+
+        if (dagsDato.isAfter(nulstillingsDato)) {Main.betalingOpdateret = false;}
+
     }
-
-    return 1500.0 * 0.75;  //Medlemmer fra over 60 år får 25% rabat af seniortaksten
-    }
-
-
-
-
-
-
-
-
-    public void prisBestemmelse(){}
-
-
-    public void getKontingent(){}
-
-
-    public void getRestance(){}
-
-
 }

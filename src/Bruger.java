@@ -30,4 +30,6 @@ public interface Bruger {
 
     //Funktion der giver menuen for brugeren
     void menu() throws Exception;
+
+    void sluk();
 }

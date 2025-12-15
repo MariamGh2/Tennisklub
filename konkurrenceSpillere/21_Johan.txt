@@ -1,0 +1,5 @@
+Hold: junior
+Disciplin: singles
+Rangering: 15
+Antal kampe vundet: 0
+Dato: 08:45:36.132197800

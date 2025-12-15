@@ -1,0 +1,5 @@
+Hold: senior
+Disciplin: mixed
+Rangering: 10
+Antal kampe vundet: 0
+Dato: 08:45:36.125817400
